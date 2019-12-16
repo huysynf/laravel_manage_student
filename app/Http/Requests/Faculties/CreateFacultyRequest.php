@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Faculties;
 
+use App\Rules\ShortStringLengt;
+use App\Rules\UpperCase;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateFacultyRequest extends FormRequest
@@ -13,7 +15,7 @@ class CreateFacultyRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +26,17 @@ class CreateFacultyRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'unique:faculties,name', new ShortStringLengt(), new UpperCase()],
+            'description' => 'required',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => '* Tên khoa không được để trống',
+            'name.unique' => '* Tên khoa đã có ! Hãy thử tên khác',
+            'description.required' => '* Mô tả không được để trống',
         ];
     }
 }
