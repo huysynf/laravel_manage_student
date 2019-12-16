@@ -15,6 +15,13 @@ class CreateClassroomsTable extends Migration
     {
         Schema::create('classrooms', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('faculty_id');
+            $table->unsignedBigInteger('subject_id');
+            $table->string('name');
+            $table->text('description');
+            $table->integer('member');
+            $table->foreign('faculty_id')->references('id')->on('faculties')->onDelete('cascade');
+            $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->timestamps();
         });
     }
