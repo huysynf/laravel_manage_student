@@ -9,7 +9,7 @@ $factory->define(App\Models\Student::class, function (Faker $faker) {
     return [
         'name'=>$faker->name,
         'address'=>$faker->address,
-        'image'=>'default'.$faker->randomNumber(1,100).'jpg',
+        'image'=>'default.jpg',
         'birthday'=>$faker->date('yyyy-mm-dd'),
         'phone'=>'111-2222-333',
         'gender'=>0,

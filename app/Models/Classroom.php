@@ -11,7 +11,8 @@ class Classroom extends Model
         'name',
         'faculty_id',
         'description',
-        'member'
+        'member',
+        'subject_id',
     ];
 
     public function faculty()
