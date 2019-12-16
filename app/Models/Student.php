@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    protected $table='students';
-    protected $fillable=[
+    protected $table = 'students';
+    protected $fillable = [
         'name',
         'address',
         'image',
@@ -15,9 +15,12 @@ class Student extends Model
         'phone',
         'gender',
     ];
-    public function classrooms(){
-        return $this->belongsToMany(Classroom::class,'classroom_student');
+
+    public function classrooms()
+    {
+        return $this->belongsToMany(Classroom::class, 'classroom_student');
     }
+
     public $timestamps = false;
 
 }
