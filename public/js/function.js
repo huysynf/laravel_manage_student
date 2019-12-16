@@ -1,4 +1,3 @@
-
 const DELETE_STATUS_CODE = 204;
 const SUCCESS_STATUS_CODE = 200;
 const CREATE_STATUS_CODE = 201;
@@ -16,7 +15,7 @@ function isDeleted(status) {
     return status == DELETE_STATUS_CODE;
 }
 
-
+//function alert eror
 function alertSuccess(message) {
     Swal.fire({
         position: 'center',
@@ -30,7 +29,6 @@ function alertSuccess(message) {
                 location.reload();
             }
         })
-
 }
 
 function alertError(message) {
@@ -75,6 +73,30 @@ function deleteResource(id, url) {
         });
 }
 
+function destroyResource(id, url) {
+    Swal.fire({
+        title: 'Xác nhận xóa?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Xóa ',
+        cancelButtonText: 'Hủy bỏ'
+    }).then((result) => {
+        if (result.value) {
+            deleteResource(id, url)
+                .done(response => {
+                    if (isDeleted(response.status)) {
+                        alertSuccess(response.message);
+                    }
+                })
+                .fail(error => {
+                    alertError(error.message);
+                });
+        }
+    });
+}
+
 function searchResource(data, url) {
     return $.ajax(
         {
@@ -83,4 +105,15 @@ function searchResource(data, url) {
             dataType: "JSON",
             data: data
         });
+}
+
+//count row table
+function countStt() {
+    let index = 1;
+    $("tr td strong").each(function () {
+        $(this).text(index);
+        index++;
+
+    });
+
 }
