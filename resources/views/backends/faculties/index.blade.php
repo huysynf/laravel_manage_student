@@ -6,13 +6,13 @@
 
     <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Quản lý khoa</h1>
-        <button type="button" class="ml-2 btn btn-sm btn-primary shadow-sm addBtnResource"
+        <button type="button" class="ml-2 btn btn-sm btn-primary shadow-sm add-faculty"
                 title="Thêm mới khoa" data-toggle="modal" data-target="#newfacultyModal">
             <i class="fas fa-plus fa-sm text-dark"></i> Thêm mới khoa
         </button>
     </div>
     {{--    table data--}}
-    <div class="row">
+    <div class="row " id="faculty">
         <div class="col-12 d-flex">
             <form class="d-none d-sm-inline-block form-inline  my-2 my-md-0 mw-100 navbar-search"
                   id="facultyFormSearch">
@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="col-12">
-            <table class="table table-bordered " id="table_faculty">
+            <table class="table table-bordered " id="table-faculty">
                 <thead>
                 <tr>
                     <th>STT</th>
@@ -49,7 +49,7 @@
                         </td>
                         <td>{{$faculty->description}}</td>
                         <td>
-                            <button class="btn btn-primary editBtnResource" title="Cập nhật thông tin khoa"
+                            <button class="btn btn-primary edit-faculty" title="Cập nhật thông tin khoa"
                                     editId="{{$faculty->id}}"
                                     data-toggle="modal"
                                     data-target="#editModal"
@@ -59,7 +59,7 @@
                             ><i
                                     class="fa fa-edit text-white"></i>
                             </button>
-                            <button href="" class="btn btn-dark deleteFaculty" title="Xóa nhật khoa"
+                            <button href="" class="btn btn-dark delete-faculty" title="Xóa nhật khoa"
                                     deleteId="{{$faculty->id}}"><i class="fas fa-trash text-danger"></i></button>
                         </td>
                     </tr>
@@ -84,7 +84,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="post" class="editResourceForm">
+                    <form method="post" class="editfaculty-form">
                         @csrf
                         <div class="modal-body text-dark">
                             @include('backends.faculties.form')
@@ -93,7 +93,7 @@
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                 Hủy
                             </button>
-                            <button type="submit" class="btn btn-primary updateFaculty" id="newfaculty">
+                            <button type="button" class="btn btn-primary update-faculty" id="newfaculty">
                                 <i class="fa fa-file-alt"></i>Cập nhật thông tin
                             </button>
                         </div>
@@ -112,16 +112,16 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{route('faculties.store')}}" method="post" class="newResourceForm">
+                    <form action="{{route('faculties.store')}}" method="post" class="newfaculty-form">
                         @csrf
                         <div class="modal-body text-dark">
                             @include('backends.faculties.form')
-                            <button type="submit" class="btn btn-primary newFaculty"><i class="fa fa-plus"></i>Thêm mới
+                            <button type="button" class="btn btn-primary new-faculty"><i class="fa fa-plus"></i>Thêm mới
                             </button>
                         </div>
-
                     </form>
                 </div>
             </div>
         </div>
+    </div>
 @endsection

@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Backends;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Faculties\CreateFacultyRequest;
+use App\Http\Requests\Faculties\UpdateFacultyRequest;
 use App\Models\Faculty;
-use Illuminate\Http\Request;
 
 class FacultyController extends Controller
 {
@@ -15,8 +16,8 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        $faculties= Faculty::paginate(5);
-        return view('backends.faculties.index',compact('faculties'));
+        $faculties = Faculty::orderBy('id', 'desc')->paginate(10);
+        return view('backends.faculties.index', compact('faculties'));
     }
 
     /**
@@ -32,18 +33,23 @@ class FacultyController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateFacultyRequest $request)
     {
-        //
+        $data = $request->all();
+        Faculty::create($data);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Thêm mới thành công',
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -54,7 +60,7 @@ class FacultyController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -65,23 +71,47 @@ class FacultyController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateFacultyRequest $request, $id)
     {
-        //
+        $faculty = Faculty::findOrFail($id);
+        $data = $request->all();
+        $faculty->update($data);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Cập nhật thông tin khoa  thành công',
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        Faculty::destroy($id);
+        return response()->json([
+            'status' => 204,
+            'message' => 'Xóa khoa thành  công',
+        ]);
+    }
+
+    public function search($search)
+    {
+
+        $searchKey = $search;
+        $faculties = Faculty::where('name', 'LIKE', '%' . $searchKey . '%')->orwhere('description', 'LIKE',
+            '%' . $searchKey . '%')->get(['id', 'name', 'description'])->orderBy('id', 'desc');
+        return response()->json([
+            'status' => 200,
+            'message' => 'Tìm kiếm thành công',
+            'data' => $faculties,
+        ]);
+
     }
 }
