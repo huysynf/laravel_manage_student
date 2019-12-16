@@ -4,26 +4,21 @@
 
 @section('content')
 
-    <div class="d-sm-flex align-items-center justify-content-sm-around mb-4">
+    <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Quản lý khoa</h1>
-        <button type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm addBtnResource"
+        <button type="button" class="ml-2 btn btn-sm btn-primary shadow-sm addBtnResource"
                 title="Thêm mới khoa" data-toggle="modal" data-target="#newfacultyModal">
             <i class="fas fa-plus fa-sm text-dark"></i> Thêm mới khoa
         </button>
     </div>
     {{--    table data--}}
     <div class="row">
-        <div class="col-12 mb-3">
-            <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+        <div class="col-12 d-flex">
+            <form class="d-none d-sm-inline-block form-inline  my-2 my-md-0 mw-100 navbar-search"
                   id="facultyFormSearch">
-                <div class="input-group">
+                <div class="input-group border-left-primary">
                     <input type="text" class="form-control bg-light border-0 small searchkey" placeholder="Tìm kiếm..."
                            aria-label="Search" aria-describedby="basic-addon2" name="searchKey">
-                    <div class="input-group-append">
-                        <button class="btn btn-primary facultySearch" type="submit">
-                            <i class="fas fa-search fa-sm"></i>
-                        </button>
-                    </div>
                 </div>
                 <p class="text-danger error_search"></p>
             </form>
@@ -34,7 +29,7 @@
             </div>
         </div>
         <div class="col-12">
-            <table class="table table-hover " id="table_faculty">
+            <table class="table table-bordered " id="table_faculty">
                 <thead>
                 <tr>
                     <th>STT</th>
@@ -117,7 +112,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{route('faculty.store')}}" method="post" class="newResourceForm">
+                    <form action="{{route('faculties.store')}}" method="post" class="newResourceForm">
                         @csrf
                         <div class="modal-body text-dark">
                             @include('backends.faculties.form')
