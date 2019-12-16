@@ -11,5 +11,5 @@ class Faculty extends Model
         'name',
         'description',
     ];
-
+    public $timestamps = false;
 }

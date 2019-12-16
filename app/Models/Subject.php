@@ -12,4 +12,5 @@ class Subject extends Model
         'lesson',
         'description',
     ];
+    public $timestamps = false;
 }
