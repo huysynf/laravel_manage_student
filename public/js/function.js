@@ -182,3 +182,44 @@ function fillSubjectToTableHtml(data) {
     });
     return tableHTML;
 }
+
+function fillStudentToTableHtml(data) {
+    let tableHTML = "";
+    data.forEach(classroom => {
+        tableHTML += ` <tr>
+                            <td>
+                                <strong></strong>
+                            </td>
+                            <td>
+                                ${classroom.name}
+                            </td>
+                            <td>
+                                ${classroom.member}
+                            </td>
+                            <td>
+                                ${classroom.description}
+                            </td>
+                            <td>
+                                <a class="btn btn-outline-primary btn-circle " title="Cập nhật lớp  học"
+                                    href=" {{route('classrooms.edit',$classroom->id)}}">
+                                    <i class="fa fa-edit text-dark"></i>
+                                    </a>
+                                <button class="btn btn-outline-dark btn-circle delete-classroom" title="Xóa lớp học"
+                                         deleteId="${classroom.id}">
+                                         <i class="fas fa-trash text-danger"></i>
+                                </button>
+                                <button class="btn btn-outline-success btn-circle  show-classroom" title="chi tiết lớp học"
+                                        data-toggle="modal"
+                                        data-name="${classroom.name}"
+                                        data-description="${classroom.description}"
+                                        data-member="${classroom.member}"
+                                        data-subject="${classroom.subject.name}"
+                                        data-faculty="${classroom.faculty.name}"
+                                        data-target="#showClassroomModal">
+                                    <i class="fas fa-info-circle text-primary"></i>
+                                </button>
+                            </td>
+                        </tr>`;
+    });
+    return tableHTML;
+}
