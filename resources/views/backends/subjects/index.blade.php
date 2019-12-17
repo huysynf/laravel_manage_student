@@ -93,25 +93,7 @@
                     <form method="post" class="editsubject-form">
                         @csrf
                         <div class="modal-body text-dark">
-                            <div class="form-group">
-                                <label for="">Tên môn học</label>
-                                <input type="text" class="form-control name" name="name" id="name"
-                                       required>
-                                <span class="text-danger nameError"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Số tiết</label>
-                                <input type="text" class="form-control lesson" name="lesson" id="lesson"
-                                       required>
-                                <span class="text-danger lessonError"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Mô tả môn học</label>
-                                <textarea type="text" class="form-control description" name="description"
-                                          id="description"></textarea>
-                                <span class="text-danger descriptionError"></span>
-                            </div>
-
+                            @include('backends.subjects.form')
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
@@ -139,25 +121,7 @@
                     <form action="{{route('subjects.store')}}" method="post" class="newsubject-form">
                         @csrf
                         <div class="modal-body text-dark">
-                            <div class="form-group">
-                                <label for="">Tên môn học</label>
-                                <input type="text" class="form-control name" name="name" id="name"
-                                       required>
-                                <span class="text-danger nameError"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Số tiết</label>
-                                <input type="text" class="form-control lesson" name="lesson" id="lesson"
-                                       required>
-                                <span class="text-danger lessonError"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Mô tả môn học</label>
-                                <textarea type="text" class="form-control description" name="description"
-                                          id="description"></textarea>
-                                <span class="text-danger descriptionError"></span>
-                            </div>
-
+                            @include('backends.subjects.form')
                             <button type="button" class="btn btn-primary new-subject"><i class="fa fa-plus"></i>Thêm mới
                             </button>
                         </div>
