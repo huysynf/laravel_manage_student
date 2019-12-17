@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Backends;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Students\CreateStudentRequest;
 use App\Http\Requests\Students\UpdateStudentRequest;
 use App\Models\Classroom;
 use App\Models\Classroom_student;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Image;
-
+use DB;
 class StudentController extends Controller
 {
     private $student;
@@ -23,6 +24,13 @@ class StudentController extends Controller
         $this->student = new Student();
         $this->path_image = 'images/students/';
         $this->classroom_student = new Classroom_student();
+    }
+
+    public function saveimage($image)
+    {
+        $name = time() . '.' . $image->getClientOriginalExtension();
+        Image::make($image)->resize(300, 300)->save(public_path($this->path_image) . $name);
+        return $name;
     }
 
     public function index()
@@ -48,12 +56,12 @@ class StudentController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateStudentRequest $request)
     {
         $data = $request->except('classrooms');
         $classroom_id = $request->input('classrooms');
         $image = $request->file('image');
-        $name = ($image->isValid()) ? $this->savestudentprofile($image) : 'default.jpg';
+        $name =$this->saveimage($image);
         try {
             DB::beginTransaction();
             $data['image'] = $name;
@@ -103,29 +111,27 @@ class StudentController extends Controller
      */
     public function update(UpdateStudentRequest $request, $id)
     {
-        $student=Student::findOrFail($id);
-        $data=$request->except('classrooms');
-        $classroom_id=$request->input('classrooms');
-        $image=$request->file('image');
-        $current_image=$student->image;
+        $student = Student::findOrFail($id);
+        $data = $request->except('classrooms');
+        $classroom_id = $request->input('classrooms');
+        $image = $request->file('image');
+        $current_image = $student->image;
         try {
             DB::beginTransaction();
-            if(isset($image)){
-                $image_name=$this->savestudentprofile($image);
-                $data['image']=$image_name;
-                unlink('images/students/'.$current_image);
-            }
-            else{
-                $data['image']=$current_image;
+            if (isset($image)) {
+                $image_name =$this->saveimage($image);
+                $data['image'] = $image_name;
+                unlink('images/students/' . $current_image);
+            } else {
+                $data['image'] = $current_image;
             }
             $student->update($data);
             $student->classrooms()->sync($classroom_id);
             DB::commit();
-            return  redirect()->route('students.index')->with('message','Cập nhật thành công');
-        }
-        catch (Exception $x){
+            return redirect()->route('students.index')->with('message', 'Cập nhật thành công');
+        } catch (Exception $x) {
             DB::rollBack();
-            return redirect()->route('students.edit')->with('message','Có lỗi xảy ra thêm thất bại');
+            return redirect()->route('students.edit')->with('message', 'Có lỗi xảy ra thêm thất bại');
         }
     }
 
@@ -138,35 +144,29 @@ class StudentController extends Controller
     public function destroy($id)
     {
         try {
-            $student=$this->student->findOrFail($id);
+            $student = $this->student->findOrFail($id);
             DB::beginTransaction();
-            $current_image=$student->image;
+            $current_image = $student->image;
             $student->delete();
-            if(file_exists('images/students/'.$current_image))
-                unlink('images/students/'.$current_image);
+            if (file_exists('images/students/' . $current_image)) {
+                unlink('images/students/' . $current_image);
+            }
             DB::commit();
             return response()->json([
-                'status'=>204,
-                'message'=>'Xóa sinh viên thành công',
+                'status' => 204,
+                'message' => 'Xóa sinh viên thành công',
             ]);
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json([
-                'status'=>400,
-                'message'=>'Có lỗi xảy ra xóa thất bại',
+                'status' => 400,
+                'message' => 'Có lỗi xảy ra xóa thất bại',
             ]);
         }
     }
 
-    public function savestudentprofile($image)
-    {
-        $name = time() . '.' . $image->getClientOriginalExtension();
-        Image::make($image)->resize(300, 300)->save(public_path($this->path_image) . $name);
-        return $name;
-    }
+
     public function search($search)
     {
-
         $students = $this->student->search($this->search());
         return response()->json([
             'satus' => 200,
