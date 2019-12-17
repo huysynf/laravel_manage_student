@@ -1,7 +1,8 @@
 const DELETE_STATUS_CODE = 204;
 const SUCCESS_STATUS_CODE = 200;
 const CREATE_STATUS_CODE = 201;
-const TIME_TO_SEARCH=2000;
+const TIME_TO_SEARCH = 2000;
+
 //function
 function isSuccess(status) {
     return status == SUCCESS_STATUS_CODE;
@@ -97,7 +98,7 @@ function destroyResource(id, url) {
     });
 }
 
-function searchResource( url) {
+function searchResource(url) {
     return $.ajax(
         {
             url: url,
@@ -116,6 +117,7 @@ function countStt() {
     });
 
 }
+
 //fetch data to table
 function fillFacultyToTableHtml(data) {
     let tableHTML = "";
@@ -140,6 +142,40 @@ function fillFacultyToTableHtml(data) {
                                     class="fa fa-edit text-white"></i>
                             </button>
                             <button class="btn btn-dark delete-faculty" title="Xóa nhật khoa"
+                               deleteId="${item.id}"><i class="fas fa-trash text-danger"></i></button>
+                        </td>
+                    </tr>`;
+    });
+    return tableHTML;
+}
+
+function fillSubjectToTableHtml(data) {
+    let tableHTML = "";
+    data.forEach(item => {
+        tableHTML += ` <tr>
+                        <td>
+                            <strong></strong>
+                        </td>
+                        <td>
+                            ${item.name}
+                        </td>
+                        <td>
+                            ${item.lesson}
+                        </td>
+                        <td>${item.description}</td>
+                        <td>
+                            <button  class="btn btn-primary edit-subject" title="Cập nhật thông tin môn học"
+                                    editId="${item.id}"
+                                    data-toggle="modal"
+                                    data-target="#editSubjectModal"
+                                    data-name="${item.name}"
+                                    data-lesson="${item.lesson}"
+                                    data-description="${item.description}"
+                                    data-id="${item.id}"
+                                ><i
+                                    class="fa fa-edit text-white"></i>
+                            </button>
+                            <button class="btn btn-dark delete-subject" title="Xóa môn học"
                                deleteId="${item.id}"><i class="fas fa-trash text-danger"></i></button>
                         </td>
                     </tr>`;

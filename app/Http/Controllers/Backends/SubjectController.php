@@ -3,83 +3,64 @@
 namespace App\Http\Controllers\Backends;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Subjects\CreateSubjectRequest;
+use App\Http\Requests\Subjects\UpdateSubjectRequest;
+use App\Models\Subject;
 
 class SubjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private $subject;
+
+    public function __construct()
+    {
+        $this->subject = new Subject();
+    }
+
     public function index()
     {
-        //
+        $subjects = $this->subject->getpaginate(10);
+        return view('backends.subjects.index', compact('subjects'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function store(CreateSubjectRequest $request)
     {
-        //
+        $data = $request->all();
+        $this->subject->create($data);
+        return response()->json([
+            'status' => 201,
+            'message' => 'Thêm mới môn học thành công',
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function update(UpdateSubjectRequest $request, $id)
     {
-        //
+        $subject = $this->subject->findOrFail($id);
+        $data = $request->all();
+        $subject->update($data);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Cập nhật thông tin môn học  thành công',
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $this->subject->destroy($id);
+        return response()->json([
+            'status' => 204,
+            'message' => 'Xóa môn học thành  công',
+        ]);
+    }
+
+    public function search($search)
+    {
+
+        $subjects = $this->subject->search($search);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Có ' . count($subjects) . ' kết quả tìm thấy với từ khóa mon:' . $search,
+            'data' => $subjects,
+        ]);
+
     }
 }
