@@ -17,16 +17,16 @@
             <form class="d-none d-sm-inline-block form-inline  my-2 my-md-0 mw-100 navbar-search"
                   id="facultyFormSearch">
                 <div class="input-group border-left-primary">
-                    <input type="text" class="form-control bg-light border-0 small searchkey" placeholder="Tìm kiếm..."
+                    <input type="text" class="form-control bg-light border-0 small faculty-searchkey" placeholder="Tìm kiếm..."
                            aria-label="Search" aria-describedby="basic-addon2" name="searchKey">
                 </div>
-                <p class="text-danger error_search"></p>
             </form>
             <div class="show_search_result d-flex align-items-center">
                 <p id="row_number_serach" class="text-danger mt-3"></p>
                 <div class="select_row">
                 </div>
             </div>
+            <p class="search-message text-danger ml-1"></p>
         </div>
         <div class="col-12">
             <table class="table table-bordered " id="table-faculty">
@@ -59,7 +59,7 @@
                             ><i
                                     class="fa fa-edit text-white"></i>
                             </button>
-                            <button href="" class="btn btn-dark delete-faculty" title="Xóa nhật khoa"
+                            <button class="btn btn-dark delete-faculty" title="Xóa nhật khoa"
                                     deleteId="{{$faculty->id}}"><i class="fas fa-trash text-danger"></i></button>
                         </td>
                     </tr>

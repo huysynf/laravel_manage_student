@@ -106,10 +106,10 @@ class FacultyController extends Controller
 
         $searchKey = $search;
         $faculties = Faculty::where('name', 'LIKE', '%' . $searchKey . '%')->orwhere('description', 'LIKE',
-            '%' . $searchKey . '%')->get(['id', 'name', 'description'])->orderBy('id', 'desc');
+            '%' . $searchKey . '%')->get(['id', 'name', 'description']);
         return response()->json([
             'status' => 200,
-            'message' => 'Tìm kiếm thành công',
+            'message' => 'Có '.count($faculties).' kết quả tìm thấy với từ khóa:'.$searchKey,
             'data' => $faculties,
         ]);
 

@@ -12,7 +12,8 @@ $(function () {
     let idActionResource = 0;
     let urlResource = "";
     let dataResource = "";
-
+    let searchPath = "";
+    let searchMessage=$('.search-message');
     //faculty
     //valiable
     let faculty = $('#faculty');
@@ -21,6 +22,7 @@ $(function () {
     let addFacultyBtn = $('.add-faculty');
     let editFacultyBtn = $('.edit-faculty');
     let facultyPath = "/manage/faculties/";
+    let facultySearch = $('.faculty-searchkey');
 
     // function
     function resetError() {
@@ -73,6 +75,33 @@ $(function () {
     faculty.on('click', '.delete-faculty', function () {
         idActionResource = $(this).attr('deleteId');
         destroyResource(idActionResource, facultyPath);
+    });
+
+    facultySearch.on('keyup', function () {
+        let searchKey = $(this).val().trim();
+        searchPath = facultyPath + "search/" + searchKey;
+        if(searchKey.length>0){
+            searchResource(searchPath)
+                .done(data => {
+                    $('.pagination-container').hide();
+                    const faculties = data.data;
+                    searchMessage.html(data.message);
+                    let facutyTable = fillFacultyToTableHtml(faculties);
+                    $('tbody').html(facutyTable);
+                    countStt();
+                })
+                .fail(error => {
+                    searchMessage.html('');
+                });
+        }else {
+            searchMessage.html('');
+        }
+        facultySearch.on('keydown',function () {
+            if(searchKey.length<0){
+                searchMessage.html('');
+            }
+        });
+
     });
     //fill data to modal
     $('#editModal').on('show.bs.modal', function (event) {
