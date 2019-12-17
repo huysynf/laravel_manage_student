@@ -3,18 +3,22 @@
 namespace App\Http\Controllers\Backends;
 
 use App\Http\Controllers\Controller;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private $subject;
+
+    public function __construct()
+    {
+        $this->subject=new Subject();
+    }
+
     public function index()
     {
-        //
+        $subjects=$this->subject->orderBy('id', 'desc')->paginate(10);
+        return view('backends.subjects.index',compact('subjects'));
     }
 
     /**
