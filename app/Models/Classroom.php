@@ -14,6 +14,7 @@ class Classroom extends Model
         'member',
         'subject_id',
     ];
+    public $timestamps = false;
 
     public function faculty()
     {
@@ -25,5 +26,5 @@ class Classroom extends Model
         return $this->belongsTo(Subject::class);
     }
 
-    public $timestamps = false;
+
 }
