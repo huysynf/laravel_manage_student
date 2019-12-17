@@ -35,8 +35,8 @@
                 <tr>
                     <th>STT</th>
                     <th>Tên môn học</th>
-                    <th>Mô tả</th>
                     <th>Số tiết</th>
+                    <th>Mô tả</th>
                     <th>Tùy chọn</th>
                 </tr>
                 </thead>

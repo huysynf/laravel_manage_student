@@ -179,15 +179,16 @@ $(function () {
 
     subjectSearch.on('keyup', function () {
         let searchKey = $(this).val().trim();
-        searchPath = facultyPath + "search/" + searchKey;
+        searchPath = subjectPath + "search/" + searchKey;
         if(searchKey.length>0){
             searchResource(searchPath)
                 .done(data => {
                     $('.pagination-container').hide();
-                    const faculties = data.data;
+                    const subjects = data.data;
+                    console.log(subjects);
                     searchMessage.html(data.message);
-                    let facutyTable = fillFacultyToTableHtml(faculties);
-                    $('tbody').html(facutyTable);
+                    let subjectTable = fillSubjectToTableHtml(subjects);
+                    $('tbody').html(subjectTable);
                     countStt();
                 })
                 .fail(error => {
