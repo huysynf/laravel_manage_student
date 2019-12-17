@@ -148,8 +148,8 @@ $(function () {
         urlResource = '/manage/subjects';
         newResource(dataResource, urlResource)
             .done(response => {
-                $('#newsubjectModal').modal('hide')
-                isSuccess(response.status) ? alertSuccess(response.message) : "";
+                $('#newsubjectModal').modal('hide');
+                isCreated(response.status) ? alertSuccess(response.message) : "";
                 countStt();
             })
             .fail(error => {
@@ -159,7 +159,7 @@ $(function () {
     });
     subject.on('click', '.update-subject', function () {
         dataResource = editSubjectForm.serialize();
-        urlResource = facultyPath + idActionResource;
+        urlResource = subjectPath + idActionResource;
         updateResource(dataResource, urlResource)
             .done(response => {
                 $('#newsubjectModal').modal('hide')
