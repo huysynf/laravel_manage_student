@@ -6,12 +6,12 @@
 
     <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Quản lí người dùng</h1>
-        <a href="{{route('users.create')}}" class="ml-2 btn btn-sm btn-primary shadow-sm "
-           title="thêm mới người dùng"
-           data-toggle="modal"
-           data-target="#newUserModal"
-        > <i class="fas fa-plus fa-sm text-success"></i> thêm mới người dùng
-        </a>
+        <button class="ml-2 btn btn-sm btn-primary shadow-sm add-user"
+                title="thêm mới người dùng"
+                data-toggle="modal"
+                data-target="#newUserModal"
+        ><i class="fas fa-plus fa-sm text-success"></i> thêm mới người dùng
+        </button>
     </div>
     @if(session('message'))
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -46,7 +46,6 @@
                 <tr>
                     <th>STT</th>
                     <th>Ảnh</th>
-                    <th>Họ tên</th>
                     <th>Email</th>
                     <th>Tùy chọn</th>
                 </tr>
@@ -63,16 +62,16 @@
                                  alt="{{$user->name}}">
                         </td>
                         <td>
-                            {{$user->name}}
-                        </td>
-                        <td>
                             {{$user->email}}
                         </td>
                         <td class="d-flex">
-                            <a class="btn btn-outline-primary btn-circle" title="Cập nhật sinh viên"
-                               href=" {{route('students.edit',$user->id)}}">
+                            <button class="btn btn-outline-primary btn-circle edit-user"
+                                    title="Cập nhật thông tin người dùng"
+                                    data-toggle="modal"
+                                    editId="{{$user->id}}"
+                                    data-target="#editUserModal">
                                 <i class="fa fa-edit text-dark"></i>
-                            </a>
+                            </button>
                             <button class="btn btn-outline-dark delete-user btn-circle" title="Xóa người dùng"
                                     deleteId="{{$user->id}}"><i class="fas fa-trash text-danger"></i></button>
                             <button class="btn btn-outline-success btn-circle  show-user" title="Chi tiết người dùng"
@@ -82,8 +81,8 @@
                                 <i class="fas fa-info-circle text-primary"></i></button>
                             <button class="btn btn-outline-primary btn-circle  show-user" title="Đổi mật khẩu"
                                     data-toggle="modal"
-                                    showId="{{$user->id}}"
-                                    data-target="#showUserModal">
+                                    userId="{{$user->id}}"
+                                    data-target="#changePasswordModal">
                                 <i class="fas fa-key text-warning"></i></button>
                         </td>
                     </tr>
@@ -97,6 +96,7 @@
 
             </div>
         </div>
+        @include('backends.users.show')
         <div class="modal fade" id="newUserModal" tabindex="-1" role="dialog"
              aria-labelledby="newUserModalTitle"
              aria-hidden="true">
@@ -113,76 +113,227 @@
                           enctype="multipart/form-data">
                         <div class="modal-body text-dark ">
                             @csrf
+                            <div class="form-group">
+                                <label for="">Họ tên</label>
+                                <input type="text" class="form-control name" name="name" value="{{old('name')}}"
+                                       required>
+                                <span class="text-danger error-name"></span>
+                            </div>
+                            <div class="d-flex ">
                                 <div class="form-group">
-                                    <label for="">Họ tên</label>
-                                    <input type="text" class="form-control name" name="name" value="{{old('name')}}"
-                                           required>
-                                    <span class="text-danger error-name"></span>
-                                </div>
-                                <div class="d-flex ">
-                                    <div class="form-group">
-                                        <label for="">Email</label>
+                                    <label for="">Email</label>
 
-                                        <input type="text" class="form-control " name="email" value="{{old('email')}}"
-                                        >
-                                        <span class="text-danger error-email"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="">Số điện thoại</label>
-                                        <input type="text" class="form-control " name="phone" value="{{old('phone')}}"
-                                        >
-                                        <span class="text-danger error-phone"></span>
-                                    </div>
-                                </div>
-                                <div class="d-flex">
-                                    <div class="form-group">
-                                        <label for="">Ảnh</label>
-                                        <input type="file" class="form-control " name="image" id="image-input"
-                                        >
-                                        <span class="text-danger error-image"></span>
-                                    </div>
-                                    <div>
-                                        <img src="" alt="" width="100px" height="100px"
-                                             style="max-height: 100%;max-width: 100%" id="image-show">
-                                    </div>
-
+                                    <input type="text" class="form-control " name="email" value="{{old('email')}}"
+                                    >
+                                    <span class="text-danger error-email"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="">Quyền</label>
-                                    <select class="form-control " name="role">
-                                        <option value=" " selected>---- Chọn quyền ----</option>
-                                        <option value="0" {{old('role')==0?'selected':''}}>Người dùng</option>
-                                        <option value="1" {{old('role')==1?'selected':''}} >Nhân viên</option>
-                                        <option value="1" {{old('role')==2?'selected':''}} >Quản trị</option>
-                                    </select>
-                                    <span class="text-danger error-role"></span>
-                                </div>
-                                <div class="d-flex">
-                                    <div class="form-group">
-                                        <label for="">Mật khẩu</label>
-                                        <input type="password" class="form-control " name="password" id="password"
-                                               value="{{old('password')}}"
-                                        >
-                                        <span class="text-danger error-password"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="">Nhập lại mật khẩu</label>
-                                        <input type="password" class="form-control " name="password_confirmation"
-                                               value="{{old('password_confirmation')}}"
-                                               id="password_confirmation"
-                                        >
-                                        <span class="text-danger error-password_confirmation"></span>
-                                    </div>
+                                    <label for="">Số điện thoại</label>
+                                    <input type="text" class="form-control " name="phone" value="{{old('phone')}}"
+                                    >
+                                    <span class="text-danger error-phone"></span>
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-primary new-user"><i class="fa fa-plus">
-                                            Thêm mới người dùng
-                                    </i>
-                                </button>
-                                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Trở về
-                                </button>
+                            <div class="d-flex">
+                                <div class="form-group">
+                                    <label for="">Ảnh</label>
+                                    <input type="file" class="form-control image-input" name="image"
+                                    >
+                                    <span class="text-danger error-image"></span>
+                                </div>
+                                <div>
+                                    <img src="" alt="" width="100px" height="100px"
+                                         style="max-height: 100%;max-width: 100%" class="image-show">
+                                </div>
+
                             </div>
+                            <div class="form-group">
+                                <label for="">Quyền</label>
+                                <select class="form-control " name="role">
+                                    <option value=" " selected>---- Chọn quyền ----</option>
+                                    <option value="0" {{old('role')==0?'selected':''}}>Người dùng</option>
+                                    <option value="1" {{old('role')==1?'selected':''}} >Nhân viên</option>
+                                    <option value="2" {{old('role')==2?'selected':''}} >Quản trị</option>
+                                </select>
+                                <span class="text-danger error-role"></span>
+                            </div>
+                            <div class="d-flex">
+                                <div class="form-group">
+                                    <label for="">Mật khẩu</label>
+                                    <input type="password" class="form-control " name="password" id="password"
+                                           value="{{old('password')}}"
+                                    >
+                                    <span class="text-danger error-password"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Nhập lại mật khẩu</label>
+                                    <input type="password" class="form-control " name="password_confirmation"
+                                           value="{{old('password_confirmation')}}"
+                                           id="password_confirmation"
+                                    >
+                                    <span class="text-danger error-password_confirmation"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-primary new-user"><i class="fa fa-plus">
+                                    Thêm mới người dùng
+                                </i>
+                            </button>
+                            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Trở về
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="editUserModal" tabindex="-1" role="dialog"
+             aria-labelledby="editUserModalTitle"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editUserModalTitle">Cập nhật thông tin người dùng <span
+                                class="classromm-name"></span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="post" id="update-user-form"
+                          enctype="multipart/form-data">
+                        <div class="modal-body text-dark ">
+                            @csrf
+                            {{method_field('PUT')}}
+                            <div class="form-group">
+                                <label for="">Họ tên</label>
+                                <input type="text" class="form-control user-name" name="name" value="{{old('name')}}"
+                                       required>
+                                <span class="text-danger error-name"></span>
+                            </div>
+                            <div class="d-flex ">
+                                <div class="form-group">
+                                    <label for="">Email</label>
+                                    <input type="text" class="form-control user-email" name="email"
+                                           value="{{old('email')}}"
+                                    >
+                                    <span class="text-danger error-email"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Số điện thoại</label>
+                                    <input type="text" class="form-control user-phone" name="phone"
+                                           value="{{old('phone')}}"
+                                    >
+                                    <span class="text-danger error-phone"></span>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="form-group">
+                                    <label for="">Ảnh</label>
+                                    <input type="file" class="form-control image-input " name="image"
+                                    >
+                                    <span class="text-danger error-image"></span>
+                                </div>
+                                <div>
+                                    <img src="" alt="" width="100px" height="100px"
+                                         style="max-height: 100%;max-width: 100%" class="image-show user-image">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Quyền</label>
+                                <select class="form-control user-role" name="role">
+                                    <option value=" " selected>---- Chọn quyền ----</option>
+                                    <option value="0" {{old('role')==0?'selected':''}}>Người dùng</option>
+                                    <option value="1" {{old('role')==1?'selected':''}} >Nhân viên</option>
+                                    <option value="2" {{old('role')==2?'selected':''}} >Quản trị</option>
+                                </select>
+                                <span class="text-danger error-role"></span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-primary update-user"><i
+                                    class="fas fa-pencil-alt">
+                                    Cập nhật thông tin
+                                </i>
+                            </button>
+                            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Trở về
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog"
+             aria-labelledby="changePasswordModalTitle"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="changePasswordModalTitle">Cập nhật thông tin người dùng <span
+                                class="classromm-name"></span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form method="post" id="update-user-form"
+                          enctype="multipart/form-data">
+                        <div class="modal-body text-dark ">
+                            @csrf
+                            {{method_field('PUT')}}
+                            <div class="form-group">
+                                <label for="">Họ tên</label>
+                                <input type="text" class="form-control user-name" name="name" value="{{old('name')}}"
+                                       required>
+                                <span class="text-danger error-name"></span>
+                            </div>
+                            <div class="d-flex ">
+                                <div class="form-group">
+                                    <label for="">Email</label>
+                                    <input type="text" class="form-control user-email" name="email"
+                                           value="{{old('email')}}"
+                                    >
+                                    <span class="text-danger error-email"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="">Số điện thoại</label>
+                                    <input type="text" class="form-control user-phone" name="phone"
+                                           value="{{old('phone')}}"
+                                    >
+                                    <span class="text-danger error-phone"></span>
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="form-group">
+                                    <label for="">Ảnh</label>
+                                    <input type="file" class="form-control image-input " name="image"
+                                    >
+                                    <span class="text-danger error-image"></span>
+                                </div>
+                                <div>
+                                    <img src="" alt="" width="100px" height="100px"
+                                         style="max-height: 100%;max-width: 100%" class="image-show user-image">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Quyền</label>
+                                <select class="form-control user-role" name="role">
+                                    <option value=" " selected>---- Chọn quyền ----</option>
+                                    <option value="0" {{old('role')==0?'selected':''}}>Người dùng</option>
+                                    <option value="1" {{old('role')==1?'selected':''}} >Nhân viên</option>
+                                    <option value="2" {{old('role')==2?'selected':''}} >Quản trị</option>
+                                </select>
+                                <span class="text-danger error-role"></span>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-primary update-user"><i
+                                    class="fas fa-pencil-alt">
+                                    Cập nhật thông tin
+                                </i>
+                            </button>
+                            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Trở về
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
