@@ -7,8 +7,10 @@
     <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Quản lí người dùng</h1>
         <a href="{{route('users.create')}}" class="ml-2 btn btn-sm btn-primary shadow-sm "
-           title="thêm mới người dùng">
-            <i class="fas fa-plus fa-sm text-success"></i> thêm mới người dùng
+           title="thêm mới người dùng"
+           data-toggle="modal"
+           data-target="#newUserModal"
+        > <i class="fas fa-plus fa-sm text-success"></i> thêm mới người dùng
         </a>
     </div>
     @if(session('message'))
@@ -39,15 +41,13 @@
         </div>
 
         <div class="col-12">
-            <table class="table table-bordered " id="table_data">
+            <table class="table table-responsive" id="table_data">
                 <thead>
                 <tr>
                     <th>STT</th>
                     <th>Ảnh</th>
                     <th>Họ tên</th>
                     <th>Email</th>
-                    <th>Quyền</th>
-                    <th>Số điện thoại</th>
                     <th>Tùy chọn</th>
                 </tr>
                 </thead>
@@ -68,24 +68,23 @@
                         <td>
                             {{$user->email}}
                         </td>
-                        <td>{{$user->phone}}</td>
-                        <td>
+                        <td class="d-flex">
                             <a class="btn btn-outline-primary btn-circle" title="Cập nhật sinh viên"
                                href=" {{route('students.edit',$user->id)}}">
                                 <i class="fa fa-edit text-dark"></i>
                             </a>
                             <button class="btn btn-outline-dark delete-user btn-circle" title="Xóa người dùng"
                                     deleteId="{{$user->id}}"><i class="fas fa-trash text-danger"></i></button>
-                            <button class="btn btn-outline-success btn-circle  show-user" title="chi tiết người dùng"
+                            <button class="btn btn-outline-success btn-circle  show-user" title="Chi tiết người dùng"
                                     data-toggle="modal"
                                     showId="{{$user->id}}"
                                     data-target="#showUserModal">
                                 <i class="fas fa-info-circle text-primary"></i></button>
-                            <button class="btn btn-outline-primary btn-circle  show-user" title="đổi mật khẩu"
+                            <button class="btn btn-outline-primary btn-circle  show-user" title="Đổi mật khẩu"
                                     data-toggle="modal"
                                     showId="{{$user->id}}"
                                     data-target="#showUserModal">
-                                <i class="fas fa-key text-primary"></i></button>
+                                <i class="fas fa-key text-warning"></i></button>
                         </td>
                     </tr>
                 @endforeach
@@ -94,27 +93,26 @@
         </div>
         <div class="col-12">
             <div class='pagination-container'>
-                {{ $students->links() }}
+                {{ $users->links() }}
 
             </div>
         </div>
-        <div class="modal fade" id="showUserModal" tabindex="-1" role="dialog"
-             aria-labelledby="showUserModalTitle"
+        <div class="modal fade" id="newUserModal" tabindex="-1" role="dialog"
+             aria-labelledby="newUserModalTitle"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="showUserModalTitle">Thông tin người dùng <span
+                        <h5 class="modal-title" id="newUserModalTitle">Thêm mới người dùng <span
                                 class="classromm-name"></span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body text-dark ">
-                        <form action="{{route('user.store')}}" method="post" class="newResourceForm"
-                              enctype="multipart/form-data">
+                    <form action="{{route('users.store')}}" method="post" class="newResourceForm"
+                          enctype="multipart/form-data">
+                        <div class="modal-body text-dark ">
                             @csrf
-                            <div class="modal-body text-dark">
                                 <div class="form-group">
                                     <label for="">Họ tên</label>
                                     <input type="text" class="form-control name" name="name" value="{{old('name')}}"
@@ -166,8 +164,8 @@
                                     </div>
                                     <div class="form-group col-5">
                                         <label for="">Nhập lại mật khẩu</label>
-                                        <input type="password" class="form-control " name="password_confirm"
-                                               value="{{old('password_confirm')}}"
+                                        <input type="password" class="form-control " name="password_confirmation"
+                                               value="{{old('password_confirmation')}}"
                                                id="password_confirmation"
                                         >
                                         <span class="text-danger error-password_confirm"></span>
@@ -175,11 +173,17 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-primary" data-dismiss="modal"><i class="fa fa-plus">
+                                            Thêm mới người dùng
+                                    </i>
+                                </button>
                                 <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Trở về
                                 </button>
                             </div>
-                    </div>
+                    </form>
                 </div>
-
             </div>
+
+        </div>
+    </div>
 @endsection

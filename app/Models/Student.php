@@ -16,11 +16,12 @@ class Student extends Model
         'gender',
     ];
 
+    public $timestamps = false;
+
     public function classrooms()
     {
         return $this->belongsToMany(Classroom::class, 'classroom_student');
     }
 
-    public $timestamps = false;
 
 }
