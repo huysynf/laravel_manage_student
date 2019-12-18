@@ -84,7 +84,12 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-
+        $student=$this->student->getstudent($id);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Lấy thông tin sinh viên thành công',
+            'data'=>$student,
+        ]);
 
     }
 

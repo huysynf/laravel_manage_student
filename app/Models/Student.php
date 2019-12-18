@@ -36,6 +36,10 @@ class Student extends Model
     {
         return $this->with('classrooms')->orderBy('id', 'desc')->paginate($number);
     }
+    public function getstudent($id)
+    {
+        return $this->with('classrooms')->find($id);
+    }
 
 
 }

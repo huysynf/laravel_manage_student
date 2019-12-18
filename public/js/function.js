@@ -118,6 +118,18 @@ function countStt() {
 
 }
 
+//show array in html
+function arrayOjectParseToNameP(data) {
+    let html="";
+    data.forEach(item=>{
+        html+=`<p>${item.name}<p/>`;
+    });
+    return html;
+}
+function gender(gender) {
+    return (gender==1)?'Nam':'Nữ';
+}
+
 //fetch data to table
 function fillFacultyToTableHtml(data) {
     let tableHTML = "";
@@ -185,40 +197,39 @@ function fillSubjectToTableHtml(data) {
 
 function fillStudentToTableHtml(data) {
     let tableHTML = "";
-    data.forEach(classroom => {
+    data.forEach(student => {
         tableHTML += ` <tr>
                             <td>
-                                <strong></strong>
-                            </td>
-                            <td>
-                                ${classroom.name}
-                            </td>
-                            <td>
-                                ${classroom.member}
-                            </td>
-                            <td>
-                                ${classroom.description}
-                            </td>
-                            <td>
-                                <a class="btn btn-outline-primary btn-circle " title="Cập nhật lớp  học"
-                                    href=" {{route('classrooms.edit',$classroom->id)}}">
-                                    <i class="fa fa-edit text-dark"></i>
-                                    </a>
-                                <button class="btn btn-outline-dark btn-circle delete-classroom" title="Xóa lớp học"
-                                         deleteId="${classroom.id}">
-                                         <i class="fas fa-trash text-danger"></i>
-                                </button>
-                                <button class="btn btn-outline-success btn-circle  show-classroom" title="chi tiết lớp học"
-                                        data-toggle="modal"
-                                        data-name="${classroom.name}"
-                                        data-description="${classroom.description}"
-                                        data-member="${classroom.member}"
-                                        data-subject="${classroom.subject.name}"
-                                        data-faculty="${classroom.faculty.name}"
-                                        data-target="#showClassroomModal">
-                                    <i class="fas fa-info-circle text-primary"></i>
-                                </button>
-                            </td>
+                            <strong></strong>
+                        </td>
+                        <td>
+                            <img src="/images/students/${student.image}" alt=""
+                                 style="max-width: 50px;max-height: 50px;" width="100%" height="100%"
+                                 alt="{{$student->name}}">
+                        </td>
+                        <td>
+                             ${student.name}
+                        </td>
+                        <td>
+                            ${student.birthday}
+                        </td>
+                        <td>
+                            `+gender(student.gender)+`
+                        </td>
+                        <td> ${student.phone}</td>
+                        <td>
+                            <a class="btn btn-outline-primary btn-circle" title="Cập nhật sinh viên"
+                               href=" /manage/students/`+ student.id+`/edit">
+                                <i class="fa fa-edit text-dark"></i>
+                            </a>
+                            <button class="btn btn-outline-dark delete-student btn-circle" title="Xóa sinh viên"
+                                    deleteId="${student.id}"><i class="fas fa-trash text-danger"></i></button>
+                            <button class="btn btn-outline-success btn-circle  show-student" title="chi tiết sinh v"
+                                    data-toggle="modal"
+                                    showId="${student.id}"
+                                    data-target="#showStudentModal">
+                                <i class="fas fa-info-circle text-primary"></i></button>
+                        </td>
                         </tr>`;
     });
     return tableHTML;

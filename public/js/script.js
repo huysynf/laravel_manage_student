@@ -218,6 +218,7 @@ $(function () {
 
 
     //student
+
     let student = $('#student');
     let studentPath = "/manage/students/";
     let studentSearch=$('.student-searchkey');
@@ -232,8 +233,8 @@ $(function () {
                     $('.pagination-container').hide();
                     const students = data.data;
                     searchMessage.html(data.message);
-                    // let studentTable = fillStudentToTableHtml(students);
-                    // $('tbody').html(studentTable);
+                    let studentTable = fillStudentToTableHtml(students);
+                    $('tbody').html(studentTable);
                     countStt();
                 })
                 .fail(error => {
@@ -252,6 +253,28 @@ $(function () {
     student.on('click', '.delete-student', function () {
         idActionResource = $(this).attr('deleteId');
         destroyResource(idActionResource, studentPath);
+    });
+
+    student.on('click', '.show-student', function () {
+        idActionResource = $(this).attr('showId');
+        urlResource=studentPath+idActionResource;
+        console.log(idActionResource);
+        getResource(urlResource)
+            .done(data=>{
+                let student=data.data;
+                $('.student-name').html(student.name);
+                $('.student-address').html(student.address);
+                $(' .student-gender').html((student.gender==0)?'Nam':'Nữ');
+                $(' .student-image').attr('src','/images/students/'+student.image);
+                let classrooms=(student.classrooms.length>0)?arrayOjectParseToNameP(student.classrooms):'Không có';
+                $('.student-classroom').html(classrooms);
+                $(' .student-birthday').html(student.birthday);
+                $('.student-phone').html(student.phone);
+            })
+            .fail(error=>{
+                console.log(error);
+            });
+
     });
 
 });

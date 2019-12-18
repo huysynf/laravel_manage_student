@@ -39,7 +39,7 @@
         </div>
 
         <div class="col-12">
-            <table class="table table-bordered table-responsive" id="table_data">
+            <table class="table table-bordered " id="table_data">
                 <thead>
                 <tr>
                     <th>STT</th>
@@ -47,9 +47,7 @@
                     <th>Họ tên</th>
                     <th>Ngày sinh</th>
                     <th>Giới tính</th>
-                    <th>Lớp học</th>
                     <th>Số điện thoại</th>
-                    <th>Địa chỉ</th>
                     <th>Tùy chọn</th>
                 </tr>
                 </thead>
@@ -73,14 +71,7 @@
                         <td>
                             {{($student->gender ==1)?'Nam':'Nữ'}}
                         </td>
-                        <td>
-                            @foreach($student->classrooms as $classroom)
-                                <p>{{$classroom->name}}</p>
-                            @endforeach
-
-                        </td>
                         <td>{{$student->phone}}</td>
-                        <td>{{$student->address}}</td>
                         <td>
                             <a class="btn btn-outline-primary btn-circle" title="Cập nhật sinh viên"
                                href=" {{route('students.edit',$student->id)}}">
@@ -88,18 +79,11 @@
                             </a>
                             <button class="btn btn-outline-dark delete-student btn-circle" title="Xóa sinh viên"
                                     deleteId="{{$student->id}}"><i class="fas fa-trash text-danger"></i></button>
-                            <button class="btn btn-outline-success btn-circle  show-classroom" title="chi tiết sinh v"
+                            <button class="btn btn-outline-success btn-circle  show-student" title="chi tiết sinh v"
                                     data-toggle="modal"
-                                    data-name="{{$student->name}}"
-                                    data-address="{{$student->address}}"
-                                    data-gender="{{$student->gender}}"
-                                    data-image="{{$student->image}}"
-                                    data-phone="{{$student->phone}}"
-                                    data-classrooms="{{$student->classrooms}}"
-                                    data-birthday="{{$student->birthday}}"
+                                    showId="{{$student->id}}"
                                     data-target="#showStudentModal">
                                 <i class="fas fa-info-circle text-primary"></i></button>
-
                         </td>
                     </tr>
                 @endforeach
@@ -113,29 +97,41 @@
             </div>
         </div>
         <div class="modal fade" id="showStudentModal" tabindex="-1" role="dialog"
-             aria-labelledby="sshowStudentModalTitle"
+             aria-labelledby="showStudentModalTitle"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="showStudentModalTitle">Thông tin lớp <span class="classromm-name"></span></h5>
+                        <h5 class="modal-title" id="showStudentModalTitle">Thông tin sinh viên <span
+                                class="classromm-name"></span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body text-dark">
-                        <p> Tên lớp : <span class="classroom-name"></span></p>
-                        <p> Số sinh viên : <span class="classroom-member"></span></p>
-                        <p> Mô tả : <span class="classroom-description"></span></p>
-                        <p>Tên môn học ở lớp:<span class="classroom-subject"></span></p>
-                        <p>Tên khoa:<span class="classroom-faculty"></span></p>
+                    <div class="modal-body text-dark ">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <p> Tên sinh viên: <span class="student-name"></span></p>
+                                <p> Gới tính: <span class="student-gender"></span></p>
+                                <p> Ngày sinh: <span class="student-birthday"></span></p>
+                            </div>
+                            <div>
+                                <img src="" alt="" class="student-image" width="100%" height="100%"
+                                     style="max-width: 100px;max-height: 100px;">
+                            </div>
+                        </div>
+                        <p> Số điện thoại : <span class="student-phone"></span></p>
+                        <p> Địa chỉ: <span class="student-address"></span></p>
+                        <div class="d-flex">
+                            <p>Các lớp học:</p>
+                            <div class="student-classroom flex-column align-items-center pl-3">
+                            </div>
+                        </div>
 
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Trở về</button>
                     </div>
-
-
                 </div>
             </div>
 
