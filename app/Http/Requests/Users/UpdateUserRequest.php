@@ -26,6 +26,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'name'=>'required',
             'role'=>'required',
+            'phone'=>'required|regex:/\d{3}-\d{4}-\d{3}/',
             'email'=>'required|unique:users,email,'.$this->user,
         ];
     }
@@ -36,6 +37,8 @@ class UpdateUserRequest extends FormRequest
             'role.required'=>'* Chọn quyền',
             'email.required'=>'* Email không được để trống',
             'email.unique'=>'* Email đã được sử dụng! Hãy sử dụng email khác.',
+            'phone.required'=>'* Số điện thoại không để trống',
+            'phone.regex'=>'* Số điện thoại có dạng XXX-XXXX-XXX',
         ];
     }
 }
