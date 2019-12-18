@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\CreateUserRequest;
 use App\User;
 use DB;
+use Hash;
 use Illuminate\Http\Request;
 use Image;
 
@@ -23,7 +24,7 @@ class UserController extends Controller
     public function saveimage($image)
     {
         $name = time() . '.' . $image->getClientOriginalExtension();
-        Image::make($image)->resize(300, 300)->save(public_path($this->path_image) . $name);
+        Image::make($image)->resize(300, 300)->save($this->image_path . $name);
         return $name;
     }
 
@@ -45,24 +46,25 @@ class UserController extends Controller
     {
         $data = $request->except('password_confirm');
         $image = $request->file('image');
-        $name = $this->savestudentprofile($image);
+        $name = $this->saveimage($image);
         try {
             DB::beginTransaction();
             $password = $request->input('password');
             $data['password'] = Hash::make($password);
             $data['image'] = $name;
-           $this->user->create($data);
+            $this->user->create($data);
             DB::commit();
             return response()->json([
-                'status'=>201,
-                'message'=>'Tạo mới nguoif dùng thành công',
+                'status' => 201,
+                'message' => 'Tạo mới nguoi dùng thành công',
+                'data' => $name,
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
             unlink($this->path_image . $name);
             return response()->json([
-                'status'=>401,
-                'message'=>'có lỗi xảy ra! Thêm người dung thất bại',
+                'status' => 401,
+                'message' => 'có lỗi xảy ra! Thêm người dung thất bại',
             ]);
         }
 

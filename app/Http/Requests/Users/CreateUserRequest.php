@@ -27,9 +27,9 @@ class CreateUserRequest extends FormRequest
             'name'=>'required',
             'role'=>'required',
             'email'=>'required|unique:users,email',
+            'phone'=>'required|regex:/\d{3}-\d{4}-\d{3}/',
             'image'=>'required|image|mimes:jpeg,bmp,png,jpg',
             'password'=>'required|confirmed|min:',
-            'password_confirmation' => 'required',
         ];
     }
     public function messages()
@@ -39,13 +39,14 @@ class CreateUserRequest extends FormRequest
             'role.required'=>'* Chọn quyền',
             'email.required'=>'* Email không được để trống',
             'email.unique'=>'* Email đã được sử dụng! Hãy sử dụng email khác.',
+            'phone.required'=>'* Số điện thoại không để trống',
+            'phone.regex'=>'* Số điện thoại có dạng XXX-XXXX-XXX',
             'image.required'=>'* Hình ảnh không được để trống',
             'image.image'=>'* File phải là hình ành',
             'image.mimes'=>'* Ảnh có định dạng jpg,jpec,png',
             'password.required'=>'* Mật khẩu không để trống',
             'password.min'=>'* Mật khẩu lớn hơn 4 kí tự',
             'password.confirmed'=>'* Mật khẩu với nhập lại mật khẩu phải giống nhau',
-            'password_confirmation.required'=>'* Nhập lại mật khẩu không để trống',
         ];
     }
 }

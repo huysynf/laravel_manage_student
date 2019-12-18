@@ -13,7 +13,7 @@ $(function () {
     let urlResource = "";
     let dataResource = "";
     let searchPath = "";
-    let searchMessage=$('.search-message');
+    let searchMessage = $('.search-message');
     //faculty
     //valiable
     let faculty = $('#faculty');
@@ -80,7 +80,7 @@ $(function () {
     facultySearch.on('keyup', function () {
         let searchKey = $(this).val().trim();
         searchPath = facultyPath + "search/" + searchKey;
-        if(searchKey.length>0){
+        if (searchKey.length > 0) {
             searchResource(searchPath)
                 .done(data => {
                     $('.pagination-container').hide();
@@ -93,11 +93,11 @@ $(function () {
                 .fail(error => {
                     searchMessage.html('');
                 });
-        }else {
+        } else {
             searchMessage.html('');
         }
-        facultySearch.on('keydown',function () {
-            if(searchKey.length<0){
+        facultySearch.on('keydown', function () {
+            if (searchKey.length < 0) {
                 searchMessage.html('');
             }
         });
@@ -180,7 +180,7 @@ $(function () {
     subjectSearch.on('keyup', function () {
         let searchKey = $(this).val().trim();
         searchPath = subjectPath + "search/" + searchKey;
-        if(searchKey.length>0){
+        if (searchKey.length > 0) {
             searchResource(searchPath)
                 .done(data => {
                     $('.pagination-container').hide();
@@ -194,11 +194,11 @@ $(function () {
                 .fail(error => {
                     searchMessage.html('');
                 });
-        }else {
+        } else {
             searchMessage.html('');
         }
-        subjectSearch.on('keydown',function () {
-            if(searchKey.length<0){
+        subjectSearch.on('keydown', function () {
+            if (searchKey.length < 0) {
                 searchMessage.html('');
             }
         });
@@ -216,4 +216,91 @@ $(function () {
         modal.find('.modal-body .lesson').val(lesson);
     });
 
+    //user
+
+    let user = $('#user');
+    let addUserBtn = $('.add-user');
+    let editUserBtn = $('.edit-user');
+    let userPath = "/manage/users/";
+    let userSearch = $('.user-searchkey');
+
+    // function
+
+
+    addUserBtn.click(function () {
+        resetErrorUser();
+    })
+    editUserBtn.click(function (event) {
+        idActionResource = $(this).attr('editId');
+        resetErrorUser();
+    });
+
+    user.on('click', '.new-user', function () {
+        dataResource = new FormData($('#new-user-form')[0]);
+        urlResource = '/manage/users';
+        $.ajax({
+            url: urlResource,
+            type: "post",
+            data: dataResource,
+            processData: false,
+            contentType: false,
+        })
+            .done(response => {
+                console.log(response.data);
+                $('#newUserModal').modal('hide');
+                isSuccess(response.status) ? alertSuccess(response.message) : "";
+                countStt();
+            })
+            .fail(error => {
+                const errors = error.responseJSON.errors;
+                console.log(errors);
+                showErrorUser(errors);
+            });
+    });
+    // user.on('click', '.update-user', function () {
+    //     dataResource = editFacultyForm.serialize();
+    //     urlResource = facultyPath + idActionResource;
+    //     updateResource(dataResource, urlResource)
+    //         .done(response => {
+    //             $('#newFacultyModal').modal('hide')
+    //             isSuccess(response.status) ? alertSuccess(response.message) : "";
+    //             countStt();
+    //         })
+    //         .fail(error => {
+    //             const errors = error.responseJSON.errors;
+    //             showErrorFaculty(errors);
+    //         });
+    // });
+    //
+    // user.on('click', '.delete-user', function () {
+    //     idActionResource = $(this).attr('deleteId');
+    //     destroyResource(idActionResource, facultyPath);
+    // });
+    //
+    // userSearch.on('keyup', function () {
+    //     let searchKey = $(this).val().trim();
+    //     searchPath = facultyPath + "search/" + searchKey;
+    //     if(searchKey.length>0){
+    //         searchResource(searchPath)
+    //             .done(data => {
+    //                 $('.pagination-container').hide();
+    //                 const faculties = data.data;
+    //                 searchMessage.html(data.message);
+    //                 let facutyTable = fillFacultyToTableHtml(faculties);
+    //                 $('tbody').html(facutyTable);
+    //                 countStt();
+    //             })
+    //             .fail(error => {
+    //                 searchMessage.html('');
+    //             });
+    //     }else {
+    //         searchMessage.html('');
+    //     }
+    //     facultySearch.on('keydown',function () {
+    //         if(searchKey.length<0){
+    //             searchMessage.html('');
+    //         }
+    //     });
+    //
+    // });
 });

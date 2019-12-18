@@ -182,3 +182,37 @@ function fillSubjectToTableHtml(data) {
     });
     return tableHTML;
 }
+
+// function of user
+function resetErrorUser() {
+    $('.error-name').html('');
+    $('.error-email').html('');
+    $('.error-image').html('');
+    $('.error-password').html('');
+    $('.error-password_confirmation').html('');
+    $('.error-phone').html('');
+    $('.error-role').html('');
+}
+function showErrorUser(errors) {
+    (errors.name) ? $('.error-name').html(errors.name[0]) : "";
+    (errors.email) ? $('.error-email').html(errors.email[0]) : "";
+    (errors.image) ? $('.error-image').html(errors.image[0]) : "";
+    (errors.password) ? $('.error-password').html(errors.password[0]) : "";
+    (errors.password_confirmation) ? $('.error-password_confirmation').html(errors.password_confirmation[0]) : "";
+    (errors.phone) ? $('.error-phone').html(errors.phone[0]) : "";
+    (errors.role) ? $('.error-role').html(errors.role[0]) : "";
+
+}
+//show image when chose
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('#image-show').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+$("#image-input").change(function() {
+    readURL(this);
+});

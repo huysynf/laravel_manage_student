@@ -109,7 +109,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{route('users.store')}}" method="post" class="newResourceForm"
+                    <form action="{{route('users.store')}}" method="post" id="new-user-form"
                           enctype="multipart/form-data">
                         <div class="modal-body text-dark ">
                             @csrf
@@ -119,30 +119,33 @@
                                            required>
                                     <span class="text-danger error-name"></span>
                                 </div>
-                                <div class="form-group">
-                                    <label for="">Email</label>
+                                <div class="d-flex ">
+                                    <div class="form-group">
+                                        <label for="">Email</label>
 
-                                    <input type="text" class="form-control " name="email" value="{{old('email')}}"
-                                    >
-                                    <span class="text-danger error-email"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Số điện thoại</label>
-                                    <input type="text" class="form-control " name="phone" value="{{old('phone')}}"
-                                    >
-                                    <span class="text-danger error-phone"></span>
-                                </div>
-                                <div class="row">
-                                    <div class="form-group col-8">
-                                        <label for="">Ảnh</label>
-                                        <input type="file" class="form-control " name="image"
+                                        <input type="text" class="form-control " name="email" value="{{old('email')}}"
                                         >
+                                        <span class="text-danger error-email"></span>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="">Số điện thoại</label>
+                                        <input type="text" class="form-control " name="phone" value="{{old('phone')}}"
+                                        >
+                                        <span class="text-danger error-phone"></span>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="form-group">
+                                        <label for="">Ảnh</label>
+                                        <input type="file" class="form-control " name="image" id="image-input"
+                                        >
+                                        <span class="text-danger error-image"></span>
+                                    </div>
+                                    <div>
                                         <img src="" alt="" width="100px" height="100px"
-                                             style="max-height: 100%;max-width: 100%">
+                                             style="max-height: 100%;max-width: 100%" id="image-show">
                                     </div>
-                                    <span class="text-danger error-image"></span>
+
                                 </div>
                                 <div class="form-group">
                                     <label for="">Quyền</label>
@@ -154,26 +157,26 @@
                                     </select>
                                     <span class="text-danger error-role"></span>
                                 </div>
-                                <div class="row">
-                                    <div class="form-group col-5">
+                                <div class="d-flex">
+                                    <div class="form-group">
                                         <label for="">Mật khẩu</label>
                                         <input type="password" class="form-control " name="password" id="password"
                                                value="{{old('password')}}"
                                         >
                                         <span class="text-danger error-password"></span>
                                     </div>
-                                    <div class="form-group col-5">
+                                    <div class="form-group">
                                         <label for="">Nhập lại mật khẩu</label>
                                         <input type="password" class="form-control " name="password_confirmation"
                                                value="{{old('password_confirmation')}}"
                                                id="password_confirmation"
                                         >
-                                        <span class="text-danger error-password_confirm"></span>
+                                        <span class="text-danger error-password_confirmation"></span>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-primary" data-dismiss="modal"><i class="fa fa-plus">
+                                <button type="button" class="btn btn-outline-primary new-user"><i class="fa fa-plus">
                                             Thêm mới người dùng
                                     </i>
                                 </button>
