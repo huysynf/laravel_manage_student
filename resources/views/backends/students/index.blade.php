@@ -127,13 +127,11 @@
                             <div class="student-classroom flex-column align-items-center pl-3">
                             </div>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Trở về</button>
                     </div>
                 </div>
             </div>
-
         </div>
 @endsection
