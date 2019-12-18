@@ -225,14 +225,15 @@ $(function () {
     studentSearch.on('keyup', function () {
         let searchKey = $(this).val().trim();
         searchPath = studentPath + "search/" + searchKey;
+        console.log(searchKey);
         if(searchKey.length>0){
             searchResource(searchPath)
                 .done(data => {
                     $('.pagination-container').hide();
                     const students = data.data;
                     searchMessage.html(data.message);
-                    let studentTable = fillStudentToTableHtml(students);
-                    $('tbody').html(studentTable);
+                    // let studentTable = fillStudentToTableHtml(students);
+                    // $('tbody').html(studentTable);
                     countStt();
                 })
                 .fail(error => {

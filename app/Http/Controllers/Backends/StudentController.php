@@ -8,9 +8,9 @@ use App\Http\Requests\Students\UpdateStudentRequest;
 use App\Models\Classroom;
 use App\Models\Classroom_student;
 use App\Models\Student;
-use Illuminate\Http\Request;
-use Image;
 use DB;
+use Image;
+
 class StudentController extends Controller
 {
     private $student;
@@ -61,7 +61,7 @@ class StudentController extends Controller
         $data = $request->except('classrooms');
         $classroom_id = $request->input('classrooms');
         $image = $request->file('image');
-        $name =$this->saveimage($image);
+        $name = $this->saveimage($image);
         try {
             DB::beginTransaction();
             $data['image'] = $name;
@@ -119,7 +119,7 @@ class StudentController extends Controller
         try {
             DB::beginTransaction();
             if (isset($image)) {
-                $image_name =$this->saveimage($image);
+                $image_name = $this->saveimage($image);
                 $data['image'] = $image_name;
                 unlink('images/students/' . $current_image);
             } else {
@@ -167,7 +167,7 @@ class StudentController extends Controller
 
     public function search($search)
     {
-        $students = $this->student->search($this->search());
+        $students = $this->student->search($search);
         return response()->json([
             'satus' => 200,
             'message' => 'Có ' . count($students) . ' kết quả tìm thấy với từ khóa:' . $search,
