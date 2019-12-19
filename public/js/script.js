@@ -215,68 +215,103 @@ $(function () {
         modal.find('.modal-body .description').val(description);
         modal.find('.modal-body .lesson').val(lesson);
     });
-
     //user
-
     let user = $('#user');
     let addUserBtn = $('.add-user');
-    let editUserBtn = $('.edit-user');
     let userPath = "/manage/users/";
     let userSearch = $('.user-searchkey');
-
     // function
-
-
     addUserBtn.click(function () {
         resetErrorUser();
-    })
-    editUserBtn.click(function (event) {
-        idActionResource = $(this).attr('editId');
-        resetErrorUser();
     });
-
     user.on('click', '.new-user', function () {
         dataResource = new FormData($('#new-user-form')[0]);
         urlResource = '/manage/users';
-        $.ajax({
-            url: urlResource,
-            type: "post",
-            data: dataResource,
-            processData: false,
-            contentType: false,
-        })
+        newResource(dataResource, urlResource)
             .done(response => {
-                console.log(response.data);
                 $('#newUserModal').modal('hide');
-                isSuccess(response.status) ? alertSuccess(response.message) : "";
+                isCreated(response.status) ? alertSuccess(response.message) : "";
                 countStt();
             })
             .fail(error => {
                 const errors = error.responseJSON.errors;
-                console.log(errors);
                 showErrorUser(errors);
             });
     });
-    // user.on('click', '.update-user', function () {
-    //     dataResource = editFacultyForm.serialize();
-    //     urlResource = facultyPath + idActionResource;
-    //     updateResource(dataResource, urlResource)
-    //         .done(response => {
-    //             $('#newFacultyModal').modal('hide')
-    //             isSuccess(response.status) ? alertSuccess(response.message) : "";
-    //             countStt();
-    //         })
-    //         .fail(error => {
-    //             const errors = error.responseJSON.errors;
-    //             showErrorFaculty(errors);
-    //         });
-    // });
-    //
-    // user.on('click', '.delete-user', function () {
-    //     idActionResource = $(this).attr('deleteId');
-    //     destroyResource(idActionResource, facultyPath);
-    // });
-    //
+    user.on('click', '.edit-user', function () {
+        resetErrorUser();
+        idActionResource = $(this).attr('editId');
+        urlResource =userPath + idActionResource;
+        getResource(urlResource)
+            .done(response => {
+                let user = response.data;
+                console.log(user);
+                $('.user-name').val(user.name);
+                $('.user-email').val(user.email);
+                $('.user-phone').val(user.phone);
+                $('.user-image').attr('src', '/images/users/' + user.image);
+                $('.user-role').val(user.role);
+            })
+    });
+
+    user.on('click', '.show-user', function () {
+        idActionResource = $(this).attr('showId');
+        urlResource =userPath + idActionResource;
+        getResource(urlResource)
+            .done(response => {
+                let user = response.data;
+                $('.user-name').html(user.name);
+                $('.user-email').html(user.email);
+                $('.user-phone').html(user.phone);
+                $('.user-image').attr('src', '/images/users/' + user.image);
+                let role="người dùng";
+                if(user.role==1){
+                    role="nhân viên";
+                }
+                if(user.role==2){
+                    role="Quản trị";
+                }
+
+                $('.user-role').html(role);
+            })
+    });
+    user.on('click', '.update-user', function () {
+        dataResource = new FormData($('#update-user-form')[1]);
+        urlResource = userPath+idActionResource;
+        console.log(dataResource);
+        updateResource(dataResource, urlResource)
+            .done(response => {
+                console.log(response);
+                // $('#editUserModal').modal('hide')
+               // isSuccess(response.status) ? alertSuccess(response.message) : "";
+               //  countStt();
+            })
+            .fail(error => {
+                const errors = error.responseJSON.errors;
+                showErrorUser(errors);
+            });
+    });
+
+    user.on('click', '.delete-user', function () {
+        idActionResource = $(this).attr('deleteId');
+        destroyResource(idActionResource, userPath);
+    });
+
+    user.on('click', '.set-password', function () {
+        dataResource = $('#set-password-form').serialize();
+        urlResource = userPath+"setpassword/"+idActionResource;
+        updateResource(dataResource, urlResource)
+            .done(response => {
+                $('#changePasswordModal').modal('hide')
+                 alertSuccess(response.message,1);
+                 countStt();
+            })
+            .fail(error => {
+                const errors = error.responseJSON.errors;
+                showErrorUser(errors);
+            });
+    });
+
     // userSearch.on('keyup', function () {
     //     let searchKey = $(this).val().trim();
     //     searchPath = facultyPath + "search/" + searchKey;

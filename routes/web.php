@@ -15,7 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+Auth::routes([
+    'register' => false,
+    'verify' => true,
+    'reset' => false,
+]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -26,6 +30,8 @@ Route::group(['prefix' => 'manage', 'namespace' => 'Backends'], function () {
 
     Route::resource('/users', 'UserController');
     Route::get('users/search/{searchkey}', 'UserController@search');
+    Route::put('users/setpassword/{id}', 'UserController@setuserpassword');
+    Route::put('users/changepassword/{id}', 'UserController@changepassword');
     //facultys
     Route::resource('faculties', 'FacultyController');
     Route::get('faculties/search/{searchkey}', 'FacultyController@search');

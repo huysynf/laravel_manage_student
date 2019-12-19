@@ -45,4 +45,16 @@ class User extends Authenticatable
     public function getpaginate($number){
         return $this->orderBy('id', 'desc')->paginate($number);
     }
+
+    public function search($searchkey)
+    {
+        return $this->where('name', 'LIKE', '%' . $searchkey . '%')
+            ->orwhere('email', 'LIKE', '%' . $searchkey . '%')
+            ->orwhere('phone', 'LIKE', '%' . $searchkey . '%')
+            ->get();
+    }
+    public  function changepassword($id,$password){
+        return $this->where('id',$id)->update(['password'=>$password]);
+
+    }
 }

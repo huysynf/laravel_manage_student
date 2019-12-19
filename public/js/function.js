@@ -17,7 +17,7 @@ function isDeleted(status) {
 }
 
 //function alert eror
-function alertSuccess(message) {
+function alertSuccess(message,reload=0) {
     Swal.fire({
         position: 'center',
         icon: 'success',
@@ -26,8 +26,10 @@ function alertSuccess(message) {
         confirmButtonText: 'ok'
     })
         .then((result) => {
-            if (result.value) {
-                location.reload();
+            if (result.value ) {
+                  if(reload==0){
+                      location.reload();
+                  }
             }
         })
 }
@@ -52,7 +54,9 @@ function newResource(data, url) {
     return $.ajax({
         url: url,
         type: "post",
-        data: data
+        data: data,
+        processData: false,
+        contentType: false,
     });
 }
 
@@ -60,10 +64,9 @@ function updateResource(data, url) {
     return $.ajax({
         url: url,
         type: "PUT",
-        data: data
+        data: data,
     });
 }
-
 function deleteResource(id, url) {
     return $.ajax(
         {
@@ -185,14 +188,15 @@ function fillSubjectToTableHtml(data) {
 
 // function of user
 function resetErrorUser() {
-    $('.error-name').html('');
-    $('.error-email').html('');
-    $('.error-image').html('');
-    $('.error-password').html('');
-    $('.error-password_confirmation').html('');
-    $('.error-phone').html('');
-    $('.error-role').html('');
+    $('.error-name').html(' ');
+    $('.error-email').html(' ');
+    $('.error-image').html(' ');
+    $('.error-password').html(' ');
+    $('.error-password_confirmation').html('  ');
+    $('.error-phone').html(' ');
+    $('.error-role').html(' ');
 }
+
 function showErrorUser(errors) {
     (errors.name) ? $('.error-name').html(errors.name[0]) : "";
     (errors.email) ? $('.error-email').html(errors.email[0]) : "";
@@ -203,16 +207,18 @@ function showErrorUser(errors) {
     (errors.role) ? $('.error-role').html(errors.role[0]) : "";
 
 }
+
 //show image when chose
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
-        reader.onload = function(e) {
-            $('#image-show').attr('src', e.target.result);
+        reader.onload = function (e) {
+            $('.image-show').attr('src', e.target.result);
         }
         reader.readAsDataURL(input.files[0]);
     }
 }
-$("#image-input").change(function() {
+
+$(".image-input").change(function () {
     readURL(this);
 });
