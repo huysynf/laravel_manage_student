@@ -7,7 +7,6 @@ $(function () {
     });
     //count row table
     countStt();
-
     //variable
     let idActionResource = 0;
     let urlResource = "";
@@ -228,9 +227,10 @@ $(function () {
         dataResource = new FormData($('#new-user-form')[0]);
         urlResource = '/manage/users';
         newResource(dataResource, urlResource)
-            .done(response => {
-                $('#newUserModal').modal('hide');
-                isCreated(response.status) ? alertSuccess(response.message) : "";
+            .done(data => {
+
+                 $('#newUserModal').modal('hide');
+                isCreated(data.status) ? alertSuccess(data.message) : "";
                 countStt();
             })
             .fail(error => {
@@ -241,11 +241,10 @@ $(function () {
     user.on('click', '.edit-user', function () {
         resetErrorUser();
         idActionResource = $(this).attr('editId');
-        urlResource =userPath + idActionResource;
+        urlResource = userPath + idActionResource;
         getResource(urlResource)
             .done(response => {
                 let user = response.data;
-                console.log(user);
                 $('.user-name').val(user.name);
                 $('.user-email').val(user.email);
                 $('.user-phone').val(user.phone);
@@ -256,7 +255,7 @@ $(function () {
 
     user.on('click', '.show-user', function () {
         idActionResource = $(this).attr('showId');
-        urlResource =userPath + idActionResource;
+        urlResource = userPath + idActionResource;
         getResource(urlResource)
             .done(response => {
                 let user = response.data;
@@ -264,31 +263,31 @@ $(function () {
                 $('.user-email').html(user.email);
                 $('.user-phone').html(user.phone);
                 $('.user-image').attr('src', '/images/users/' + user.image);
-                let role="người dùng";
-                if(user.role==1){
-                    role="nhân viên";
+                let role = "người dùng";
+                if (user.role == 1) {
+                    role = "nhân viên";
                 }
-                if(user.role==2){
-                    role="Quản trị";
+                if (user.role == 2) {
+                    role = "Quản trị";
                 }
 
                 $('.user-role').html(role);
             })
     });
     user.on('click', '.update-user', function () {
-        dataResource = new FormData($('#update-user-form')[1]);
-        urlResource = userPath+idActionResource;
+        dataResource = new FormData($('#update-user-form')[0]);
         console.log(dataResource);
-        updateResource(dataResource, urlResource)
-            .done(response => {
-                console.log(response);
-                // $('#editUserModal').modal('hide')
-               // isSuccess(response.status) ? alertSuccess(response.message) : "";
-               //  countStt();
+        urlResource ='/manage/users/update/'+idActionResource;
+        newResource(dataResource,urlResource)
+        .done(response => {
+                $('#editUserModal').modal('hide')
+                isSuccess(response.status) ? alertSuccess(response.message) : "";
+                 countStt();
             })
             .fail(error => {
+                console.log(error);
                 const errors = error.responseJSON.errors;
-                showErrorUser(errors);
+                 showErrorUser(errors);
             });
     });
 
@@ -299,12 +298,12 @@ $(function () {
 
     user.on('click', '.set-password', function () {
         dataResource = $('#set-password-form').serialize();
-        urlResource = userPath+"setpassword/"+idActionResource;
+        urlResource = userPath + "setpassword/" + idActionResource;
         updateResource(dataResource, urlResource)
             .done(response => {
                 $('#changePasswordModal').modal('hide')
-                 alertSuccess(response.message,1);
-                 countStt();
+                alertSuccess(response.message, 1);
+                countStt();
             })
             .fail(error => {
                 const errors = error.responseJSON.errors;

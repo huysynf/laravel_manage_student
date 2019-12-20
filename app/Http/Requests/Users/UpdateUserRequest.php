@@ -27,7 +27,7 @@ class UpdateUserRequest extends FormRequest
             'name'=>'required',
             'role'=>'required',
             'phone'=>'required|regex:/\d{3}-\d{4}-\d{3}/',
-            'email'=>'required|unique:users,email,'.$this->user,
+            'email'=>'required|unique:users,email,'.$this->id,
         ];
     }
     public function messages()
