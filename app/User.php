@@ -4,10 +4,10 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use App\Traits\ImageTrait;
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable,ImageTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -42,7 +42,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function getpaginate($number){
+    public function getPaginate($number){
         return $this->orderBy('id', 'desc')->paginate($number);
     }
 
@@ -53,8 +53,7 @@ class User extends Authenticatable
             ->orwhere('phone', 'LIKE', '%' . $searchkey . '%')
             ->get();
     }
-    public  function changepassword($id,$password){
+    public  function changePassword($id,$password){
         return $this->where('id',$id)->update(['password'=>$password]);
-
     }
 }

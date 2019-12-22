@@ -23,35 +23,6 @@ class UserController extends Controller
         $this->user = new User();
         $this->imagePath = 'images/users/';
     }
-
-
-    public function saveimage($image)
-    {
-
-        $name = time() . '.' . $image->getClientOriginalExtension();
-        Image::make($image)->resize(300, 300)->save($this->imagePath . $name);
-        return $name;
-    }
-
-    public function deleteimage($name)
-    {
-        if (file_exists($this->imagePath . $name) && $name != 'default.jpg') {
-            unlink($this->imagePath . $name);
-        }
-    }
-
-    public function updateimage($request, $currentName)
-    {
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $this->deleteimage($currentName);
-            $name = $this->saveimage($image);
-            return $name;
-        } else {
-            return $currentName;
-        }
-    }
-
     public function index()
     {
         $users = $this->user->getPaginate(10);
@@ -61,29 +32,16 @@ class UserController extends Controller
     public function store(CreateUserRequest $request)
     {
 
-        $data = $request->except('password_confirm');
-        $image = $request->file('image');
-        $name = $this->saveimage($image);
-        try {
-            DB::beginTransaction();
-            $password = $request->input('password');
-            $data['password'] = Hash::make($password);
-            $data['image'] = $name;
-            $this->user->create($data);
-            DB::commit();
-            return response()->json([
-                'status' => 201,
-                'message' => 'Tạo mới nguoi dùng thành công',
-            ]);
-        } catch (\Exception $e) {
-            DB::rollBack();
-          $this->deleteimage($name);
-            return response()->json([
-                'status' => 401,
-                'message' => 'có lỗi xảy ra! Thêm người dung thất bại',
-            ]);
-        }
+        $data = $request->except('password_confirm', 'image');
+        $data['image'] = $this->user->saveImage($request, $this->imagePath);
+        $password = $request->input('password');
+        $data['password'] = Hash::make($password);
+        $this->user->create($data);
+        return response()->json([
+            'status' => 201,
+            'message' => 'Tạo mới nguoi dùng thành công',
 
+        ]);
     }
 
     public function show($id)
@@ -99,53 +57,29 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request, $id)
     {
         $user = $this->user->findOrFail($id);
-        $data = $request->all();
+        $data = $request->except('image');
         $current_image = $user->image;
-        try {
-            DB::beginTransaction();
-            $name = $this->updateimage($request, $current_image);
-            $data['image'] = $name;
-            $user->update($data);
-            DB::commit();
-            return response()->json([
-                'status' => 200,
-                'message' => 'Cập nhật thông tin nguoi dùng thành công',
-
-            ]);
-        } catch (Exception $x) {
-            DB::rollBack();
-            return response()->json([
-                'status' => 401,
-                'message' => 'Có lỗi xảy ra!Cập nhật thông tin người dùng thất bại',
-            ]);
-        }
+        $data['image'] = $this->user->updateimage($request, $this->imagePath, $current_image);
+        $user->update($data);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Cập nhật thông tin nguoi dùng thành công',
+        ]);
     }
-
-
     public function destroy($id)
     {
-        try {
-            $user = $this->user->findOrFail($id);
-            DB::beginTransaction();
-            $current_image = $user->image;
-            $user->delete();
-            $this->deleteimage($current_image);
-            DB::commit();
-            return response()->json([
-                'status' => 204,
-                'message' => 'Xóa người dùng thành công',
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => 400,
-                'message' => 'Có lỗi xảy ra xóa thất bại',
-            ]);
-        }
+        $user = $this->user->findOrFail($id);
+        $current_image = $user->image;
+        $user->delete();
+        $this->user->deleteImage($current_image);
+        return response()->json([
+            'status' => 204,
+            'message' => 'Xóa người dùng thành công',
+        ]);
     }
 
     public function search($search)
     {
-
 
         $users = $this->user->search($search);
         return response()->json([

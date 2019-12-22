@@ -228,13 +228,14 @@ $(function () {
         urlResource = '/manage/users';
         newResource(dataResource, urlResource)
             .done(data => {
-
                  $('#newUserModal').modal('hide');
-                isCreated(data.status) ? alertSuccess(data.message) : "";
+                console.log(data);
+               isCreated(data.status) ? alertSuccess(data.message) : "";
                 countStt();
             })
-            .fail(error => {
-                const errors = error.responseJSON.errors;
+            .fail(data => {
+                const errors = data.responseJSON.errors;
+                console.log(errors);
                 showErrorUser(errors);
             });
     });
@@ -253,7 +254,7 @@ $(function () {
             })
     });
 
-    user.on('click', '.show-user', function () {
+    $('body').on('click', '.show-user', function () {
         idActionResource = $(this).attr('showId');
         urlResource = userPath + idActionResource;
         getResource(urlResource)
@@ -302,6 +303,21 @@ $(function () {
         updateResource(dataResource, urlResource)
             .done(response => {
                 $('#changePasswordModal').modal('hide')
+                alertSuccess(response.message, 1);
+                countStt();
+            })
+            .fail(error => {
+                const errors = error.responseJSON.errors;
+                showErrorUser(errors);
+            });
+    });
+        //change password
+    $('body').on('click', '.change-password', function () {
+        dataResource = $('#change-password-form').serialize();
+        urlResource = userPath + "changepassword/" + idActionResource;
+        updateResource(dataResource, urlResource)
+            .done(response => {
+                $('#changeUserPasswordModal').modal('hide')
                 alertSuccess(response.message, 1);
                 countStt();
             })
