@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Faculties\CreateFacultyRequest;
 use App\Http\Requests\Faculties\UpdateFacultyRequest;
 use App\Models\Faculty;
-
+use Illuminate\Http\Request;
 class FacultyController extends Controller
 {
     private $faculty;
@@ -42,7 +42,9 @@ class FacultyController extends Controller
             'message' => 'Cập nhật thông tin khoa  thành công',
         ]);
     }
+    public function show($id){
 
+    }
 
     public function destroy($id)
     {
@@ -53,15 +55,13 @@ class FacultyController extends Controller
         ]);
     }
 
-    public function search($search)
+    public function search(Request $request)
     {
-
-        $faculties = $this->faculty->search($search);
-        return response()->json([
-            'status' => 200,
-            'message' => 'Có ' . count($faculties) . ' kết quả tìm thấy với từ khóa:' . $search,
-            'data' => $faculties,
-        ]);
+        dd($request->all());
+        $search=$request->input('searchKey');
+        $faculties = $this->faculty->search($search)->paginate(5);
+        return view('backends.faculties.index',compact('faculties'));
 
     }
+
 }

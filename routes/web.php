@@ -28,7 +28,7 @@ Route::group(['prefix' => 'manage', 'namespace' => 'Backends'], function () {
     Route::get('users/search/{searchkey}', 'UserController@search');
     //facultys
     Route::resource('faculties', 'FacultyController');
-    Route::get('faculties/search/{searchkey}', 'FacultyController@search');
+    Route::get('faculties/search', 'FacultyController@seach')->name('faculty.search');
     //subject
     Route::resource('subjects', 'SubjectController');
     Route::get('subjects/search/{searchkey}', 'FacultyController@search');

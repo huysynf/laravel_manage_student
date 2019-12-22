@@ -14,17 +14,19 @@
     {{--    table data--}}
     <div class="row " id="faculty">
         <div class="col-12 d-flex">
-            <form class="d-none d-sm-inline-block form-inline  my-2 my-md-0 mw-100 navbar-search"
-                  id="facultyFormSearch">
-                <div class="input-group border-left-primary">
-                    <input type="text" class="form-control bg-light border-0 small faculty-searchkey" placeholder="Tìm kiếm..."
-                           aria-label="Search" aria-describedby="basic-addon2" name="searchKey">
+            <form method="get" action="{{route('faculty.search')}}" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                @csrf
+                <div class="input-group">
+                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2" name="searchKey">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
                 </div>
             </form>
             <div class="show_search_result d-flex align-items-center">
-                <p id="row_number_serach" class="text-danger mt-3"></p>
-                <div class="select_row">
-                </div>
+
             </div>
             <p class="search-message text-danger ml-1"></p>
         </div>
