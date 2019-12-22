@@ -9,6 +9,7 @@ use App\User;
 use DB;
 use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Image;
 
 class UserController extends Controller

@@ -39,7 +39,6 @@
             </div>
             <p class="search-message text-danger ml-1"></p>
         </div>
-
         <div class="col-12">
             <table class="table table-responsive" id="table_data">
                 <thead>
