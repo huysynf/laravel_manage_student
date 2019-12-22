@@ -109,23 +109,4 @@ class UserController extends Controller
         ]);
     }
 
-    public function changepassword(Request $request, $id)
-    {
-        $data = $request->all();
-        $this->validate($data, [
-            'password' => 'required|min:6|confirmed'
-        ], [
-            'password.required' => 'Mật  mật khẩu',
-            'password.min' => 'Mật khẩu lớn hơn 6 kí tụ',
-            'password.confirmed' => 'Nhập lại mật khẩu phải giống mật khẩu',
-        ]);
-
-        $password = Hash::make($data['password']);
-        $this->user->changePassword($id, $password);
-        return response()->json([
-            'status' => 204,
-            'message' => 'Cập nhật mật khẩu thành công',
-        ]);
-
-    }
 }

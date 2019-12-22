@@ -31,7 +31,6 @@ Route::group(['prefix' => 'manage', 'namespace' => 'Backends'], function () {
     Route::post('users/update/{id}', 'UserController@update');
     Route::get('users/search/{key}', 'UserController@search');
     Route::put('users/setpassword/{id}', 'UserController@setuserpassword');
-    Route::put('users/changepassword/{id}', 'UserController@changepassword');
     //facultys
     Route::resource('faculties', 'FacultyController');
     Route::get('faculties/search/{searchkey}', 'FacultyController@search');
@@ -44,7 +43,6 @@ Route::group(['prefix' => 'manage', 'namespace' => 'Backends'], function () {
     //classroom
     Route::resource('/students', 'StudentController');
     Route::get('students/search/{searchkey}', 'StudentController@search');
-    //login
 
 
 });
