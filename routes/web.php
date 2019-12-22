@@ -22,14 +22,15 @@ Auth::routes([
 ]);
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-
-Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix' => 'manage', 'namespace' => 'Backends'], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard.index');
-
-    Route::resource('/users', 'UserController');
-    Route::get('users/search/{searchkey}', 'UserController@search');
+    Route::resource('/users', 'UserController')->except([
+        'update',
+        'edit',
+        'create',
+    ]);
+    Route::post('users/update/{id}', 'UserController@update');
+    Route::get('users/search/{key}', 'UserController@search');
     Route::put('users/setpassword/{id}', 'UserController@setuserpassword');
     Route::put('users/changepassword/{id}', 'UserController@changepassword');
     //facultys

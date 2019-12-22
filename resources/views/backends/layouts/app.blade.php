@@ -47,6 +47,8 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 @yield('content')
+                @include('backends.users.show')
+                @include('backends.users.user_change_password')
             </div>
             <!-- /.container-fluid -->
 

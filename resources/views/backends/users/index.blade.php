@@ -1,6 +1,6 @@
 @extends('backends.layouts.app')
 
-@section('title',' Quản lý sinh viên')
+@section('title',' Quản người dùng')
 
 @section('content')
 
@@ -77,8 +77,8 @@
                             <button class="btn btn-outline-success btn-circle  show-user" title="Chi tiết người dùng"
                                     data-toggle="modal"
                                     showId="{{$user->id}}"
-                                    data-target="#showUserModal">
-                                <i class="fas fa-info-circle text-primary"></i></button>
+                                    data-target="#showUserModal">   <i class="fas fa-info-circle text-primary"></i>
+                              </button>
                             <button class="btn btn-outline-primary btn-circle  " title="Đổi mật khẩu"
                                     data-toggle="modal"
                                     userId="{{$user->id}}"
@@ -203,7 +203,7 @@
                           enctype="multipart/form-data">
                         <div class="modal-body text-dark ">
                             @csrf
-                            {{method_field('PUT')}}
+
                             <div class="form-group">
                                 <label for="">Họ tên</label>
                                 <input type="text" class="form-control user-name" name="name" value="{{old('name')}}"
@@ -280,26 +280,12 @@
                         <div class="modal-body text-dark ">
                             @csrf
                             {{method_field('put')}}
-                            <div class="form-group">
-                                    <label for="">Mật khẩu mới</label>
-                                    <input type="password" class="form-control " name="password"
-                                           value="{{old('password')}}"
-                                    >
-                                    <span class="text-danger error-password"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label for="">Nhập lại mật khẩu</label>
-                                    <input type="password" class="form-control " name="password_confirmation"
-                                           value="{{old('password_confirmation')}}"
-
-                                    >
-                                    <span class="text-danger error-password_confirmation"></span>
-                                </div>
+                            @include('backends.users.password_form')
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-primary set-password"><i
                                     class="fas fa-pencil-alt">
-                                   Đổi mật khẩu
+                                    Đổi mật khẩu
                                 </i>
                             </button>
                             <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Trở về

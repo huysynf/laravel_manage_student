@@ -15,7 +15,7 @@
                 <div class="d-flex justify-content-between">
                     <div>
                         <p>Tên người dùng: <span class="user-name"></span></p>
-                        <p>Tên số điện thoại: <span class="user-phone"></span></p>
+                        <p>Số điện thoại: <span class="user-phone"></span></p>
                     </div>
                     <div>
                         <img src=""

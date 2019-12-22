@@ -9,7 +9,6 @@
     <label for="">Nhập lại mật khẩu</label>
     <input type="password" class="form-control " name="password_confirmation"
            value="{{old('password_confirmation')}}"
-
     >
     <span class="text-danger error-password_confirmation"></span>
 </div>
