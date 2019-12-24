@@ -13,107 +13,69 @@ $(function () {
     let urlResource = "";
     let dataResource = "";
     let searchPath = "";
-    let searchMessage=$('.search-message');
+    let getMethodForm='get';
+    let newMethodForm='post';
+    let updateMethodForm='put';
+    let deleteMethodForm='delete';
     //faculty
-    //valiable
+    //variable
     let faculty = $('#faculty');
-    let newFacultyForm = $('.newfaculty-form');
-    let editFacultyForm = $('.editfaculty-form');
     let addFacultyBtn = $('.add-faculty');
-    let editFacultyBtn = $('.edit-faculty');
-    let facultyPath = "/manage/faculties/";
+    let facultyPath = "/manage/faculties";
     let facultySearch = $('.faculty-searchkey');
-
     // function
-    function resetError() {
-        $('.nameError').html('');
-        $('.descriptionError').html('');
-    }
-
-    function showErrorFaculty(errors) {
-        (errors.name) ? $('.nameError').html(errors.name[0]) : "";
-        (errors.description) ? $('.descriptionError').html(errors.description[0]) : "";
-    }
-
     addFacultyBtn.click(function () {
-        resetError();
-    })
-    editFacultyBtn.click(function (event) {
-        idActionResource = $(this).attr('editId');
-        resetError();
+        resetErrorFaculty();
+    });
+    faculty.on('click', '.edit-faculty', function () {
+        resetErrorFaculty();
+        idActionResource=$(this).attr('editId');
+        urlResource=facultyPath+"/"+idActionResource;
+        callAjax(urlResource,null,getMethodForm)
+            .done(data => {
+                let faculty=data.data;
+                $('.faculty-name').val(faculty.name);
+                $('.faculty-description').val(faculty.description);
+            })
     });
 
     faculty.on('click', '.new-faculty', function () {
-        dataResource = newFacultyForm.serialize();
-        urlResource = '/manage/faculties';
-        newResource(dataResource, urlResource)
-            .done(response => {
+        dataResource = new FormData($('.new-faculty-form')[0]);
+        callAjax(facultyPath,dataResource,newMethodForm)
+            .done(data => {
                 $('#newFacultyModal').modal('hide')
-                isSuccess(response.status) ? alertSuccess(response.message) : "";
+                alertSuccess(data.message);
                 countStt();
             })
-            .fail(error => {
-                const errors = error.responseJSON.errors;
+            .fail(data => {
+                const errors = data.responseJSON.errors;
+                resetErrorFaculty();
                 showErrorFaculty(errors);
             });
     });
     faculty.on('click', '.update-faculty', function () {
-        dataResource = editFacultyForm.serialize();
-        urlResource = facultyPath + idActionResource;
-        updateResource(dataResource, urlResource)
-            .done(response => {
-                $('#newFacultyModal').modal('hide')
-                isSuccess(response.status) ? alertSuccess(response.message) : "";
+        dataResource = new FormData($('.edit-faculty-form')[0]);
+        urlResource = facultyPath + '/update/' + idActionResource;
+        callAjax(urlResource,dataResource,newMethodForm)
+            .done(data => {
+                $('#newFacultyModal').modal('hide');
+                alertSuccess(data.message);
                 countStt();
             })
-            .fail(error => {
-                const errors = error.responseJSON.errors;
+            .fail(data => {
+                const errors = data.responseJSON.errors;
                 showErrorFaculty(errors);
             });
     });
-
     faculty.on('click', '.delete-faculty', function () {
         idActionResource = $(this).attr('deleteId');
-        destroyResource(idActionResource, facultyPath);
+        urlResource = facultyPath + "/"+idActionResource;
+        destroyResource(urlResource);
     });
 
-    facultySearch.on('keyup', function () {
-        let searchKey = $(this).val().trim();
-        searchPath = facultyPath + "search/" + searchKey;
-        if(searchKey.length>0){
-            searchResource(searchPath)
-                .done(data => {
-                    $('.pagination-container').hide();
-                    const faculties = data.data;
-                    searchMessage.html(data.message);
-                    let facutyTable = fillFacultyToTableHtml(faculties);
-                    $('tbody').html(facutyTable);
-                    countStt();
-                })
-                .fail(error => {
-                    searchMessage.html('');
-                });
-        }else {
-            searchMessage.html('');
-        }
-        facultySearch.on('keydown',function () {
-            if(searchKey.length<0){
-                searchMessage.html('');
-            }
-        });
-
-    });
     //fill data to modal
-    $('#editModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var name = button.data('name');
-        var description = button.data('description');
-        var modal = $(this);
-        modal.find('.modal-body .name').val(name);
-        modal.find('.modal-body .description').val(description);
-    });
     //subject
-    //valiable
+    //variable
     let subject = $('#subject');
     let newSubjectForm = $('.newsubject-form');
     let editSubjectForm = $('.editsubject-form');
@@ -203,17 +165,6 @@ $(function () {
             }
         });
 
-    });
-    //fill data to modal
-    $('#editSubjectModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var name = button.data('name');
-        var description = button.data('description');
-        var lesson = button.data('lesson');
-        var modal = $(this);
-        modal.find('.modal-body .name').val(name);
-        modal.find('.modal-body .description').val(description);
-        modal.find('.modal-body .lesson').val(lesson);
     });
 
 });

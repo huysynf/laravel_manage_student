@@ -26,7 +26,7 @@ class UpdateFacultyRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'unique:faculties,name,' . $this->faculty, new ShortStringLengt(), new UpperCase()],
+            'name' => ['required', 'unique:faculties,name,' . $this->id, new ShortStringLengt(), new UpperCase()],
             'description' => 'required',
         ];
     }

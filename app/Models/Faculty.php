@@ -14,8 +14,18 @@ class Faculty extends Model
 
     public $timestamps = false;
 
-    public function search($searchKey){
-        return $this->where('name', 'LIKE', '%' . $searchKey . '%')->orwhere('description', 'LIKE',
-            '%' . $searchKey . '%')->get(['id', 'name', 'description']);
+    public function search($name, $description)
+    {
+        return $this
+            ->when($name, function ($query) use ($name) {
+                $query->orwhere('name', 'LIKE', '%' . $name . '%');
+            })
+            ->when($description, function ($query) use ($description) {
+                $query->orwhere('description', 'LIKE', '%' . $description . '%');
+            })
+            ->latest('id')
+            ->paginate(10);
     }
+
+
 }

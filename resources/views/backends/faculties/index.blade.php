@@ -1,32 +1,39 @@
 @extends('backends.layouts.app')
 
-@section('title',' Quản lý nghành học')
+@section('title',' Quản lý Khoa')
 
 @section('content')
 
     <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Quản lý khoa</h1>
         <button type="button" class="ml-2 btn btn-sm btn-primary shadow-sm add-faculty"
-                title="Thêm mới khoa" data-toggle="modal" data-target="#newfacultyModal">
+                title="Thêm mới khoa" data-toggle="modal" data-target="#newFacultyModal">
             <i class="fas fa-plus fa-sm text-dark"></i> Thêm mới khoa
         </button>
     </div>
     {{--    table data--}}
     <div class="row " id="faculty">
         <div class="col-12 d-flex">
-            <form class="d-none d-sm-inline-block form-inline  my-2 my-md-0 mw-100 navbar-search"
-                  id="facultyFormSearch">
-                <div class="input-group border-left-primary">
-                    <input type="text" class="form-control bg-light border-0 small faculty-searchkey" placeholder="Tìm kiếm..."
-                           aria-label="Search" aria-describedby="basic-addon2" name="searchKey">
+            <form method="get" action="{{route('faculties.index')}}" class=" p-1 d-flex"
+                  id="subjectFormSearch">
+                <div class="d-flex flex-column">
+                    <lable class="text-primary" for="name">Tên khoa</lable>
+                    <input value="{{request()->input('name')}}" class="h-50" type="text" placeholder="Tên tìm kiếm..."
+                           name="name">
                 </div>
+                <div class="d-flex flex-column ml-1">
+                    <lable class="text-primary" for="description">Số tiết</lable>
+                    <input value="{{request()->input('description')}}" class="h-50" type="text"
+                           placeholder="Mô tả tìm kiếm..." name="description">
+                </div>
+                <div class="align-self-end ml-1">
+                    <button class="btn btn-primary  aqua-gradient btn-rounded btn-sm my-0" type="submit"
+                            title="Tìm kiếm">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                </div>
+
             </form>
-            <div class="show_search_result d-flex align-items-center">
-                <p id="row_number_serach" class="text-danger mt-3"></p>
-                <div class="select_row">
-                </div>
-            </div>
-            <p class="search-message text-danger ml-1"></p>
         </div>
         <div class="col-12">
             <table class="table table-bordered " id="table-faculty">
@@ -49,17 +56,14 @@
                         </td>
                         <td>{{$faculty->description}}</td>
                         <td>
-                            <button class="btn btn-primary edit-faculty" title="Cập nhật thông tin khoa"
+                            <button class="btn btn-outline-primary btn-circle edit-faculty"
+                                    title="Cập nhật thông tin khoa"
                                     editId="{{$faculty->id}}"
                                     data-toggle="modal"
-                                    data-target="#editModal"
-                                    data-name="{{$faculty->name}}"
-                                    data-description="{{$faculty->description}}"
-                                    data-id="{{$faculty->id}}"
-                            ><i
-                                    class="fa fa-edit text-white"></i>
+                                    data-target="#editFacultyModal"
+                            ><i class="fa fa-edit text-warning"></i>
                             </button>
-                            <button class="btn btn-dark delete-faculty" title="Xóa nhật khoa"
+                            <button class="btn btn-outline-dark delete-faculty btn-circle" title="Xóa nhật khoa"
                                     deleteId="{{$faculty->id}}"><i class="fas fa-trash text-danger"></i></button>
                         </td>
                     </tr>
@@ -74,17 +78,17 @@
 
         </div>
         <!-- Modal -->
-        <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
-             aria-labelledby="facultyModalTitle" aria-hidden="true">
+        <div class="modal fade" id="editFacultyModal" tabindex="-1" role="dialog"
+             aria-labelledby="editFacultyModalTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="facultyModalTitle">Cập nhật thông tin</h5>
+                        <h5 class="modal-title" id="editFacultyModalTitle">Cập nhật thông tin</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="post" class="editfaculty-form">
+                    <form method="post" class="edit-faculty-form">
                         @csrf
                         <div class="modal-body text-dark">
                             @include('backends.faculties.form')
@@ -93,7 +97,7 @@
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">
                                 Hủy
                             </button>
-                            <button type="button" class="btn btn-primary update-faculty" id="newfaculty">
+                            <button type="button" class="btn btn-primary update-faculty">
                                 <i class="fa fa-file-alt"></i>Cập nhật thông tin
                             </button>
                         </div>
@@ -102,7 +106,7 @@
             </div>
         </div>
 
-        <div class="modal fade" id="newfacultyModal" tabindex="-1" role="dialog" aria-labelledby="newfacultyModalTitle"
+        <div class="modal fade" id="newFacultyModal" tabindex="-1" role="dialog" aria-labelledby="newFacultyModalTitle"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
@@ -112,7 +116,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{route('faculties.store')}}" method="post" class="newfaculty-form">
+                    <form action="{{route('faculties.store')}}" method="post" class="new-faculty-form">
                         @csrf
                         <div class="modal-body text-dark">
                             @include('backends.faculties.form')
