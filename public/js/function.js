@@ -1,22 +1,4 @@
-const DELETE_STATUS_CODE = 204;
-const SUCCESS_STATUS_CODE = 200;
-const CREATE_STATUS_CODE = 201;
-const TIME_TO_SEARCH=2000;
-//function
-function isSuccess(status) {
-    return status == SUCCESS_STATUS_CODE;
-}
-
-function isCreated(status) {
-    return status == CREATE_STATUS_CODE;
-}
-
-function isDeleted(status) {
-    return status == DELETE_STATUS_CODE;
-}
-
-//function alert eror
-function alertSuccess(message) {
+function alertSuccess(message, reload = 0) {
     Swal.fire({
         position: 'center',
         icon: 'success',
@@ -26,7 +8,9 @@ function alertSuccess(message) {
     })
         .then((result) => {
             if (result.value) {
-                location.reload();
+                if (reload == 0) {
+                    location.reload();
+                }
             }
         })
 }
@@ -40,6 +24,7 @@ function alertError(message) {
 }
 
 //curd resource
+
 function getResource(url) {
     return $.ajax({
         url: url,
@@ -51,7 +36,9 @@ function newResource(data, url) {
     return $.ajax({
         url: url,
         type: "post",
-        data: data
+        data: data,
+        processData: false,
+        contentType: false,
     });
 }
 
@@ -59,9 +46,12 @@ function updateResource(data, url) {
     return $.ajax({
         url: url,
         type: "PUT",
-        data: data
+        data: data,
+        processData: false,
+        contentType: false,
     });
 }
+
 
 function deleteResource(id, url) {
     return $.ajax(
@@ -115,34 +105,4 @@ function countStt() {
 
     });
 
-}
-//fetch data to table
-function fillFacultyToTableHtml(data) {
-    let tableHTML = "";
-    data.forEach(item => {
-        tableHTML += ` <tr>
-                        <td>
-                            <strong></strong>
-                        </td>
-                        <td>
-                            ${item.name}
-                        </td>
-                        <td>${item.description}</td>
-                        <td>
-                            <button  class="btn btn-primary edit-faculty" title="Cập nhật thông tin khoa"
-                                    editId="${item.id}"
-                                    data-toggle="modal"
-                                    data-target="#editModal"
-                                    data-name="${item.name}"
-                                    data-description="${item.description}"
-                                    data-id="${item.id}"
-                                ><i
-                                    class="fa fa-edit text-white"></i>
-                            </button>
-                            <button class="btn btn-dark delete-faculty" title="Xóa nhật khoa"
-                               deleteId="${item.id}"><i class="fas fa-trash text-danger"></i></button>
-                        </td>
-                    </tr>`;
-    });
-    return tableHTML;
 }
