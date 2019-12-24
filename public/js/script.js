@@ -33,10 +33,17 @@ $(function () {
 
     addFacultyBtn.click(function () {
         resetErrorFaculty();
-    })
-    editFacultyBtn.click(function () {
-        idActionResource = $(this).attr('editId');
+    });
+    faculty.on('click', '.edit-faculty', function () {
         resetErrorFaculty();
+        idActionResource=$(this).attr('editId');
+        urlResource=facultyPath+"/"+idActionResource;
+        getResource(urlResource)
+            .done(data => {
+                let faculty=data.data;
+                $('.faculty-name').val(faculty.name);
+                $('.faculty-description').val(faculty.description);
+            })
     });
 
     faculty.on('click', '.new-faculty', function () {

@@ -62,7 +62,6 @@ function deleteResource(id, url) {
             data: {"id": id,}
         });
 }
-
 function destroyResource(id, url) {
     Swal.fire({
         title: 'Xác nhận xóa?',
@@ -76,24 +75,13 @@ function destroyResource(id, url) {
         if (result.value) {
             deleteResource(id, url)
                 .done(response => {
-                    if (isDeleted(response.status)) {
-                        alertSuccess(response.message);
-                    }
+                    alertSuccess(response.message);
                 })
                 .fail(error => {
                     alertError(error.message);
                 });
         }
     });
-}
-
-function searchResource( url) {
-    return $.ajax(
-        {
-            url: url,
-            type: 'get',
-            dataType: "JSON",
-        });
 }
 
 //count row table

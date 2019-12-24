@@ -1,6 +1,6 @@
 @extends('backends.layouts.app')
 
-@section('title',' Quản lý nghành học')
+@section('title',' Quản lý Khoa')
 
 @section('content')
 
@@ -18,14 +18,17 @@
                   id="subjectFormSearch">
                 <div class="d-flex flex-column">
                     <lable class="text-primary" for="name">Tên khoa</lable>
-                    <input value="{{request()->input('name')}}" class="h-50" type="text" placeholder="Tên tìm kiếm..." name="name"  >
+                    <input value="{{request()->input('name')}}" class="h-50" type="text" placeholder="Tên tìm kiếm..."
+                           name="name">
                 </div>
                 <div class="d-flex flex-column ml-1">
                     <lable class="text-primary" for="description">Số tiết</lable>
-                    <input value="{{request()->input('description')}}" class="h-50" type="text" placeholder="Mô tả tìm kiếm..." name="description"  >
+                    <input value="{{request()->input('description')}}" class="h-50" type="text"
+                           placeholder="Mô tả tìm kiếm..." name="description">
                 </div>
                 <div class="align-self-end ml-1">
-                    <button class="btn btn-primary  aqua-gradient btn-rounded btn-sm my-0" type="submit" title="Tìm kiếm">
+                    <button class="btn btn-primary  aqua-gradient btn-rounded btn-sm my-0" type="submit"
+                            title="Tìm kiếm">
                         <i class="fas fa-search fa-sm"></i>
                     </button>
                 </div>
@@ -57,12 +60,8 @@
                                     title="Cập nhật thông tin khoa"
                                     editId="{{$faculty->id}}"
                                     data-toggle="modal"
-                                    data-target="#editModal"
-                                    data-name="{{$faculty->name}}"
-                                    data-description="{{$faculty->description}}"
-                                    data-id="{{$faculty->id}}"
-                            ><i
-                                    class="fa fa-edit text-warning"></i>
+                                    data-target="#editFacultyModal"
+                            ><i class="fa fa-edit text-warning"></i>
                             </button>
                             <button class="btn btn-outline-dark delete-faculty btn-circle" title="Xóa nhật khoa"
                                     deleteId="{{$faculty->id}}"><i class="fas fa-trash text-danger"></i></button>
@@ -79,12 +78,12 @@
 
         </div>
         <!-- Modal -->
-        <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
-             aria-labelledby="facultyModalTitle" aria-hidden="true">
+        <div class="modal fade" id="editFacultyModal" tabindex="-1" role="dialog"
+             aria-labelledby="editFacultyModalTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="facultyModalTitle">Cập nhật thông tin</h5>
+                        <h5 class="modal-title" id="editFacultyModalTitle">Cập nhật thông tin</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
