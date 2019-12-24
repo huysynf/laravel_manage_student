@@ -79,3 +79,16 @@ function showErrorFaculty(errors) {
     (errors.description) ? $('.descriptionError').html(errors.description[0]) : "";
 
 }
+
+//subject error
+function resetErrorSubject() {
+    $('.name-error').html('');
+    $('.lesson-error').html('');
+    $('.description-error').html('');
+}
+
+function showErrorSubject(errors) {
+    (errors.name) ? $('.name-error').html(errors.name[0]) : "";
+    (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
+    (errors.description) ? $('.description-error').html(errors.description[0]) : "";
+}
