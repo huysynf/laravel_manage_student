@@ -25,44 +25,16 @@ function alertError(message) {
 
 //curd resource
 
-function getResource(url) {
+function callAjax( url,data="",type='get') {
     return $.ajax({
         url: url,
-        type: "get",
-    });
-}
-
-function newResource(data, url) {
-    return $.ajax({
-        url: url,
-        type: "post",
+        type:type,
         data: data,
         processData: false,
         contentType: false,
     });
 }
-
-function updateResource(data, url) {
-    return $.ajax({
-        url: url,
-        type: "PUT",
-        data: data,
-        processData: false,
-        contentType: false,
-    });
-}
-
-
-function deleteResource(id, url) {
-    return $.ajax(
-        {
-            url: url + id,
-            type: 'delete',
-            dataType: "JSON",
-            data: {"id": id,}
-        });
-}
-function destroyResource(id, url) {
+function destroyResource(url) {
     Swal.fire({
         title: 'Xác nhận xóa?',
         icon: 'warning',
@@ -73,7 +45,7 @@ function destroyResource(id, url) {
         cancelButtonText: 'Hủy bỏ'
     }).then((result) => {
         if (result.value) {
-            deleteResource(id, url)
+            callAjax(url,null,'delete')
                 .done(response => {
                     alertSuccess(response.message);
                 })
@@ -93,4 +65,13 @@ function countStt() {
 
     });
 
+}
+//faculty error function
+function resetErrorFaculty() {
+    $('.nameError').html('');
+    $('.descriptionError').html('');
+}
+function showErrorFaculty(errors) {
+    (errors.name) ? $('.nameError').html(errors.name[0]) : "";
+    (errors.description) ? $('.descriptionError').html(errors.description[0]) : "";
 }

@@ -13,24 +13,17 @@ $(function () {
     let urlResource = "";
     let dataResource = "";
     let searchPath = "";
+    let getMethodForm='get';
+    let newMethodForm='post';
+    let updateMethodForm='put';
+    let deleteMethodForm='delete';
     //faculty
-    //valiable
+    //variable
     let faculty = $('#faculty');
     let addFacultyBtn = $('.add-faculty');
-    let editFacultyBtn = $('.edit-faculty');
     let facultyPath = "/manage/faculties";
     let facultySearch = $('.faculty-searchkey');
     // function
-    function resetErrorFaculty() {
-        $('.nameError').html('');
-        $('.descriptionError').html('');
-    }
-
-    function showErrorFaculty(errors) {
-        (errors.name) ? $('.nameError').html(errors.name[0]) : "";
-        (errors.description) ? $('.descriptionError').html(errors.description[0]) : "";
-    }
-
     addFacultyBtn.click(function () {
         resetErrorFaculty();
     });
@@ -38,7 +31,7 @@ $(function () {
         resetErrorFaculty();
         idActionResource=$(this).attr('editId');
         urlResource=facultyPath+"/"+idActionResource;
-        getResource(urlResource)
+        callAjax(urlResource,null,getMethodForm)
             .done(data => {
                 let faculty=data.data;
                 $('.faculty-name').val(faculty.name);
@@ -48,7 +41,7 @@ $(function () {
 
     faculty.on('click', '.new-faculty', function () {
         dataResource = new FormData($('.new-faculty-form')[0]);
-        newResource(dataResource, facultyPath)
+        callAjax(facultyPath,dataResource,newMethodForm)
             .done(data => {
                 $('#newFacultyModal').modal('hide')
                 alertSuccess(data.message);
@@ -63,7 +56,7 @@ $(function () {
     faculty.on('click', '.update-faculty', function () {
         dataResource = new FormData($('.edit-faculty-form')[0]);
         urlResource = facultyPath + '/update/' + idActionResource;
-        newResource(dataResource, urlResource)
+        callAjax(urlResource,dataResource,newMethodForm)
             .done(data => {
                 $('#newFacultyModal').modal('hide');
                 alertSuccess(data.message);
@@ -73,6 +66,11 @@ $(function () {
                 const errors = data.responseJSON.errors;
                 showErrorFaculty(errors);
             });
+    });
+    faculty.on('click', '.delete-faculty', function () {
+        idActionResource = $(this).attr('deleteId');
+        urlResource = facultyPath + "/"+idActionResource;
+        destroyResource(urlResource);
     });
 
     //fill data to modal
