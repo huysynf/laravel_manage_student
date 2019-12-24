@@ -60,7 +60,7 @@
                 <div class="row">
                     <div class="form-group col-md-6 col-lg-6 col-sm-12">
                         <label for="">Tên lớp</label>
-                        <select name="classrooms[]" id="" class="form-control" multiple>
+                        <select name="classrooms[]" id="" class="form-control student-select-classroom" multiple>
                             @foreach($classrooms as $classroom)
                                 <option
                                     value="{{$classroom->id}}" {{( $listClassroomStudent->contains($classroom->id)) ? 'selected' : '' }}  {{in_array($classroom->id,old('classrooms',[]))? 'selected' : '' }}>{{$classroom->name}}</option>

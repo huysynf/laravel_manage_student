@@ -159,7 +159,7 @@ $(function () {
 
     let student = $('#student');
     let studentPath = "/manage/students/";
-
+    $('.student-select-classroom').select2();
     student.on('click', '.delete-student', function () {
         idActionResource = $(this).attr('deleteId');
         urlResource=studentPath+idActionResource;

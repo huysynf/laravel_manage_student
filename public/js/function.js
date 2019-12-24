@@ -90,3 +90,12 @@ function showErrorSubject(errors) {
     (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
     (errors.description) ? $('.description-error').html(errors.description[0]) : "";
 }
+//classroom
+function arrayOjectParseToNameP(data) {
+    let html = "";
+    data.forEach(item => {
+        html += `<p>${item.name}<p/>`;
+    });
+    return html;
+}
+
