@@ -22,6 +22,9 @@ class Student extends Model
         return $this->belongsToMany(Classroom::class, 'classroom_student');
     }
 
+    public function  findOrFail($id){
+        return $this->with('classrooms')->findOrFail($id);
+    }
     public function search($name, $address, $classroomName)
     {
         return $this
