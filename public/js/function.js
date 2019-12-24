@@ -1,23 +1,4 @@
-const DELETE_STATUS_CODE = 204;
-const SUCCESS_STATUS_CODE = 200;
-const CREATE_STATUS_CODE = 201;
-const TIME_TO_SEARCH = 2000;
-
-//function
-function isSuccess(status) {
-    return status == SUCCESS_STATUS_CODE;
-}
-
-function isCreated(status) {
-    return status == CREATE_STATUS_CODE;
-}
-
-function isDeleted(status) {
-    return status == DELETE_STATUS_CODE;
-}
-
-//function alert eror
-function alertSuccess(message) {
+function alertSuccess(message, reload = 0) {
     Swal.fire({
         position: 'center',
         icon: 'success',
@@ -27,7 +8,9 @@ function alertSuccess(message) {
     })
         .then((result) => {
             if (result.value) {
-                location.reload();
+                if (reload == 0) {
+                    location.reload();
+                }
             }
         })
 }
@@ -41,40 +24,17 @@ function alertError(message) {
 }
 
 //curd resource
-function getResource(url) {
+
+function callAjax( url,data="",type='get') {
     return $.ajax({
         url: url,
-        type: "get",
+        type:type,
+        data: data,
+        processData: false,
+        contentType: false,
     });
 }
-
-function newResource(data, url) {
-    return $.ajax({
-        url: url,
-        type: "post",
-        data: data
-    });
-}
-
-function updateResource(data, url) {
-    return $.ajax({
-        url: url,
-        type: "PUT",
-        data: data
-    });
-}
-
-function deleteResource(id, url) {
-    return $.ajax(
-        {
-            url: url + id,
-            type: 'delete',
-            dataType: "JSON",
-            data: {"id": id,}
-        });
-}
-
-function destroyResource(id, url) {
+function destroyResource(url) {
     Swal.fire({
         title: 'Xác nhận xóa?',
         icon: 'warning',
@@ -85,26 +45,15 @@ function destroyResource(id, url) {
         cancelButtonText: 'Hủy bỏ'
     }).then((result) => {
         if (result.value) {
-            deleteResource(id, url)
+            callAjax(url,null,'delete')
                 .done(response => {
-                    if (isDeleted(response.status)) {
-                        alertSuccess(response.message);
-                    }
+                    alertSuccess(response.message);
                 })
                 .fail(error => {
                     alertError(error.message);
                 });
         }
     });
-}
-
-function searchResource(url) {
-    return $.ajax(
-        {
-            url: url,
-            type: 'get',
-            dataType: "JSON",
-        });
 }
 
 //count row table
@@ -118,119 +67,26 @@ function countStt() {
 
 }
 
-//show array in html
-function arrayOjectParseToNameP(data) {
-    let html="";
-    data.forEach(item=>{
-        html+=`<p>${item.name}<p/>`;
-    });
-    return html;
+//faculty error function
+function resetErrorFaculty() {
+    $('.nameError').html('');
+    $('.descriptionError').html('');
 }
-function gender(gender) {
-    return (gender==1)?'Nam':'Nữ';
+function showErrorFaculty(errors) {
+    (errors.name) ? $('.nameError').html(errors.name[0]) : "";
+    (errors.description) ? $('.descriptionError').html(errors.description[0]) : "";
+
 }
 
-//fetch data to table
-function fillFacultyToTableHtml(data) {
-    let tableHTML = "";
-    data.forEach(item => {
-        tableHTML += ` <tr>
-                        <td>
-                            <strong></strong>
-                        </td>
-                        <td>
-                            ${item.name}
-                        </td>
-                        <td>${item.description}</td>
-                        <td>
-                            <button  class="btn btn-primary edit-faculty" title="Cập nhật thông tin khoa"
-                                    editId="${item.id}"
-                                    data-toggle="modal"
-                                    data-target="#editModal"
-                                    data-name="${item.name}"
-                                    data-description="${item.description}"
-                                    data-id="${item.id}"
-                                ><i
-                                    class="fa fa-edit text-white"></i>
-                            </button>
-                            <button class="btn btn-dark delete-faculty" title="Xóa nhật khoa"
-                               deleteId="${item.id}"><i class="fas fa-trash text-danger"></i></button>
-                        </td>
-                    </tr>`;
-    });
-    return tableHTML;
+//subject error
+function resetErrorSubject() {
+    $('.name-error').html('');
+    $('.lesson-error').html('');
+    $('.description-error').html('');
 }
 
-function fillSubjectToTableHtml(data) {
-    let tableHTML = "";
-    data.forEach(item => {
-        tableHTML += ` <tr>
-                        <td>
-                            <strong></strong>
-                        </td>
-                        <td>
-                            ${item.name}
-                        </td>
-                        <td>
-                            ${item.lesson}
-                        </td>
-                        <td>${item.description}</td>
-                        <td>
-                            <button  class="btn btn-primary edit-subject" title="Cập nhật thông tin môn học"
-                                    editId="${item.id}"
-                                    data-toggle="modal"
-                                    data-target="#editSubjectModal"
-                                    data-name="${item.name}"
-                                    data-lesson="${item.lesson}"
-                                    data-description="${item.description}"
-                                    data-id="${item.id}"
-                                ><i
-                                    class="fa fa-edit text-white"></i>
-                            </button>
-                            <button class="btn btn-dark delete-subject" title="Xóa môn học"
-                               deleteId="${item.id}"><i class="fas fa-trash text-danger"></i></button>
-                        </td>
-                    </tr>`;
-    });
-    return tableHTML;
-}
-
-function fillStudentToTableHtml(data) {
-    let tableHTML = "";
-    data.forEach(student => {
-        tableHTML += ` <tr>
-                            <td>
-                            <strong></strong>
-                        </td>
-                        <td>
-                            <img src="/images/students/${student.image}" alt=""
-                                 style="max-width: 50px;max-height: 50px;" width="100%" height="100%"
-                                 alt="{{$student->name}}">
-                        </td>
-                        <td>
-                             ${student.name}
-                        </td>
-                        <td>
-                            ${student.birthday}
-                        </td>
-                        <td>
-                            `+gender(student.gender)+`
-                        </td>
-                        <td> ${student.phone}</td>
-                        <td>
-                            <a class="btn btn-outline-primary btn-circle" title="Cập nhật sinh viên"
-                               href=" /manage/students/`+ student.id+`/edit">
-                                <i class="fa fa-edit text-dark"></i>
-                            </a>
-                            <button class="btn btn-outline-dark delete-student btn-circle" title="Xóa sinh viên"
-                                    deleteId="${student.id}"><i class="fas fa-trash text-danger"></i></button>
-                            <button class="btn btn-outline-success btn-circle  show-student" title="chi tiết sinh v"
-                                    data-toggle="modal"
-                                    showId="${student.id}"
-                                    data-target="#showStudentModal">
-                                <i class="fas fa-info-circle text-primary"></i></button>
-                        </td>
-                        </tr>`;
-    });
-    return tableHTML;
+function showErrorSubject(errors) {
+    (errors.name) ? $('.name-error').html(errors.name[0]) : "";
+    (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
+    (errors.description) ? $('.description-error').html(errors.description[0]) : "";
 }
