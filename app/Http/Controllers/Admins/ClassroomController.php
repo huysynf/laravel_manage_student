@@ -43,8 +43,12 @@ class ClassroomController extends Controller
      */
     public function create()
     {
-        //
+        $faculties = $this->faculty->all(['id', 'name']);
+        $subjects = $this->subject->all(['id', 'name']);
+        return view('backends.classrooms.create', compact('faculties', 'subjects'));
     }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -52,10 +56,14 @@ class ClassroomController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateClassroomRequest $request)
     {
-        //
+        $data = $request->all();
+        $this->classroom->create($data);
+        DB::commit();
+        return redirect(route('classrooms.index'))->with('message', 'Thêm mới lớp học thành công');
     }
+
 
     /**
      * Display the specified resource.
