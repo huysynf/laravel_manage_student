@@ -36,7 +36,14 @@ class SubjectController extends Controller
             'message' => 'Thêm mới môn học thành công',
         ]);
     }
-
+    public  function  show($id){
+        $subject=$this->subject->findOrFail($id);
+        return response()->json([
+            'status'=>200,
+            'message'=>'Lấy dữ liêu thành công',
+            'data'=>$subject,
+        ]);
+    }
     public function update(UpdateSubjectRequest $request, $id)
     {
         $subject = $this->subject->findOrFail($id);
@@ -57,12 +64,5 @@ class SubjectController extends Controller
         ]);
     }
 
-    public function search(Request $request)
-    {
-        $searchKey = $request->input('searchKey');
-        $subjects = $this->subject->search($searchKey)->paginate(10);
-        return view('backends.subjects.index', compact('subjects'));
-
-    }
 
 }
