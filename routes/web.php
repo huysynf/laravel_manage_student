@@ -21,7 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::group(['prefix' => 'manage', 'namespace' => 'Backends'], function () {
+Route::group(['prefix' => 'manage', 'namespace' => 'Admins'], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard.index');
 
     Route::resource('/users', 'UserController');
