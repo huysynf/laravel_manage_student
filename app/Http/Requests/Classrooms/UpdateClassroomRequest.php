@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Classrooms;
 
+use App\Rules\UpperCase;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateClassroomRequest extends FormRequest
@@ -24,7 +25,7 @@ class UpdateClassroomRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' =>['required','unique:classrooms,name,'.$this->id,new UpperCase()],
+            'name' =>['required','unique:classrooms,name,'.$this->classroom,new UpperCase()],
             'description' => 'required',
             'faculty_id' => 'required',
             'member' => [

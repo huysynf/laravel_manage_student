@@ -84,7 +84,11 @@ class ClassroomController extends Controller
      */
     public function edit($id)
     {
-        //
+        $classroom = $this->classroom->findOrFail($id);
+        $faculties = $this->faculty->all(['id', 'name']);
+        $subjects = $this->subject->all(['id', 'name']);
+        return view('backends.classrooms.edit', compact('faculties', 'subjects', 'classroom'));
+
     }
 
     /**
@@ -94,9 +98,13 @@ class ClassroomController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateClassroomRequest $request, $id)
     {
-        //
+        $classroom = $this->classroom->findOrFail($id);
+        $data = $request->all();
+        $classroom->update($data);
+        return redirect(route('classrooms.index'))->with('message', 'Cập nhật thông tin lớp học thành công');
+
     }
 
     /**
