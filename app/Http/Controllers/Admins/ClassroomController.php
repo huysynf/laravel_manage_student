@@ -3,18 +3,37 @@
 namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Classrooms\CreateClassroomRequest;
+use App\Http\Requests\Classrooms\UpdateClassroomRequest;
+use App\Models\Classroom;
+use App\Models\Faculty;
+use App\Models\Subject;
+use DB;
 use Illuminate\Http\Request;
+
 
 class ClassroomController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private $classroom;
+    private $faculty;
+    private $subject;
+
+    public function __construct()
+    {
+        $this->classroom = new Classroom();
+        $this->faculty = new Faculty();
+        $this->subject = new Subject();
+
+    }
+
     public function index()
     {
-        //
+        $subjects = $this->subject->get('name');
+        $faculties = $this->faculty->get('name');
+
+        $classrooms = $this->classroom->paginate(10);
+        return view('backends.classrooms.index', compact('classrooms', 'faculties', 'subjects'));
+
     }
 
     /**
