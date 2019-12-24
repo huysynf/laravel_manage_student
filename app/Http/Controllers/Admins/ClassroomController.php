@@ -107,14 +107,13 @@ class ClassroomController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $this->classroom->destroy($id);
+        return response()->json([
+            'status' => 204,
+            'message' => 'Xóa thành công',
+        ]);
+
     }
 }
