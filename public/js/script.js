@@ -78,10 +78,9 @@ $(function () {
     let editSubjectBtn = $('.edit-subject');
     let subjectPath = "/manage/subjects";
     // function
-
     addSubjectBtn.click(function () {
         resetErrorSubject();
-    })
+    });
     subject.on('click', '.new-subject', function () {
         dataResource = new FormData($('.new-subject-form')[0]);
         callAjax(subjectPath,dataResource,newMethodForm)
@@ -97,12 +96,15 @@ $(function () {
             });
     });
     subject.on('click', '.edit-subject', function () {
+        resetErrorSubject();
         idActionResource=$(this).attr('editId');
         urlResource=subjectPath+"/"+idActionResource;
-        callAjax(idActionResource,null,getMethodForm)
+        callAjax(urlResource,null,getMethodForm)
             .done(data => {
               let subject=data.data;
-                countStt();
+                $('.subject-name').val(subject.name);
+                $('.subject-lesson').val(subject.lesson);
+                $('.subject-description').val(subject.description);
             })
     });
     subject.on('click', '.update-subject', function () {
@@ -110,14 +112,14 @@ $(function () {
         urlResource = subjectPath + "/update/" + idActionResource;
         callAjax(urlResource,dataResource,newMethodForm)
             .done(data => {
-                $('#newsubjectModal').modal('hide')
+                $('#editSubjectModal').modal('hide')
                 alertSuccess(data.message);
                 countStt();
             })
             .fail(data => {
                 const errors = data.responseJSON.errors;
                 resetErrorSubject();
-                showErrorFaculty(errors);
+                showErrorSubject(errors);
             });
     });
 
