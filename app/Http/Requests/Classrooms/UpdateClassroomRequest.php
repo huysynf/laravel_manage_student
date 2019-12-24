@@ -25,7 +25,7 @@ class UpdateClassroomRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' =>['required','unique:classrooms,name,'.$this->classroom,new UpperCase()],
+            'name' =>['required','unique:classrooms,name,'.$this->id,new UpperCase()],
             'description' => 'required',
             'faculty_id' => 'required',
             'member' => [
