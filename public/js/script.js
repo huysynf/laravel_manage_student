@@ -141,5 +141,19 @@ $(function () {
         urlResource=classroomPath+"/"+idActionResource;
         destroyResource(urlResource);
     });
+    classroom.on('click','.show-classroom',function () {
+        idActionResource=$(this).attr('showId');
+        urlResource=classroomPath+"/"+idActionResource;
+        callAjax(urlResource)
+            .done(data => {
+                let classroom = data.data;
+                $('.classroom-name').html(classroom.name);
+                $('.classroom-description').html(classroom.description);
+                $('.classroom-member').html(classroom.member);
+                $('.classroom-faculty').html(classroom.faculty.name);
+                $('.classroom-subject').html(classroom.subject.name);
+            })
+    });
+
 
 });

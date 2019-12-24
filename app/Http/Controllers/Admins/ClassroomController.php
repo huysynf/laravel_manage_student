@@ -73,7 +73,13 @@ class ClassroomController extends Controller
      */
     public function show($id)
     {
-        //
+        $classroom=$this->classroom->with('subject')->with('faculty')->findOrFail($id);
+        return response()->json([
+            'status'=>200,
+            'message'=>'Thành công',
+            'data'=>$classroom,
+        ]);
+
     }
 
     /**
