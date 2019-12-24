@@ -26,12 +26,15 @@ class ClassroomController extends Controller
 
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $subjects = $this->subject->get('name');
         $faculties = $this->faculty->get('name');
+        $classroomName = $request->input('name');
+        $subjectName = $request->input('subject');
+        $facultyName = $request->input('faculty');
+        $classrooms = $this->classroom->search($classroomName, $facultyName, $subjectName);
 
-        $classrooms = $this->classroom->paginate(10);
         return view('backends.classrooms.index', compact('classrooms', 'faculties', 'subjects'));
 
     }
