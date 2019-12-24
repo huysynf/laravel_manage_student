@@ -22,20 +22,32 @@
     {{--    table data--}}
     <div class="row" id="student">
         <div class="col-12 d-flex">
-            <form class="d-none d-sm-inline-block form-inline  my-2 my-md-0 mw-100 navbar-search"
-                  id="studentFormSearch">
-                <div class="input-group border-left-primary">
-                    <input type="text" class="form-control bg-light border-0 small student-searchkey"
-                           placeholder="Tìm kiếm..."
-                           aria-label="Search" aria-describedby="basic-addon2" name="searchKey">
+            <form method="get" action="{{route('students.index')}}" class=" p-1 d-flex"
+                  id="subjectFormSearch">
+                <div class="d-flex flex-column">
+                    <lable class="text-primary" for="name">Tên tìm kiếm</lable>
+                    <input value="{{request()->input('name')}}" class="h-50" type="text" placeholder="Tên tìm kiếm..." name="name"  >
                 </div>
+                <div class="d-flex flex-column ml-1">
+                    <lable class="text-primary" for="address">Địa chỉ</lable>
+                    <input value="{{request()->input('address')}}" class="h-50" type="text" placeholder="Địa chỉ tìm kiếm..." name="address"  >
+                </div>
+                <div class="d-flex flex-column ml-1">
+                    <lable class="text-primary" for="role" >Tên lớp</lable>
+                    <select name="classroom" class="h-50 student-select-classroom">
+                        <option value="">Tất cả</option>
+                        @foreach($classrooms as $classroom)
+                            <option value="{{$classroom->name}}" {{(request()->input('classroom')==$classroom->name)?'selected':''}}  >{{$classroom->name}}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="align-self-end ml-1">
+                    <button class="btn btn-primary  aqua-gradient btn-rounded btn-sm my-0" type="submit" title="Tìm kiếm">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                </div>
+
             </form>
-            <div class="show_search_result d-flex align-items-center">
-                <p id="row_number_serach" class="text-danger mt-3"></p>
-                <div class="select_row">
-                </div>
-            </div>
-            <p class="search-message text-danger ml-1"></p>
         </div>
 
         <div class="col-12">

@@ -22,24 +22,24 @@ class Student extends Model
         return $this->belongsToMany(Classroom::class, 'classroom_student');
     }
 
-
-    public function search($searchKey)
+    public function search($name, $address, $classroomName)
     {
-        return $this->where('name', 'LIKE', '%' . $searchKey . '%')
-            ->orwhere('address', 'LIKE', '%' . $searchKey . '%')
-            ->orwhere('phone', 'LIKE', '%' . $searchKey . '%')
-            ->with('classrooms')
-            ->get();
+        return $this
+            ->when($classroomName,function ($query) use ($classroomName) {
+                $query->whereHas('classrooms',function($q) use ($classroomName){
+                    $q->orwhere('name','LIKE','%'.$classroomName.'%');
+                });
+            })
+            ->when($name, function ($query) use ($name) {
+                $query->orwhere('name', 'LIKE', '%' . $name . '%');
+            })
+            ->when($address, function ($query) use ($address) {
+                $query->orwhere('address', 'LIKE', '%' . $address . '%');
+            })
+            ->paginate(5);
     }
 
-    public function getpaginate($number)
-    {
-        return $this->with('classrooms')->orderBy('id', 'desc')->paginate($number);
-    }
-    public function getstudent($id)
-    {
-        return $this->with('classrooms')->find($id);
-    }
+
 
 
 }

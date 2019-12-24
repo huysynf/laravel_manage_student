@@ -10,6 +10,7 @@ use App\Models\Classroom_student;
 use App\Models\Student;
 use DB;
 use Image;
+use Illuminate\Http\Request;
 
 class StudentController extends Controller
 {
@@ -33,10 +34,15 @@ class StudentController extends Controller
         return $name;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $students = $this->student->getpaginate(10);
-        return view('backends.students.index', compact('students'));
+        $name=$request->input('name');
+        $address=$request->input('address');
+        $classroomName=$request->input('classroom');
+        $students = $this->student->search($name,$address,$classroomName);
+        $classrooms=$this->classroom->all();
+        return view('backends.students.index', compact('students','classrooms'));
+
     }
 
     /**
