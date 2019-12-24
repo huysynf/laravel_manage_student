@@ -14,20 +14,23 @@
     {{--    table data--}}
     <div class="row " id="subject">
         <div class="col-12 d-flex">
-            <form class="d-none d-sm-inline-block form-inline  my-2 my-md-0 mw-100 navbar-search"
+            <form method="get" action="{{route('subjects.index')}}" class=" p-1 d-flex"
                   id="subjectFormSearch">
-                <div class="input-group border-left-primary">
-                    <input type="text" class="form-control bg-light border-0 small subject-searchkey"
-                           placeholder="Tìm kiếm..."
-                           aria-label="Search" aria-describedby="basic-addon2" name="searchKey">
+                <div class="d-flex flex-column">
+                    <lable class="text-primary" for="name">Tên môn học</lable>
+                    <input value="{{request()->input('name')}}" class="h-50" type="text" placeholder="Tên tìm kiếm..." name="name"  >
                 </div>
+                <div class="d-flex flex-column ml-1">
+                    <lable class="text-primary" for="lesson">Số tiết</lable>
+                    <input value="{{request()->input('lesson')}}" class="h-50" type="text" placeholder="Số tiết tìm kiếm..." name="lesson"  >
+                </div>
+                <div class="align-self-end ml-1">
+                    <button class="btn btn-primary  aqua-gradient btn-rounded btn-sm my-0" type="submit" title="Tìm kiếm">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                </div>
+
             </form>
-            <div class="show_search_result d-flex align-items-center">
-                <p id="row_number_serach" class="text-danger mt-3"></p>
-                <div class="select_row">
-                </div>
-            </div>
-            <p class="search-message text-danger ml-1"></p>
         </div>
         <div class="col-12">
             <table class="table table-bordered " id="table-subject">
@@ -54,7 +57,8 @@
                         </td>
                         <td>{{$subject->description}}</td>
                         <td>
-                            <button class="btn btn-primary edit-subject" title="Cập nhật thông tin khoa"
+                            <button class="btn btn-outline-primary edit-subject btn-circle"
+                                    title="Cập nhật thông tin khoa"
                                     editId="{{$subject->id}}"
                                     data-toggle="modal"
                                     data-target="#editSubjectModal"
@@ -63,9 +67,9 @@
                                     data-description="{{$subject->description}}"
                                     data-id="{{$subject->id}}"
                             ><i
-                                    class="fa fa-edit text-white"></i>
+                                    class="fa fa-edit text-warning"></i>
                             </button>
-                            <button class="btn btn-dark delete-subject" title="Xóa nhật khoa"
+                            <button class="btn btn-outline-dark delete-subject btn-circle" title="Xóa nhật khoa"
                                     deleteId="{{$subject->id}}"><i class="fas fa-trash text-danger"></i></button>
                         </td>
                     </tr>
@@ -90,7 +94,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form method="post" class="editsubject-form">
+                    <form method="post" class="edit-subject-form">
                         @csrf
                         <div class="modal-body text-dark">
                             @include('backends.subjects.form')
@@ -118,7 +122,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form action="{{route('subjects.store')}}" method="post" class="newsubject-form">
+                    <form action="{{route('subjects.store')}}" method="post" class="new-subject-form">
                         @csrf
                         <div class="modal-body text-dark">
                             @include('backends.subjects.form')
