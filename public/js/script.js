@@ -13,19 +13,15 @@ $(function () {
     let urlResource = "";
     let dataResource = "";
     let searchPath = "";
-    let searchMessage=$('.search-message');
     //faculty
     //valiable
     let faculty = $('#faculty');
-    let newFacultyForm = $('.newfaculty-form');
-    let editFacultyForm = $('.editfaculty-form');
     let addFacultyBtn = $('.add-faculty');
     let editFacultyBtn = $('.edit-faculty');
-    let facultyPath = "/manage/faculties/";
+    let facultyPath = "/manage/faculties";
     let facultySearch = $('.faculty-searchkey');
-
     // function
-    function resetError() {
+    function resetErrorFaculty() {
         $('.nameError').html('');
         $('.descriptionError').html('');
     }
@@ -36,82 +32,42 @@ $(function () {
     }
 
     addFacultyBtn.click(function () {
-        resetError();
+        resetErrorFaculty();
     })
-    editFacultyBtn.click(function (event) {
+    editFacultyBtn.click(function () {
         idActionResource = $(this).attr('editId');
-        resetError();
+        resetErrorFaculty();
     });
 
     faculty.on('click', '.new-faculty', function () {
-        dataResource = newFacultyForm.serialize();
-        urlResource = '/manage/faculties';
-        newResource(dataResource, urlResource)
-            .done(response => {
+        dataResource = new FormData($('.new-faculty-form')[0]);
+        newResource(dataResource, facultyPath)
+            .done(data => {
                 $('#newFacultyModal').modal('hide')
-                isSuccess(response.status) ? alertSuccess(response.message) : "";
+                alertSuccess(data.message);
                 countStt();
             })
-            .fail(error => {
-                const errors = error.responseJSON.errors;
+            .fail(data => {
+                const errors = data.responseJSON.errors;
+                resetErrorFaculty();
                 showErrorFaculty(errors);
             });
     });
     faculty.on('click', '.update-faculty', function () {
-        dataResource = editFacultyForm.serialize();
-        urlResource = facultyPath + idActionResource;
-        updateResource(dataResource, urlResource)
-            .done(response => {
-                $('#newFacultyModal').modal('hide')
-                isSuccess(response.status) ? alertSuccess(response.message) : "";
+        dataResource = new FormData($('.edit-faculty-form')[0]);
+        urlResource = facultyPath + '/update/' + idActionResource;
+        newResource(dataResource, urlResource)
+            .done(data => {
+                $('#newFacultyModal').modal('hide');
+                alertSuccess(data.message);
                 countStt();
             })
-            .fail(error => {
-                const errors = error.responseJSON.errors;
+            .fail(data => {
+                const errors = data.responseJSON.errors;
                 showErrorFaculty(errors);
             });
     });
 
-    faculty.on('click', '.delete-faculty', function () {
-        idActionResource = $(this).attr('deleteId');
-        destroyResource(idActionResource, facultyPath);
-    });
-
-    facultySearch.on('keyup', function () {
-        let searchKey = $(this).val().trim();
-        searchPath = facultyPath + "search/" + searchKey;
-        if(searchKey.length>0){
-            searchResource(searchPath)
-                .done(data => {
-                    $('.pagination-container').hide();
-                    const faculties = data.data;
-                    searchMessage.html(data.message);
-                    let facutyTable = fillFacultyToTableHtml(faculties);
-                    $('tbody').html(facutyTable);
-                    countStt();
-                })
-                .fail(error => {
-                    searchMessage.html('');
-                });
-        }else {
-            searchMessage.html('');
-        }
-        facultySearch.on('keydown',function () {
-            if(searchKey.length<0){
-                searchMessage.html('');
-            }
-        });
-
-    });
     //fill data to modal
-    $('#editModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget)
-        var name = button.data('name');
-        var description = button.data('description');
-        var modal = $(this);
-        modal.find('.modal-body .name').val(name);
-        modal.find('.modal-body .description').val(description);
-    });
-
 
 });
