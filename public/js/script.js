@@ -130,8 +130,8 @@ $(function () {
     });
 
 //classroom
-//     $('.classroom-select-faculty').select2();
-//     $('.classroom-select-subject').select2();
+    $('.classroom-select-faculty').select2();
+    $('.classroom-select-subject').select2();
 
     let classroom = $('#classroom');
     let classroomPath = "/manage/classrooms";
