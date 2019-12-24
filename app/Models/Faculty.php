@@ -3,10 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Scout\Searchable;
+
 class Faculty extends Model
 {
-    use Searchable;
     protected $table = 'faculties';
     protected $fillable = [
         'name',
@@ -15,14 +14,18 @@ class Faculty extends Model
 
     public $timestamps = false;
 
-    public function searchableAs()
+    public function search($name, $description)
     {
-        return 'faculties_index';
+        return $this
+            ->when($name, function ($query) use ($name) {
+                $query->orwhere('name', 'LIKE', '%' . $name . '%');
+            })
+            ->when($description, function ($query) use ($description) {
+                $query->orwhere('description', 'LIKE', '%' . $description . '%');
+            })
+            ->latest('id')
+            ->paginate(10);
     }
-    public function toSearchableArray()
-    {
-        $array = $this->toArray();
-        return $array;
-    }
+
 
 }

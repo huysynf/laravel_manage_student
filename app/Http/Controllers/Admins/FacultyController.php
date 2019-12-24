@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Backends;
+namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Faculties\CreateFacultyRequest;
 use App\Http\Requests\Faculties\UpdateFacultyRequest;
 use App\Models\Faculty;
 use Illuminate\Http\Request;
+
 class FacultyController extends Controller
 {
     private $faculty;
@@ -16,9 +17,11 @@ class FacultyController extends Controller
         $this->faculty = new Faculty();
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $faculties = $this->faculty->orderBy('id', 'desc')->paginate(10);
+        $name = $request->input('name');
+        $description = $request->input('description');
+        $faculties = $this->faculty->search($name, $description);
         return view('backends.faculties.index', compact('faculties'));
     }
 
@@ -42,26 +45,25 @@ class FacultyController extends Controller
             'message' => 'Cập nhật thông tin khoa  thành công',
         ]);
     }
-    public function show($id){
 
+    public function show($id)
+    {
+        $faculty = $this->faculty->findOrFail($id);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Thành công',
+            'data' => $faculty,
+        ]);
     }
 
     public function destroy($id)
     {
-        Faculty::destroy($id);
+        $this->faculty->destroy($id);
         return response()->json([
             'status' => 204,
             'message' => 'Xóa khoa thành  công',
         ]);
     }
 
-    public function search(Request $request)
-    {
-        dd($request->all());
-        $search=$request->input('searchKey');
-        $faculties = $this->faculty->search($search)->paginate(5);
-        return view('backends.faculties.index',compact('faculties'));
-
-    }
 
 }
