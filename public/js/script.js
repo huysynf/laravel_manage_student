@@ -15,14 +15,11 @@ $(function () {
     let searchPath = "";
     let getMethodForm='get';
     let newMethodForm='post';
-    let updateMethodForm='put';
-    let deleteMethodForm='delete';
     //faculty
     //variable
     let faculty = $('#faculty');
     let addFacultyBtn = $('.add-faculty');
     let facultyPath = "/manage/faculties";
-    let facultySearch = $('.faculty-searchkey');
     // function
     addFacultyBtn.click(function () {
         resetErrorFaculty();
@@ -77,94 +74,58 @@ $(function () {
     //subject
     //variable
     let subject = $('#subject');
-    let newSubjectForm = $('.newsubject-form');
-    let editSubjectForm = $('.editsubject-form');
     let addSubjectBtn = $('.add-subject');
     let editSubjectBtn = $('.edit-subject');
-    let subjectPath = "/manage/subjects/";
-    let subjectSearch = $('.subject-searchkey');
-
+    let subjectPath = "/manage/subjects";
     // function
-    function resetErrorSubject() {
-        $('.nameError').html('');
-        $('.lessonError').html('');
-        $('.descriptionError').html('');
-    }
-
-    function showErrorFacultySubject(errors) {
-        (errors.name) ? $('.nameError').html(errors.name[0]) : "";
-        (errors.name) ? $('.lessonError').html(errors.lesson[0]) : "";
-        (errors.description) ? $('.descriptionError').html(errors.description[0]) : "";
-    }
 
     addSubjectBtn.click(function () {
         resetErrorSubject();
     })
-    editSubjectBtn.click(function (event) {
-        idActionResource = $(this).attr('editId');
-        showErrorFacultySubject();
-    });
-
     subject.on('click', '.new-subject', function () {
-        dataResource = newSubjectForm.serialize();
-        urlResource = '/manage/subjects';
-        newResource(dataResource, urlResource)
-            .done(response => {
+        dataResource = new FormData($('.new-subject-form')[0]);
+        callAjax(subjectPath,dataResource,newMethodForm)
+            .done(data => {
                 $('#newsubjectModal').modal('hide');
-                isCreated(response.status) ? alertSuccess(response.message) : "";
+                alertSuccess(data.message);
                 countStt();
             })
-            .fail(error => {
-                const errors = error.responseJSON.errors;
-                showErrorFacultySubject(errors);
+            .fail(data => {
+                const errors = data.responseJSON.errors;
+                resetErrorSubject();
+                showErrorSubject(errors);
             });
     });
-    subject.on('click', '.update-subject', function () {
-        dataResource = editSubjectForm.serialize();
-        urlResource = subjectPath + idActionResource;
-        updateResource(dataResource, urlResource)
-            .done(response => {
-                $('#newsubjectModal').modal('hide')
-                isSuccess(response.status) ? alertSuccess(response.message) : "";
+    subject.on('click', '.edit-subject', function () {
+        idActionResource=$(this).attr('editId');
+        urlResource=subjectPath+"/"+idActionResource;
+        callAjax(idActionResource,null,getMethodForm)
+            .done(data => {
+              let subject=data.data;
                 countStt();
             })
-            .fail(error => {
-                const errors = error.responseJSON.errors;
+    });
+    subject.on('click', '.update-subject', function () {
+        dataResource = new FormData($('.edit-subject-form')[0]);
+        urlResource = subjectPath + "/update/" + idActionResource;
+        callAjax(urlResource,dataResource,newMethodForm)
+            .done(data => {
+                $('#newsubjectModal').modal('hide')
+                alertSuccess(data.message);
+                countStt();
+            })
+            .fail(data => {
+                const errors = data.responseJSON.errors;
+                resetErrorSubject();
                 showErrorFaculty(errors);
             });
     });
 
-    subject.on('click', '.delete-faculty', function () {
+    subject.on('click', '.delete-subject', function () {
         idActionResource = $(this).attr('deleteId');
-        destroyResource(idActionResource, facultyPath);
+        urlResource=subjectPath + "/"+idActionResource;
+        destroyResource(urlResource);
     });
 
-    subjectSearch.on('keyup', function () {
-        let searchKey = $(this).val().trim();
-        searchPath = subjectPath + "search/" + searchKey;
-        if(searchKey.length>0){
-            searchResource(searchPath)
-                .done(data => {
-                    $('.pagination-container').hide();
-                    const subjects = data.data;
-                    console.log(subjects);
-                    searchMessage.html(data.message);
-                    let subjectTable = fillSubjectToTableHtml(subjects);
-                    $('tbody').html(subjectTable);
-                    countStt();
-                })
-                .fail(error => {
-                    searchMessage.html('');
-                });
-        }else {
-            searchMessage.html('');
-        }
-        subjectSearch.on('keydown',function () {
-            if(searchKey.length<0){
-                searchMessage.html('');
-            }
-        });
-
-    });
 
 });
