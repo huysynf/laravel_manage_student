@@ -9,8 +9,8 @@ use App\Models\Classroom;
 use App\Models\Classroom_student;
 use App\Models\Student;
 use DB;
-use Image;
 use Illuminate\Http\Request;
+use Image;
 
 class StudentController extends Controller
 {
@@ -29,12 +29,12 @@ class StudentController extends Controller
 
     public function index(Request $request)
     {
-        $name=$request->input('name');
-        $address=$request->input('address');
-        $classroomName=$request->input('classroom');
-        $students = $this->student->search($name,$address,$classroomName);
-        $classrooms=$this->classroom->all();
-        return view('backends.students.index', compact('students','classrooms'));
+        $name = $request->input('name');
+        $address = $request->input('address');
+        $classroomName = $request->input('classroom');
+        $students = $this->student->search($name, $address, $classroomName);
+        $classrooms = $this->classroom->all();
+        return view('backends.students.index', compact('students', 'classrooms'));
 
     }
 
@@ -130,7 +130,7 @@ class StudentController extends Controller
         $student = $this->student->findOrFail($id);
         $currentImage = $student->image;
         $student->delete();
-        $this->student->deleteImage($currentImage,$this->imagePath);
+        $this->student->deleteImage($currentImage, $this->imagePath);
         return response()->json([
             'status' => 204,
             'message' => 'Xóa sinh viên thành công',
