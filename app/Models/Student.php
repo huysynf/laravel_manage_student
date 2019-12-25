@@ -35,15 +35,16 @@ class Student extends Model
         return $this
             ->when($classroomName, function ($query) use ($classroomName) {
                 $query->whereHas('classrooms', function ($q) use ($classroomName) {
-                    $q->orwhere('name', 'LIKE', '%' . $classroomName . '%');
+                    $q->where('name',$classroomName );
                 });
             })
             ->when($name, function ($query) use ($name) {
-                $query->orwhere('name', 'LIKE', '%' . $name . '%');
+                $query->where('name', 'LIKE', '%' . $name . '%');
             })
             ->when($address, function ($query) use ($address) {
                 $query->orwhere('address', 'LIKE', '%' . $address . '%');
             })
+            ->latest('id')
             ->paginate(5);
     }
 
