@@ -100,6 +100,7 @@
 <script src="{{asset('js/sb-admin-2.min.js')}}"></script>
 <script src="{{asset('js/sweetalert2.min.js')}}"></script>
 <script src="{{asset('js/select2.min.js')}}"></script>
+<script src="{{asset('js/jquery.counterup.min.js')}}"></script>
 <script src="{{asset('js/function.js')}}"></script>
 <script src="{{asset('js/script.js')}}"></script>
 </body>
