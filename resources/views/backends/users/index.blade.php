@@ -55,7 +55,7 @@
                 <tr>
                     <th>STT</th>
                     <th>Ảnh</th>
-                    <th>Email</th>
+                    <th>Họ tên</th>
                     <th>Tùy chọn</th>
                 </tr>
                 </thead>
@@ -71,7 +71,7 @@
                                  alt="{{$user->name}}">
                         </td>
                         <td>
-                            {{$user->email}}
+                            {{$user->name}}
                         </td>
                         <td class="d-flex">
                             <button class="btn btn-outline-primary btn-circle edit-user"
@@ -249,7 +249,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Quyền</label>
-                                <select class="form-control user-role" name="role">
+                                <select class="form-control role-user" name="role">
                                     <option value=" " selected>---- Chọn quyền ----</option>
                                     <option value="1" {{old('role')==1?'selected':''}}>Người dùng</option>
                                     <option value="2" {{old('role')==2?'selected':''}} >Nhân viên</option>
