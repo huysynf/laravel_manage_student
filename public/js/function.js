@@ -1,16 +1,19 @@
-function alertSuccess(message) {
-    Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: message,
-        showConfirmButton: true,
-        confirmButtonText: 'ok'
-    })
-        .then((result) => {
-            if (result.value) {
+ alertSuccess=(message)=>{
+       Swal.fire({
+           position: 'center',
+           icon: 'success',
+           title: message,
+           showConfirmButton: true,
+           confirmButtonText: 'ok'
+       })
+           .then((result) => {
+               if (result.value) {
 
-            }
-        })
+               }
+               else {
+
+               }
+           })
 }
 
 function alertError(message) {
@@ -149,5 +152,41 @@ function showErrorUser(errors) {
     (errors.role) ? $('.error-role').html(errors.role[0]) : "";
 
 }
+function fillUserToRowTable(user) {
+ return `<tr>
+    <td>
+    <strong></strong>
+    </td>
+    <td>
+    <img src="/images/users/${user.image}" alt=""
+    style="max-width: 50px;max-height: 50px;" width="100%" height="100%"
+    alt="${user.id}">
+        </td>
+        <td>
+        ${user.name}
+</td>
+    <td class="d-flex">
+        <button class="btn btn-outline-primary btn-circle edit-user"
+    title="Cập nhật thông tin người dùng"
+    data-toggle="modal"
+    editId="${user.id}"
+    data-target="#editUserModal">
+        <i class="fa fa-edit text-dark"></i>
+        </button>
+        <button class="btn btn-outline-dark delete-user btn-circle" title="Xóa người dùng"
+    deleteId="${user.id}"><i class="fas fa-trash text-danger"></i></button>
+    <button class="btn btn-outline-success btn-circle  show-user" title="Chi tiết người dùng"
+    data-toggle="modal"
+    showId="${user.id}"
+    data-target="#showUserModal"><i class="fas fa-info-circle text-primary"></i>
+        </button>
+        <button class="btn btn-outline-primary  btn-circle change-user-password " title="Đổi mật khẩu"
+    data-toggle="modal"
+    userId="${user.id}"
+    data-target="#setPasswordModal">
+        <i class="fas fa-key text-warning"></i></button>
+    </td>
+    </tr>`;
 
+}
 

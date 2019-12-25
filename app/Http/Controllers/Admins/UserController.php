@@ -41,11 +41,11 @@ class UserController extends Controller
         $data['image'] = $this->user->saveImage($request, $this->imagePath);
         $password = $request->input('password');
         $data['password'] = Hash::make($password);
-        $this->user->create($data);
+       $user=$this->user->create($data);
         return response()->json([
             'status' => 200,
             'message' => 'Tạo mới nguoi dùng thành công',
-
+            'data'=>$user,
         ]);
     }
 
@@ -69,6 +69,7 @@ class UserController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'Cập nhật thông tin nguoi dùng thành công',
+            'data'=>$user,
         ]);
     }
 
