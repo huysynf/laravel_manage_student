@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\ChangePasswordRequest;
 use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
 use App\User;
 use DB;
 use Hash;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Image;
 
 class UserController extends Controller
@@ -17,16 +17,19 @@ class UserController extends Controller
 
     private $user;
     private $imagePath;
-    private $imageName;
 
     public function __construct()
     {
+      //  $this->middleware('check.employee');
         $this->user = new User();
         $this->imagePath = 'images/users/';
     }
-    public function index()
+
+    public function index(Request $request)
     {
-        $users = $this->user->getPaginate(10);
+        $name = $request->input('name');
+        $role = $request->input('role');
+        $users = $this->user->search($name, $role);
         return view('backends.users.index', compact('users'));
     }
 
@@ -45,7 +48,7 @@ class UserController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function getuser($id)
     {
         $user = $this->user->find($id);
         return response()->json([
@@ -67,31 +70,20 @@ class UserController extends Controller
             'message' => 'Cập nhật thông tin nguoi dùng thành công',
         ]);
     }
+
     public function destroy($id)
     {
         $user = $this->user->findOrFail($id);
         $current_image = $user->image;
         $user->delete();
-        $this->user->deleteImage($current_image);
+        $this->user->deleteImage($current_image, $this->imagePath);
         return response()->json([
             'status' => 204,
             'message' => 'Xóa người dùng thành công',
         ]);
     }
 
-    public function search($search)
-    {
-
-        $users = $this->user->search($search);
-        return response()->json([
-            'satus' => 200,
-            'message' => 'Có' . count($users) . ' Kết quả với từ khóa:' . $search,
-            'data' => $users,
-        ]);
-
-    }
-
-    public function setuserpassword(Request $request, $id)
+    public function setPassword(Request $request, $id)
     {
 
         $this->validate($request, [
@@ -109,4 +101,15 @@ class UserController extends Controller
         ]);
     }
 
+    public function changePassword(ChangePasswordRequest $request, $id)
+    {
+        $password = Hash::make($request->input('password'));
+        $user = $this->user->changePassword($id, $password);
+        return response()->json([
+            'status' => 204,
+            'message' => 'Cập nhật mật khẩu thành công',
+        ]);
+    }
 }
+
+
