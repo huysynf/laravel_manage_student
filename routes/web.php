@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::group(['prefix' => 'manage', 'namespace' => 'Admins', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'manage', 'namespace' => 'Admins', 'middleware' => ['auth','check.user']], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard.index');
     Route::resource('/users', 'UserController')->except([
         'update',
