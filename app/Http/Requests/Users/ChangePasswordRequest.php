@@ -24,7 +24,19 @@ class ChangePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'oldPassword'=>['required',new MatchOldPasword()],
+            'password' => 'required|min:6|confirmed'
+        ];
+
+    }
+    public function messages()
+    {
+        return [
+            'oldPassword.required' => 'Mật mới  khẩu không để trống',
+            'password.required' => 'Mật  khẩu không để trống',
+            'password.min' => 'Mật khẩu lớn hơn 6 kí tụ',
+            'password.confirmed' => 'Nhập lại mật khẩu phải giống mật khẩu',
         ];
     }
+
 }
