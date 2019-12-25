@@ -4,6 +4,7 @@ namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
 use Auth;
+use Hash;
 
 class MathOldPassword implements Rule
 {

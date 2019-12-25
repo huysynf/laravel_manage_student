@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Users;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Rules\MathOldPassword;
 
 class ChangePasswordRequest extends FormRequest
 {
@@ -24,7 +25,7 @@ class ChangePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'oldPassword'=>['required',new MatchOldPasword()],
+            'oldPassword'=>['required',new MathOldPassword()],
             'password' => 'required|min:6|confirmed'
         ];
 
