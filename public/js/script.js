@@ -261,18 +261,22 @@ $(function () {
         urlResource = userPath + "/" + idActionResource
         destroyResource(urlResource);
     });
-
+    user.on('click','.set-user-password',function () {
+            idActionResource=$(this).attr('userId');
+             $("#set-password-form").trigger("reset");
+            resetErrorPassword();
+    });
     user.on('click', '.set-password', function () {
         dataResource = new FormData($('#set-password-form')[0]);
-        urlResource = userPath + "set-password/" + idActionResource;
-        callAjax(urlResource, dataResource, 'post')
-            .done(response => {
+        urlResource = userPath + "/set-password/" + idActionResource;
+        callAjax(urlResource, dataResource, newMethodForm)
+            .done(data => {
                 $('#changePasswordModal').modal('hide')
-                alertSuccess(response.message, 1);
+                alertSuccess(data.message, 1);
                 countStt();
             })
-            .fail(error => {
-                const errors = error.responseJSON.errors;
+            .fail(data => {
+                const errors = data.responseJSON.errors;
                 resetErrorUser();
                 showErrorUser(errors);
             });
@@ -280,7 +284,7 @@ $(function () {
     $('body').on('click', '.change-password', function () {
         dataResource = new FormData($('#change-password-form')[0]);
         urlResource = userPath + "change-password/" + idActionResource;
-        callAjax(urlResource, dataResource, 'post')
+        callAjax(urlResource, dataResource, newMethodForm)
             .done(data => {
                 console.log(data);
                 //   $('#changePasswordModal').modal('hide')

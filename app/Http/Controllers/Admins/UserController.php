@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Users\ChangePasswordRequest;
 use App\Http\Requests\Users\CreateUserRequest;
+use App\Http\Requests\Users\SetPasswordRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
 use App\User;
 use DB;
@@ -20,7 +20,7 @@ class UserController extends Controller
 
     public function __construct()
     {
-      //  $this->middleware('check.employee');
+        //  $this->middleware('check.employee');
         $this->user = new User();
         $this->imagePath = 'images/users/';
     }
@@ -42,7 +42,7 @@ class UserController extends Controller
         $data['password'] = Hash::make($password);
         $this->user->create($data);
         return response()->json([
-            'status' => 201,
+            'status' => 200,
             'message' => 'Tạo mới nguoi dùng thành công',
 
         ]);
@@ -52,7 +52,7 @@ class UserController extends Controller
     {
         $user = $this->user->find($id);
         return response()->json([
-            'status' => 201,
+            'status' => 200,
             'message' => 'lấy thông tin người  dùng thành công',
             'data' => $user,
         ]);
@@ -78,25 +78,18 @@ class UserController extends Controller
         $user->delete();
         $this->user->deleteImage($current_image, $this->imagePath);
         return response()->json([
-            'status' => 204,
+            'status' => 200,
             'message' => 'Xóa người dùng thành công',
         ]);
     }
 
-    public function setPassword(Request $request, $id)
+    public function setPassword(SetPasswordRequest $request, $id)
     {
 
-        $this->validate($request, [
-            'password' => 'required|min:6|confirmed'
-        ], [
-            'password.required' => 'Mật  khẩu không để trống',
-            'password.min' => 'Mật khẩu lớn hơn 6 kí tụ',
-            'password.confirmed' => 'Nhập lại mật khẩu phải giống mật khẩu',
-        ]);
         $password = Hash::make($request->input('password'));
-        $user = $this->user->changePassword($id, $password);
+        $this->user->changePassword($id, $password);
         return response()->json([
-            'status' => 204,
+            'status' => 200,
             'message' => 'Cập nhật mật khẩu thành công',
         ]);
     }
@@ -104,9 +97,9 @@ class UserController extends Controller
     public function changePassword(ChangePasswordRequest $request, $id)
     {
         $password = Hash::make($request->input('password'));
-        $user = $this->user->changePassword($id, $password);
+        $this->user->changePassword($id, $password);
         return response()->json([
-            'status' => 204,
+            'status' => 200,
             'message' => 'Cập nhật mật khẩu thành công',
         ]);
     }

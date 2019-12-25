@@ -119,7 +119,7 @@ function showErrorPassword(errors) {
     (errors.oldPassword) ? $('.error-old-password').html(errors.oldPassword[0]) : "";
     (errors.password) ? $('.error-password').html(errors.password[0]) : "";
 }
-function resetErrorPassword(errors) {
+function resetErrorPassword() {
     $('.error-old-password').html('');
     $('.error-password').html('') ;
 }
