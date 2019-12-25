@@ -21,16 +21,18 @@ Route::group(['namespace' => 'Backends'], function () {
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::group(['prefix' => 'manage', 'namespace' => 'Backends'], function () {
+Route::group(['prefix' => 'manage', 'namespace' => 'Admins'], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard.index');
+    Route::get('users/getuser/{id}', 'UserController@getuser');
     Route::resource('/users', 'UserController')->except([
         'update',
         'edit',
         'create',
     ]);
     Route::post('users/update/{id}', 'UserController@update');
-    Route::get('users/search/{key}', 'UserController@search');
-    Route::put('users/setpassword/{id}', 'UserController@setuserpassword');
+    Route::post('users/set-password/{id}', 'UserController@setPassword');
+    Route::post('users/change-password/{id}', 'UserController@changePassword');
+
     //facultys
     Route::resource('faculties', 'FacultyController');
     Route::get('faculties/search/{searchkey}', 'FacultyController@search');

@@ -14,13 +14,12 @@
                   enctype="multipart/form-data">
                 <div class="modal-body text-dark ">
                     @csrf
-                    {{method_field('put')}}
                     <div class="form-group">
                         <label for="">Mật khẩu cũ</label>
-                        <input type="password" class="form-control " name="oldpassword"
-                               value="{{old('oldpassword')}}"
+                        <input type="password" class="form-control " name="oldPassword"
+                               value="{{old('oldPassword')}}"
                         >
-                        <span class="text-danger error-password"></span>
+                        <span class="text-danger error-old-password"></span>
                     </div>
                     @include('backends.users.password_form')
                 </div>
