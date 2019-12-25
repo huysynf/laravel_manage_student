@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admins;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\SetPasswordRequest;
+use App\Http\Requests\Users\ChangePasswordRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
 use App\User;
 use DB;

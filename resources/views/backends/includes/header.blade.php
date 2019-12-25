@@ -89,7 +89,7 @@
                         <i class="fa fa-info text-warning fa-sm fa-fw mr-2 text-gray-400"></i>
                         Profile
                     </button>
-                    <button class="dropdown-item btn  change-password-user" title="Đổi mật khẩu"
+                    <button class="dropdown-item btn change-user-password" title="Đổi mật khẩu"
                             data-toggle="modal"
                             userId="{{Auth::guard()->user()->id}}"
                             data-target="#changeUserPasswordModal">

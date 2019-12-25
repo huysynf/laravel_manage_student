@@ -15,13 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['namespace' => 'Backends'], function () {
-    Route::get('login', 'LoginController@index');
-    Route::post('login', 'LoginController@login')->name('login');
-});
-
 Route::get('/home', 'HomeController@index')->name('home');
-Route::group(['prefix' => 'manage', 'namespace' => 'Admins'], function () {
+Route::group(['prefix' => 'manage', 'namespace' => 'Admins', 'middleware' => ['auth']], function () {
     Route::get('/', 'DashboardController@index')->name('dashboard.index');
     Route::resource('/users', 'UserController')->except([
         'update',
@@ -45,5 +40,9 @@ Route::group(['prefix' => 'manage', 'namespace' => 'Admins'], function () {
     Route::resource('/students', 'StudentController');
     Route::get('students/search/{searchkey}', 'StudentController@search');
 
-
 });
+Auth::routes([
+    'register' => false,
+    'verify' => true,
+    'reset' => false
+]);

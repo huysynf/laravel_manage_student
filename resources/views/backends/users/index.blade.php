@@ -88,10 +88,10 @@
                                     showId="{{$user->id}}"
                                     data-target="#showUserModal"><i class="fas fa-info-circle text-primary"></i>
                             </button>
-                            <button class="btn btn-outline-primary btn-circle  " title="Đổi mật khẩu"
+                            <button class="btn btn-outline-primary  btn-circle change-user-password " title="Đổi mật khẩu"
                                     data-toggle="modal"
                                     userId="{{$user->id}}"
-                                    data-target="#changePasswordModal">
+                                    data-target="#setPasswordModal">
                                 <i class="fas fa-key text-warning"></i></button>
                         </td>
                     </tr>
@@ -272,13 +272,13 @@
             </div>
 
         </div>
-        <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog"
-             aria-labelledby="changePasswordModalTitle"
+        <div class="modal fade" id="setPasswordModal" tabindex="-1" role="dialog"
+             aria-labelledby="setPasswordModalTitle"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="changePasswordModalTitle">Đổi mật khẩu <span
+                        <h5 class="modal-title" id="setPasswordModalTitle">Đổi mật khẩu <span
                                 class="classromm-name"></span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
