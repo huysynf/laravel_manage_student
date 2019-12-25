@@ -16,14 +16,14 @@ class StudentController extends Controller
 {
     private $student;
     private $classroom;
-    private $path_image;
+    private $imagePath;
     private $classroom_student;
 
     public function __construct()
     {
         $this->classroom = new Classroom();
         $this->student = new Student();
-        $this->path_image = 'images/students/';
+        $this->imagePath = 'images/students/';
         $this->classroom_student = new Classroom_student();
     }
 

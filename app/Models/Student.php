@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\ImageTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
+    use ImageTrait;
+
     protected $table = 'students';
     protected $fillable = [
         'name',
@@ -22,15 +25,17 @@ class Student extends Model
         return $this->belongsToMany(Classroom::class, 'classroom_student');
     }
 
-    public function  findOrFail($id){
+    public function findOrFail($id)
+    {
         return $this->with('classrooms')->findOrFail($id);
     }
+
     public function search($name, $address, $classroomName)
     {
         return $this
-            ->when($classroomName,function ($query) use ($classroomName) {
-                $query->whereHas('classrooms',function($q) use ($classroomName){
-                    $q->orwhere('name','LIKE','%'.$classroomName.'%');
+            ->when($classroomName, function ($query) use ($classroomName) {
+                $query->whereHas('classrooms', function ($q) use ($classroomName) {
+                    $q->orwhere('name', 'LIKE', '%' . $classroomName . '%');
                 });
             })
             ->when($name, function ($query) use ($name) {
@@ -41,8 +46,6 @@ class Student extends Model
             })
             ->paginate(5);
     }
-
-
 
 
 }
