@@ -10,7 +10,7 @@
                 title="thêm mới người dùng"
                 data-toggle="modal"
                 data-target="#newUserModal"
-        ><i class="fas fa-plus fa-sm text-success"></i> thêm mới người dùng
+        ><i class="fas fa-plus fa-sm text-success"></i> Thêm mới người dùng
         </button>
     </div>
     @if(session('message'))
@@ -23,24 +23,34 @@
     @endif
     {{--    table data--}}
     <div class="row" id="user">
-        <div class="col-12 d-flex">
-            <form class="d-none d-sm-inline-block form-inline  my-2 my-md-0 mw-100 navbar-search"
-                  id="userFormSearch">
-                <div class="input-group border-left-primary">
-                    <input type="text" class="form-control bg-light border-0 small user-searchkey"
-                           placeholder="Tìm kiếm..."
-                           aria-label="Search" aria-describedby="basic-addon2" name="searchKey">
+        <div class="col-12 ">
+            <form method="get" action="{{route('users.index')}}" class=" p-1 d-flex"
+                  id="subjectFormSearch">
+                <div class="d-flex flex-column">
+                    <lable class="text-primary" for="name">Tên tìm kiếm</lable>
+                    <input value="{{request()->input('name')}}" class="h-50" type="text" placeholder="Tên tìm kiếm"
+                           name="name" value="">
                 </div>
+                <div class="d-flex flex-column ml-1">
+                    <lable class="text-primary" for="role">Quyền</lable>
+                    <select name="role" class="h-50">
+                        <option value="" {{request()->input('role')==""?'selected':''}}>Tất cả</option>
+                        <option value="1" {{request()->input('role')==1?'selected':''}}>Người dùng</option>
+                        <option value="2"{{request()->input('role')==2?'selected':''}} >Nhân viên</option>
+                        <option value="3" {{request()->input('role')==3?'selected':''}} >Quản trị</option>
+                    </select>
+                </div>
+                <div class="align-self-end ml-3">
+                    <button class="btn btn-primary  aqua-gradient btn-rounded btn-sm my-0" type="submit"
+                            title="Tìm kiếm">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                </div>
+
             </form>
-            <div class="show_search_result d-flex align-items-center">
-                <p id="row_number_serach" class="text-danger mt-3"></p>
-                <div class="select_row">
-                </div>
-            </div>
-            <p class="search-message text-danger ml-1"></p>
         </div>
         <div class="col-12">
-            <table class="table table-responsive" id="table_data">
+            <table class="table table-bordered" id="table_data">
                 <thead>
                 <tr>
                     <th>STT</th>
@@ -76,8 +86,8 @@
                             <button class="btn btn-outline-success btn-circle  show-user" title="Chi tiết người dùng"
                                     data-toggle="modal"
                                     showId="{{$user->id}}"
-                                    data-target="#showUserModal">   <i class="fas fa-info-circle text-primary"></i>
-                              </button>
+                                    data-target="#showUserModal"><i class="fas fa-info-circle text-primary"></i>
+                            </button>
                             <button class="btn btn-outline-primary btn-circle  " title="Đổi mật khẩu"
                                     data-toggle="modal"
                                     userId="{{$user->id}}"
@@ -150,9 +160,9 @@
                                 <label for="">Quyền</label>
                                 <select class="form-control " name="role">
                                     <option value=" " selected>---- Chọn quyền ----</option>
-                                    <option value="0" {{old('role')==0?'selected':''}}>Người dùng</option>
-                                    <option value="1" {{old('role')==1?'selected':''}} >Nhân viên</option>
-                                    <option value="2" {{old('role')==2?'selected':''}} >Quản trị</option>
+                                    <option value="1" {{old('role')==1?'selected':''}}>Người dùng</option>
+                                    <option value="2" {{old('role')==2?'selected':''}} >Nhân viên</option>
+                                    <option value="3" {{old('role')==3?'selected':''}} >Quản trị</option>
                                 </select>
                                 <span class="text-danger error-role"></span>
                             </div>
@@ -241,9 +251,9 @@
                                 <label for="">Quyền</label>
                                 <select class="form-control user-role" name="role">
                                     <option value=" " selected>---- Chọn quyền ----</option>
-                                    <option value="0" {{old('role')==0?'selected':''}}>Người dùng</option>
-                                    <option value="1" {{old('role')==1?'selected':''}} >Nhân viên</option>
-                                    <option value="2" {{old('role')==2?'selected':''}} >Quản trị</option>
+                                    <option value="1" {{old('role')==1?'selected':''}}>Người dùng</option>
+                                    <option value="2" {{old('role')==2?'selected':''}} >Nhân viên</option>
+                                    <option value="3" {{old('role')==3?'selected':''}} >Quản trị</option>
                                 </select>
                                 <span class="text-danger error-role"></span>
                             </div>
@@ -275,10 +285,9 @@
                         </button>
                     </div>
                     <form method="post" id="set-password-form"
-                          enctype="multipart/form-data">
+                    >
                         <div class="modal-body text-dark ">
                             @csrf
-                            {{method_field('put')}}
                             @include('backends.users.password_form')
                         </div>
                         <div class="modal-footer">
