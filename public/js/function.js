@@ -153,7 +153,7 @@ function showErrorUser(errors) {
 
 }
 function fillUserToRowTable(user) {
- return `<tr>
+ return `
     <td>
     <strong></strong>
     </td>
@@ -186,7 +186,7 @@ function fillUserToRowTable(user) {
     data-target="#setPasswordModal">
         <i class="fas fa-key text-warning"></i></button>
     </td>
-    </tr>`;
+   `;
 
 }
 

@@ -189,16 +189,16 @@ $(function () {
     let userPath = "/manage/users";
     // function
     addUserBtn.click(function () {
+        $("#new-user-form").trigger("reset");
         resetErrorUser();
     });
     user.on('click', '.new-user', function () {
-        $("#new-user-form").trigger("reset");
         dataResource = new FormData($('#new-user-form')[0]);
         callAjax(urlResource, dataResource, 'post')
             .done(data => {
                 $('#newUserModal').modal('hide');
                 let userRow = fillUserToRowTable(data.data);
-                $('tbody').prepend(userRow);
+                $('tbody').prepend("<tr>"+userRow+"</tr>");
                 countStt();
             })
             .fail(data => {
@@ -250,10 +250,7 @@ $(function () {
                 $('#editUserModal').modal('hide')
                 alertSuccess(data.message);
                 let userRow = fillUserToRowTable(data.data);
-                if(($('.edit-user').attr('editId'))==idAction){
-                    $(this).prepend('abcd');
-                    console.log('html');
-                };
+                $(".edit-user[editId="+idAction+"]").parents('tr').html(userRow);
                 countStt();
             })
             .fail(data => {
