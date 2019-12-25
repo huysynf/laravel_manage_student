@@ -13,7 +13,7 @@ class SetPasswordRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,15 @@ class SetPasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'password' => 'required|min:6|confirmed'
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'password.required' => 'Mật  khẩu không để trống',
+            'password.min' => 'Mật khẩu lớn hơn 6 kí tụ',
+            'password.confirmed' => 'Nhập lại mật khẩu phải giống mật khẩu',
         ];
     }
 }
