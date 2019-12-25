@@ -6,7 +6,7 @@
 
     <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Cập nhật thông tin sinh viên</h1>
-        <a href="{{route('classrooms.index')}}" class="ml-2 btn btn-sm btn-primary shadow-sm "
+        <a href="{{route('students.index')}}" class="ml-2 btn btn-sm btn-primary shadow-sm "
            title="Quản lí sinh viên">
             <i class="fas fa-undo fa-sm text-success"></i> Quản lí sinh viên
         </a>
@@ -47,14 +47,14 @@
                     <div class="form-group col-md-6 col-lg-6 col-sm-12">
                         <label for="">Ảnh </label>
 
-                        <input type="file" class="form-control name" name="image"
+                        <input type="file" class="form-control image-input" name="image"
                         >
                         @error('image')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="col-md-6 col-lg-6 col-sm 12 image__wrap">
-                        <a href=""><img src="{{asset('images/students/'.$student->image)}}" alt="" width="100%" height="100%" style="max-height:100px;max-width:100px;"></a>
+                        <a href=""><img class="image-show" src="{{asset('images/students/'.$student->image)}}" alt="" width="100%" height="100%" style="max-height:100px;max-width:100px;"></a>
                     </div>
                 </div>
                 <div class="row">

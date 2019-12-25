@@ -44,13 +44,17 @@
                 <div class="row">
                     <div class="form-group col-md-6 col-lg-6 col-sm-12">
                         <label for="">Ảnh </label>
-                        <input type="file" class="form-control name" name="image"
+                        <input type="file" class="form-control image-input" name="image"
                         >
                         @error('image')
                         <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="col-md-6 col-lg-6 col-sm 12 image__wrap">
+                    <div class="col-md-6 col-lg-6 col-sm 12 ">
+
+                        <img src="" alt="" width="100px" height="100px"
+                             style="max-height: 100%;max-width: 100%" class="image-show student-image">
+
                     </div>
                 </div>
                 <div class="row">
