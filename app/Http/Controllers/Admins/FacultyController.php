@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backends;
+namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Faculties\CreateFacultyRequest;
