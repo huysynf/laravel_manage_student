@@ -26,7 +26,7 @@ class CreateUserRequest extends FormRequest
         return [
             'name'=>'required',
             'role'=>'required',
-            'email'=>'required|unique:users,email',
+            'email'=>'required|unique:users,email','email',
             'phone'=>'required|regex:/\d{3}-\d{4}-\d{3}/',
             'image'=>'required|image|mimes:jpeg,bmp,png,jpg',
             'password'=>'required|confirmed|min:',
@@ -39,6 +39,7 @@ class CreateUserRequest extends FormRequest
             'role.required'=>'* Chọn quyền',
             'email.required'=>'* Email không được để trống',
             'email.unique'=>'* Email đã được sử dụng! Hãy sử dụng email khác.',
+            'email.email'=>'* Email không đúng định dạng.',
             'phone.required'=>'* Số điện thoại không để trống',
             'phone.regex'=>'* Số điện thoại có dạng XXX-XXXX-XXX',
             'image.required'=>'* Hình ảnh không được để trống',
