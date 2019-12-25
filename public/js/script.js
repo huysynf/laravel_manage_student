@@ -195,7 +195,7 @@ $(function () {
         dataResource = new FormData($('#new-user-form')[0]);
         callAjax(urlResource, dataResource, 'post')
             .done(data => {
-                console.log(data);
+
                 $('#newUserModal').modal('hide');
                 alertSuccess(data.message);
                 countStt();
@@ -259,7 +259,15 @@ $(function () {
     user.on('click', '.delete-user', function () {
         idActionResource = $(this).attr('deleteId');
         urlResource = userPath + "/" + idActionResource
-        destroyResource(urlResource);
+        destroyResource(urlResource)
+            .then(data=>{
+                alertSuccess(data.message);
+                $(this).parents('tr').remove();
+            })
+            .catch(data=>{
+                    alertError(data.message);
+            });
+
     });
     $('body').on('click','.change-user-password',function () {
             idActionResource=$(this).attr('userId');
@@ -272,7 +280,7 @@ $(function () {
         callAjax(urlResource, dataResource, newMethodForm)
             .done(data => {
                 $('#changePasswordModal').modal('hide')
-                alertSuccess(data.message, 1);
+                alertSuccess(data.message,);
                 countStt();
             })
             .fail(data => {
@@ -287,7 +295,7 @@ $(function () {
         callAjax(urlResource, dataResource, newMethodForm)
             .done(data => {
                    $('#changeUserPasswordModal').modal('hide')
-                      alertSuccess(data.message, 1);
+                      alertSuccess(data.message);
             })
             .fail(data => {
                 const errors = data.responseJSON.errors;

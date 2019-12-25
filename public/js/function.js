@@ -1,4 +1,4 @@
-function alertSuccess(message, reload = 0) {
+function alertSuccess(message) {
     Swal.fire({
         position: 'center',
         icon: 'success',
@@ -8,9 +8,7 @@ function alertSuccess(message, reload = 0) {
     })
         .then((result) => {
             if (result.value) {
-                if (reload == 0) {
-                    location.reload();
-                }
+
             }
         })
 }
@@ -25,36 +23,39 @@ function alertError(message) {
 
 //curd resource
 
-function callAjax( url,data="",type='get') {
+function callAjax(url, data = "", type = 'get') {
     return $.ajax({
         url: url,
-        type:type,
+        type: type,
         data: data,
         processData: false,
         contentType: false,
     });
 }
-function destroyResource(url) {
-    Swal.fire({
-        title: 'Xác nhận xóa?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Xóa ',
-        cancelButtonText: 'Hủy bỏ'
-    }).then((result) => {
-        if (result.value) {
-            callAjax(url,null,'delete')
-                .done(response => {
-                    alertSuccess(response.message);
-                })
-                .fail(error => {
-                    alertError(error.message);
-                });
-        }
-    });
-}
+
+destroyResource = (url) => {
+    return new Promise(((resolve, reject) => {
+        Swal.fire({
+            title: 'Xác nhận xóa?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xóa ',
+            cancelButtonText: 'Hủy bỏ'
+        }).then((result) => {
+            if (result.value) {
+                callAjax(url, null, 'delete')
+                    .done(data => {
+                        resolve(data);
+                    })
+                    .fail(data => {
+                        reject(data);
+                    });
+            }
+        });
+    }))
+};
 
 //count row table
 function countStt() {
@@ -72,6 +73,7 @@ function resetErrorFaculty() {
     $('.nameError').html('');
     $('.descriptionError').html('');
 }
+
 function showErrorFaculty(errors) {
     (errors.name) ? $('.nameError').html(errors.name[0]) : "";
     (errors.description) ? $('.descriptionError').html(errors.description[0]) : "";
@@ -90,6 +92,7 @@ function showErrorSubject(errors) {
     (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
     (errors.description) ? $('.description-error').html(errors.description[0]) : "";
 }
+
 //classroom
 function arrayOjectParseToNameP(data) {
     let html = "";
@@ -113,16 +116,19 @@ function readURL(input) {
 $(".image-input").change(function () {
     readURL(this);
 });
+
 //user
 
 function showErrorPassword(errors) {
     (errors.oldPassword) ? $('.error-old-password').html(errors.oldPassword[0]) : "";
     (errors.password) ? $('.error-password').html(errors.password[0]) : "";
 }
+
 function resetErrorPassword() {
     $('.error-old-password').html('');
-    $('.error-password').html('') ;
+    $('.error-password').html('');
 }
+
 function resetErrorUser() {
     $('.error-name').html(' ');
     $('.error-email').html(' ');
