@@ -21,7 +21,7 @@ class UserController extends Controller
 
     public function __construct()
     {
-        //  $this->middleware('check.employee');
+         $this->middleware('check.employee');
         $this->user = new User();
         $this->imagePath = 'images/users/';
     }
