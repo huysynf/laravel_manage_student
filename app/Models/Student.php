@@ -45,7 +45,7 @@ class Student extends Model
                 $query->orwhere('address', 'LIKE', '%' . $address . '%');
             })
             ->latest('id')
-            ->paginate(5);
+            ->paginate(10);
     }
 
 
