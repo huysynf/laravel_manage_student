@@ -23,6 +23,7 @@ $(function () {
     let addFacultyBtn = $('.add-faculty');
     let facultyPath = "/manage/faculties";
     let facultySearch = $('.faculty-searchkey');
+    let editFacultyId=0;
     // function
     addFacultyBtn.click(function () {
         resetErrorFaculty();
@@ -30,9 +31,9 @@ $(function () {
     });
     faculty.on('click', '.edit-faculty', function () {
         resetErrorFaculty();
-        idAction=$(this).attr('editId');
-        urlResource=facultyPath+"/"+idAction;
-        callAjax(urlResource,null,getMethodForm)
+        editFacultyId=$(this).attr('editId');
+        let urlUpdate=facultyPath+"/"+editFacultyId;
+        callAjax(urlUpdate,null,getMethodForm)
             .done(data => {
                 let faculty=data.data;
                 $('.faculty-name').val(faculty.name);
@@ -41,12 +42,12 @@ $(function () {
     });
 
     faculty.on('click', '.new-faculty', function () {
-        dataResource = new FormData($('.new-faculty-form')[0]);
-        callAjax(facultyPath,dataResource,newMethodForm)
+        let facultyData = new FormData($('.new-faculty-form')[0]);
+        callAjax(facultyPath,facultyData,newMethodForm)
             .done(data => {
                 $('#newFacultyModal').modal('hide')
                 alertSuccess(data.message);
-                let facultyRow=fillFacultyToRowTable(data.data);
+                let facultyRow="<tr>"+fillFacultyToRowTable(data.data)+"</tr>";
                 $('tbody').prepend(facultyRow);
                 countStt();
             })
@@ -57,13 +58,13 @@ $(function () {
             });
     });
     faculty.on('click', '.update-faculty', function () {
-        dataResource = new FormData($('.edit-faculty-form')[0]);
-        urlResource = facultyPath + '/update/' + idAction;
-        callAjax(urlResource,dataResource,newMethodForm)
+        let facultyData = new FormData($('.edit-faculty-form')[0]);
+        let urlUpdate = facultyPath + '/update/' + editFacultyId;
+        callAjax(urlUpdate,facultyData,newMethodForm)
             .done(data => {
-                $('#newFacultyModal').modal('hide');
+                $('#editFacultyModal').modal('hide');
                 let facultyRow=fillFacultyToRowTable(data.data);
-                $(".edit-faculty[editId="+idAction+"]").parents('tr').html(facultyRow);
+                $(".edit-faculty[editId="+editFacultyId+"]").parents('tr').html(facultyRow);
                 alertSuccess(data.message);
                 countStt();
             })
@@ -73,15 +74,15 @@ $(function () {
             });
     });
     faculty.on('click', '.delete-faculty', function () {
-        idAction = $(this).attr('deleteId');
-        urlResource = facultyPath + "/"+idAction;
-        destroyResource(urlResource) .then(data => {
+      let facultyId = $(this).attr('deleteId');
+      let urlDelete = facultyPath + "/"+facultyId;
+        destroyResource(urlDelete) .then(data => {
             alertSuccess(data.message);
             $(this).parents('tr').remove();
         })
             .catch(data => {
                 alertError(data.message);
-            });;
+            });
     });
 
     //fill data to modal
