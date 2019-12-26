@@ -13,8 +13,8 @@ $(function () {
     let urlResource = "";
     let dataResource = "";
     let searchPath = "";
-    let getMethodForm='get';
-    let newMethodForm='post';
+    let getMethodForm = 'get';
+    let newMethodForm = 'post';
     //faculty
     //variable
     let faculty = $('#faculty');
@@ -26,11 +26,11 @@ $(function () {
     });
     faculty.on('click', '.edit-faculty', function () {
         resetErrorFaculty();
-        idActionResource=$(this).attr('editId');
-        urlResource=facultyPath+"/"+idActionResource;
-        callAjax(urlResource,null,getMethodForm)
+        idActionResource = $(this).attr('editId');
+        urlResource = facultyPath + "/" + idActionResource;
+        callAjax(urlResource, null, getMethodForm)
             .done(data => {
-                let faculty=data.data;
+                let faculty = data.data;
                 $('.faculty-name').val(faculty.name);
                 $('.faculty-description').val(faculty.description);
             })
@@ -38,7 +38,7 @@ $(function () {
 
     faculty.on('click', '.new-faculty', function () {
         dataResource = new FormData($('.new-faculty-form')[0]);
-        callAjax(facultyPath,dataResource,newMethodForm)
+        callAjax(facultyPath, dataResource, newMethodForm)
             .done(data => {
                 $('#newFacultyModal').modal('hide')
                 alertSuccess(data.message);
@@ -53,7 +53,7 @@ $(function () {
     faculty.on('click', '.update-faculty', function () {
         dataResource = new FormData($('.edit-faculty-form')[0]);
         urlResource = facultyPath + '/update/' + idActionResource;
-        callAjax(urlResource,dataResource,newMethodForm)
+        callAjax(urlResource, dataResource, newMethodForm)
             .done(data => {
                 $('#newFacultyModal').modal('hide');
                 alertSuccess(data.message);
@@ -66,7 +66,7 @@ $(function () {
     });
     faculty.on('click', '.delete-faculty', function () {
         idActionResource = $(this).attr('deleteId');
-        urlResource = facultyPath + "/"+idActionResource;
+        urlResource = facultyPath + "/" + idActionResource;
         destroyResource(urlResource);
     });
 
@@ -83,7 +83,7 @@ $(function () {
     });
     subject.on('click', '.new-subject', function () {
         dataResource = new FormData($('.new-subject-form')[0]);
-        callAjax(subjectPath,dataResource,newMethodForm)
+        callAjax(subjectPath, dataResource, newMethodForm)
             .done(data => {
                 $('#newsubjectModal').modal('hide');
                 alertSuccess(data.message);
@@ -97,11 +97,11 @@ $(function () {
     });
     subject.on('click', '.edit-subject', function () {
         resetErrorSubject();
-        idActionResource=$(this).attr('editId');
-        urlResource=subjectPath+"/"+idActionResource;
-        callAjax(urlResource,null,getMethodForm)
+        idActionResource = $(this).attr('editId');
+        urlResource = subjectPath + "/" + idActionResource;
+        callAjax(urlResource, null, getMethodForm)
             .done(data => {
-                let subject=data.data;
+                let subject = data.data;
                 $('.subject-name').val(subject.name);
                 $('.subject-lesson').val(subject.lesson);
                 $('.subject-description').val(subject.description);
@@ -110,7 +110,7 @@ $(function () {
     subject.on('click', '.update-subject', function () {
         dataResource = new FormData($('.edit-subject-form')[0]);
         urlResource = subjectPath + "/update/" + idActionResource;
-        callAjax(urlResource,dataResource,newMethodForm)
+        callAjax(urlResource, dataResource, newMethodForm)
             .done(data => {
                 $('#editSubjectModal').modal('hide')
                 alertSuccess(data.message);
@@ -125,7 +125,7 @@ $(function () {
 
     subject.on('click', '.delete-subject', function () {
         idActionResource = $(this).attr('deleteId');
-        urlResource=subjectPath + "/"+idActionResource;
+        urlResource = subjectPath + "/" + idActionResource;
         destroyResource(urlResource);
     });
 
@@ -138,12 +138,12 @@ $(function () {
 
     classroom.on('click', '.delete-classroom', function () {
         idActionResource = $(this).attr('deleteId');
-        urlResource=classroomPath+"/"+idActionResource;
+        urlResource = classroomPath + "/" + idActionResource;
         destroyResource(urlResource);
     });
-    classroom.on('click','.show-classroom',function () {
-        idActionResource=$(this).attr('showId');
-        urlResource=classroomPath+"/"+idActionResource;
+    classroom.on('click', '.show-classroom', function () {
+        idActionResource = $(this).attr('showId');
+        urlResource = classroomPath + "/" + idActionResource;
         callAjax(urlResource)
             .done(data => {
                 let classroom = data.data;
@@ -162,16 +162,24 @@ $(function () {
     $('.student-select-classroom').select2();
     student.on('click', '.delete-student', function () {
         idActionResource = $(this).attr('deleteId');
-        urlResource=studentPath+idActionResource;
-        destroyResource(urlResource);
+        urlResource = studentPath + idActionResource;
+        destroyResource(urlResource)
+            .then(data => {
+                alertSuccess(data.message);
+                $(this).parents('tr').remove();
+            })
+            .catch(data => {
+                alertError(data.message);
+            });
+        ;
     });
 
     student.on('click', '.show-student', function () {
         idActionResource = $(this).attr('showId');
-        urlResource=studentPath+idActionResource;
+        urlResource = studentPath + idActionResource;
         callAjax(urlResource)
-            .done(data=>{
-                let student=data.data;
+            .done(data => {
+                let student = data.data;
                 $('.student-name').html(student.name);
                 $('.student-address').html(student.address);
                 $(' .student-gender').html((student.gender == 0) ? 'Nam' : 'Nữ');
