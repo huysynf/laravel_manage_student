@@ -92,3 +92,4 @@ function showErrorSubject(errors) {
     (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
     (errors.description) ? $('.description-error').html(errors.description[0]) : "";
 }
+
