@@ -3,106 +3,98 @@
 namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\ChangePasswordRequest;
 use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\SetPasswordRequest;
-use App\Http\Requests\Users\ChangePasswordRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
-use App\User;
+use App\Repositories\Admins\UserRepository;
 use DB;
 use Hash;
 use Illuminate\Http\Request;
 use Image;
 
+
 class UserController extends Controller
 {
 
-    private $user;
-    private $imagePath;
+    private $userRepository;
 
-    public function __construct()
+    public function __construct(UserRepository $userRepository)
     {
-         $this->middleware('check.employee');
-        $this->user = new User();
-        $this->imagePath = 'images/users/';
+        $this->middleware('check.employee');
+        $this->userRepository = $userRepository;
     }
 
     public function index(Request $request)
     {
-        $name = $request->input('name');
-        $role = $request->input('role');
-        $users = $this->user->search($name, $role);
-        return view('backends.users.index', compact('users'));
+        return view('backends.users.index')->with('users',
+            $this->userRepository->search($request->only(['name', 'role'])));
     }
 
     public function store(CreateUserRequest $request)
     {
-
-        $data = $request->except('password_confirm', 'image');
-        $data['image'] = $this->user->saveImage($request, $this->imagePath);
-        $password = $request->input('password');
-        $data['password'] = Hash::make($password);
-       $user=$this->user->create($data);
+        $user = $this->userRepository->create($request->only([
+            'name',
+            'email',
+            'password',
+            'role',
+            'image',
+            'phone',
+        ]));
         return response()->json([
             'status' => 200,
             'message' => 'Tạo mới nguoi dùng thành công',
-            'data'=>$user,
+            'data' => $user,
         ]);
     }
 
+
     public function show($id)
     {
-        $user = $this->user->find($id);
         return response()->json([
             'status' => 200,
             'message' => 'lấy thông tin người  dùng thành công',
-            'data' => $user,
+            'data' => $this->userRepository->show($id),
         ]);
     }
 
     public function update(UpdateUserRequest $request, $id)
     {
-        $user = $this->user->findOrFail($id);
-        $data = $request->except('image');
-        $current_image = $user->image;
-        $data['image'] = $this->user->updateimage($request, $this->imagePath, $current_image);
-        $user->update($data);
+        $user = $this->userRepository->update($request->only([
+            'name',
+            'email',
+            'role',
+            'image',
+            'phone',
+        ]), $id);
         return response()->json([
             'status' => 200,
             'message' => 'Cập nhật thông tin nguoi dùng thành công',
-            'data'=>$user,
+            'data' => $user,
         ]);
     }
 
     public function destroy($id)
     {
-        $user = $this->user->findOrFail($id);
-        $current_image = $user->image;
-        $user->delete();
-        $this->user->deleteImage($current_image, $this->imagePath);
         return response()->json([
             'status' => 200,
-            'message' => 'Xóa người dùng thành công',
+            'message' => $this->userRepository->destroy($id),
         ]);
     }
 
     public function setPassword(SetPasswordRequest $request, $id)
     {
-
-        $password = Hash::make($request->input('password'));
-        $this->user->changePassword($id, $password);
         return response()->json([
             'status' => 200,
-            'message' => 'Cập nhật mật khẩu thành công',
+            'message' => $this->userRepository->changePassword($request->input('password'), $id),
         ]);
     }
 
     public function changePassword(ChangePasswordRequest $request, $id)
     {
-        $password = Hash::make($request->input('password'));
-        $this->user->changePassword($id, $password);
         return response()->json([
             'status' => 200,
-            'message' => 'Cập nhật mật khẩu thành công',
+            'message' => $this->userRepository->changePassword($request->input('password'), $id),
         ]);
     }
 }
