@@ -198,7 +198,7 @@ $(function () {
             .done(data => {
                 $('#newUserModal').modal('hide');
                 let userRow = fillUserToRowTable(data.data);
-                $('tbody').prepend("<tr>"+userRow+"</tr>");
+                $('tbody').prepend(userRow);
                 countStt();
             })
             .fail(data => {
@@ -250,7 +250,7 @@ $(function () {
                 $('#editUserModal').modal('hide')
                 alertSuccess(data.message);
                 let userRow = fillUserToRowTable(data.data);
-                $(".edit-user[editId="+idAction+"]").parents('tr').html(userRow);
+                $(".edit-user[editId="+idAction+"]").parents('tr').replaceWith(userRow);
                 countStt();
             })
             .fail(data => {
