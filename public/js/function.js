@@ -97,7 +97,8 @@ function showErrorSubject(errors) {
 }
 
 function fillSubjectToRowTable(subject) {
-    return ` <td>
+    return ` <tr
+                ><td>
                 <strong></strong>
             </td>
             <td>
@@ -118,5 +119,6 @@ function fillSubjectToRowTable(subject) {
                 </button>
                 <button class="btn btn-outline-dark delete-subject btn-circle" title="Xóa nhật khoa"
                         deleteId="${subject.id}"><i class="fas fa-trash text-danger"></i></button>
-            </td>`;
+            </td>
+            </tr>`;
 }

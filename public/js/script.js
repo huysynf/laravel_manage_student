@@ -117,7 +117,7 @@ $(function () {
             .done(data => {
                 $('#editSubjectModal').modal('hide')
                 let subjectRow=fillSubjectToRowTable(data.data);
-                $(".edit-subject[editId="+idAction+"]").parents('tr').html(subjectRow);
+                $(".edit-subject[editId="+idAction+"]").parents('tr').replaceWith(subjectRow);
                 alertSuccess(data.message);
                 countStt();
             })
