@@ -1,4 +1,3 @@
-
 //function alert eror
 function alertSuccess(message, reload = 0) {
     Swal.fire({
@@ -27,36 +26,39 @@ function alertError(message) {
 
 //curd resource
 
-function callAjax( url,data="",type='get') {
+function callAjax(url, data = "", type = 'get') {
     return $.ajax({
         url: url,
-        type:type,
+        type: type,
         data: data,
         processData: false,
         contentType: false,
     });
 }
-function destroyResource(url) {
-    Swal.fire({
-        title: 'Xác nhận xóa?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Xóa ',
-        cancelButtonText: 'Hủy bỏ'
-    }).then((result) => {
-        if (result.value) {
-            callAjax(url,null,'delete')
-                .done(response => {
-                    alertSuccess(response.message);
-                })
-                .fail(error => {
-                    alertError(error.message);
-                });
-        }
-    });
-}
+
+destroyResource = (url) => {
+    return new Promise(((resolve, reject) => {
+        Swal.fire({
+            title: 'Xác nhận xóa?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xóa ',
+            cancelButtonText: 'Hủy bỏ'
+        }).then((result) => {
+            if (result.value) {
+                callAjax(url, null, 'delete')
+                    .done(data => {
+                        resolve(data);
+                    })
+                    .fail(data => {
+                        reject(data);
+                    });
+            }
+        });
+    }))
+};
 
 //count row table
 function countStt() {
@@ -74,6 +76,7 @@ function resetErrorFaculty() {
     $('.nameError').html('');
     $('.descriptionError').html('');
 }
+
 function showErrorFaculty(errors) {
     (errors.name) ? $('.nameError').html(errors.name[0]) : "";
     (errors.description) ? $('.descriptionError').html(errors.description[0]) : "";
@@ -91,4 +94,29 @@ function showErrorSubject(errors) {
     (errors.name) ? $('.name-error').html(errors.name[0]) : "";
     (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
     (errors.description) ? $('.description-error').html(errors.description[0]) : "";
+}
+
+function fillSubjectToRowTable(subject) {
+    return ` <td>
+                <strong></strong>
+            </td>
+            <td>
+                ${subject.name}
+            </td>
+            <td>
+               ${subject.lesson}
+            </td>
+            <td>${subject.description}</td>
+            <td>
+                <button class="btn btn-outline-primary edit-subject btn-circle"
+                        title="Cập nhật thông tin khoa"
+                        editId="${subject.id}"
+                        data-toggle="modal"
+                        data-target="#editSubjectModal"
+                ><i
+                        class="fa fa-edit text-warning"></i>
+                </button>
+                <button class="btn btn-outline-dark delete-subject btn-circle" title="Xóa nhật khoa"
+                        deleteId="${subject.id}"><i class="fas fa-trash text-danger"></i></button>
+            </td>`;
 }
