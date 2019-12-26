@@ -47,7 +47,7 @@ $(function () {
             .done(data => {
                 $('#newFacultyModal').modal('hide')
                 alertSuccess(data.message);
-                let facultyRow="<tr>"+fillFacultyToRowTable(data.data)+"</tr>";
+                let facultyRow=fillFacultyToRowTable(data.data);
                 $('tbody').prepend(facultyRow);
                 countStt();
             })
@@ -64,7 +64,7 @@ $(function () {
             .done(data => {
                 $('#editFacultyModal').modal('hide');
                 let facultyRow=fillFacultyToRowTable(data.data);
-                $(".edit-faculty[editId="+editFacultyId+"]").parents('tr').html(facultyRow);
+                $(".edit-faculty[editId="+editFacultyId+"]").parents('tr').replaceWith(facultyRow);
                 alertSuccess(data.message);
                 countStt();
             })

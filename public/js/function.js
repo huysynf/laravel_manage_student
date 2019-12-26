@@ -76,7 +76,8 @@ function showErrorFaculty(errors) {
     (errors.description) ? $('.descriptionError').html(errors.description[0]) : "";
 }
 function  fillFacultyToRowTable(faculty) {
-    return ` <td>
+    return `<tr>
+             <td>
                 <strong></strong>
             </td>
             <td>
@@ -93,6 +94,7 @@ function  fillFacultyToRowTable(faculty) {
                 </button>
                 <button class="btn btn-outline-dark delete-faculty btn-circle" title="Xóa nhật khoa"
                         deleteId="${faculty.id}"><i class="fas fa-trash text-danger"></i></button>
-            </td>`;
+            </td>
+           </tr>`;
 
 }
