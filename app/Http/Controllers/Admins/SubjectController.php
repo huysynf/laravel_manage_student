@@ -30,10 +30,11 @@ class SubjectController extends Controller
     public function store(CreateSubjectRequest $request)
     {
         $data = $request->all();
-        $this->subject->create($data);
+       $subject=$this->subject->create($data);
         return response()->json([
-            'status' => 201,
+            'status' => 200,
             'message' => 'Thêm mới môn học thành công',
+            'data'=>$subject,
         ]);
     }
     public  function  show($id){
@@ -52,6 +53,7 @@ class SubjectController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'Cập nhật thông tin môn học  thành công',
+            'data'=>$subject,
         ]);
     }
 
@@ -59,7 +61,7 @@ class SubjectController extends Controller
     {
         $this->subject->destroy($id);
         return response()->json([
-            'status' => 204,
+            'status' => 200,
             'message' => 'Xóa môn học thành  công',
         ]);
     }

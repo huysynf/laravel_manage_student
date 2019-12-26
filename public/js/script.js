@@ -9,7 +9,7 @@ $(function () {
     countStt();
 
     //variable
-    let idActionResource = 0;
+    let idAction = 0;
     let urlResource = "";
     let dataResource = "";
     let searchPath = "";
@@ -26,8 +26,8 @@ $(function () {
     });
     faculty.on('click', '.edit-faculty', function () {
         resetErrorFaculty();
-        idActionResource=$(this).attr('editId');
-        urlResource=facultyPath+"/"+idActionResource;
+        idAction=$(this).attr('editId');
+        urlResource=facultyPath+"/"+idAction;
         callAjax(urlResource,null,getMethodForm)
             .done(data => {
                 let faculty=data.data;
@@ -52,7 +52,7 @@ $(function () {
     });
     faculty.on('click', '.update-faculty', function () {
         dataResource = new FormData($('.edit-faculty-form')[0]);
-        urlResource = facultyPath + '/update/' + idActionResource;
+        urlResource = facultyPath + '/update/' + idAction;
         callAjax(urlResource,dataResource,newMethodForm)
             .done(data => {
                 $('#newFacultyModal').modal('hide');
@@ -65,8 +65,8 @@ $(function () {
             });
     });
     faculty.on('click', '.delete-faculty', function () {
-        idActionResource = $(this).attr('deleteId');
-        urlResource = facultyPath + "/"+idActionResource;
+        idAction = $(this).attr('deleteId');
+        urlResource = facultyPath + "/"+idAction;
         destroyResource(urlResource);
     });
 
@@ -80,12 +80,15 @@ $(function () {
     // function
     addSubjectBtn.click(function () {
         resetErrorSubject();
+        $(".new-subject-form").trigger("reset");
     });
     subject.on('click', '.new-subject', function () {
         dataResource = new FormData($('.new-subject-form')[0]);
         callAjax(subjectPath,dataResource,newMethodForm)
             .done(data => {
                 $('#newsubjectModal').modal('hide');
+                let subjectRow=fillSubjectToRowTable(data.data);
+                $('tbody').prepend(subjectRow);
                 alertSuccess(data.message);
                 countStt();
             })
@@ -97,8 +100,8 @@ $(function () {
     });
     subject.on('click', '.edit-subject', function () {
         resetErrorSubject();
-        idActionResource=$(this).attr('editId');
-        urlResource=subjectPath+"/"+idActionResource;
+        idAction=$(this).attr('editId');
+        urlResource=subjectPath+"/"+idAction;
         callAjax(urlResource,null,getMethodForm)
             .done(data => {
               let subject=data.data;
@@ -109,10 +112,12 @@ $(function () {
     });
     subject.on('click', '.update-subject', function () {
         dataResource = new FormData($('.edit-subject-form')[0]);
-        urlResource = subjectPath + "/update/" + idActionResource;
+        urlResource = subjectPath + "/update/" + idAction;
         callAjax(urlResource,dataResource,newMethodForm)
             .done(data => {
                 $('#editSubjectModal').modal('hide')
+                let subjectRow=fillSubjectToRowTable(data.data);
+                $(".edit-subject[editId="+idAction+"]").parents('tr').html(subjectRow);
                 alertSuccess(data.message);
                 countStt();
             })
@@ -124,9 +129,17 @@ $(function () {
     });
 
     subject.on('click', '.delete-subject', function () {
-        idActionResource = $(this).attr('deleteId');
-        urlResource=subjectPath + "/"+idActionResource;
-        destroyResource(urlResource);
+        idAction = $(this).attr('deleteId');
+        urlResource=subjectPath + "/"+idAction;
+        destroyResource(urlResource)
+            .then(data => {
+                alertSuccess(data.message);
+                $(this).parents('tr').remove();
+            })
+            .catch(data => {
+                alertError(data.message);
+            });
+        ;
     });
 
 
