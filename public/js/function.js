@@ -8,7 +8,7 @@ function alertSuccess(message) {
     })
         .then((result) => {
             if (result.value) {
-                i
+
             }
         })
 }
