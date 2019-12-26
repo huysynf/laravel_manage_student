@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-use App\Reponsitories\RepositoryContract;
+use App\Repositories\RepositoryContract;
 
 abstract class BaseRepository implements RepositoryContract
 {
