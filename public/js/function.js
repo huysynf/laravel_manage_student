@@ -1,20 +1,12 @@
- alertSuccess=(message)=>{
-       Swal.fire({
-           position: 'center',
-           icon: 'success',
-           title: message,
-           showConfirmButton: true,
-           confirmButtonText: 'ok'
-       })
-           .then((result) => {
-               if (result.value) {
-
-               }
-               else {
-
-               }
-           })
-}
+alertSuccess = (message) => {
+    Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: message,
+        showConfirmButton: true,
+        confirmButtonText: 'ok'
+    });
+};
 
 function alertError(message) {
     Swal.fire({
@@ -152,8 +144,9 @@ function showErrorUser(errors) {
     (errors.role) ? $('.error-role').html(errors.role[0]) : "";
 
 }
+
 function fillUserToRowTable(user) {
- return `<tr>
+    return `<tr>
         <td>
         <strong></strong>
         </td>
