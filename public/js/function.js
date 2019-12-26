@@ -1,6 +1,6 @@
 
 //function alert eror
-function alertSuccess(message, reload = 0) {
+function alertSuccess(message) {
     Swal.fire({
         position: 'center',
         icon: 'success',
@@ -10,9 +10,7 @@ function alertSuccess(message, reload = 0) {
     })
         .then((result) => {
             if (result.value) {
-                if (reload == 0) {
-                    location.reload();
-                }
+
             }
         })
 }
@@ -36,27 +34,29 @@ function callAjax( url,data="",type='get') {
         contentType: false,
     });
 }
-function destroyResource(url) {
-    Swal.fire({
-        title: 'Xác nhận xóa?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Xóa ',
-        cancelButtonText: 'Hủy bỏ'
-    }).then((result) => {
-        if (result.value) {
-            callAjax(url,null,'delete')
-                .done(response => {
-                    alertSuccess(response.message);
-                })
-                .fail(error => {
-                    alertError(error.message);
-                });
-        }
-    });
-}
+destroyResource = (url) => {
+    return new Promise(((resolve, reject) => {
+        Swal.fire({
+            title: 'Xác nhận xóa?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xóa ',
+            cancelButtonText: 'Hủy bỏ'
+        }).then((result) => {
+            if (result.value) {
+                callAjax(url, null, 'delete')
+                    .done(data => {
+                        resolve(data);
+                    })
+                    .fail(data => {
+                        reject(data);
+                    });
+            }
+        });
+    }))
+};
 
 //count row table
 function countStt() {

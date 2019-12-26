@@ -139,7 +139,15 @@ $(function () {
      classroom.on('click', '.delete-classroom', function () {
         idActionResource = $(this).attr('deleteId');
         urlResource=classroomPath+"/"+idActionResource;
-        destroyResource(urlResource);
+        destroyResource(urlResource)
+            .then(data => {
+                alertSuccess(data.message);
+                $(this).parents('tr').remove();
+            })
+            .catch(data => {
+                alertError(data.message);
+            });
+
     });
     classroom.on('click','.show-classroom',function () {
         idActionResource=$(this).attr('showId');
