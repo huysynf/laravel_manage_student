@@ -28,10 +28,11 @@ class FacultyController extends Controller
     public function store(CreateFacultyRequest $request)
     {
         $data = $request->all();
-        $this->faculty->create($data);
+        $faculty= $this->faculty->create($data);
         return response()->json([
             'status' => 200,
             'message' => 'Thêm mới thành công',
+            'data'=>$faculty,
         ]);
     }
 
@@ -43,6 +44,7 @@ class FacultyController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'Cập nhật thông tin khoa  thành công',
+            'data'=>$faculty,
         ]);
     }
 
@@ -60,7 +62,7 @@ class FacultyController extends Controller
     {
         $this->faculty->destroy($id);
         return response()->json([
-            'status' => 204,
+            'status' => 200,
             'message' => 'Xóa khoa thành  công',
         ]);
     }

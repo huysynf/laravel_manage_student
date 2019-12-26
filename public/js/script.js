@@ -9,7 +9,7 @@ $(function () {
     countStt();
 
     //variable
-    let idActionResource = 0;
+    let idAction = 0;
     let urlResource = "";
     let dataResource = "";
     let searchPath = "";
@@ -26,11 +26,12 @@ $(function () {
     // function
     addFacultyBtn.click(function () {
         resetErrorFaculty();
+        $(".new-faculty-form").trigger("reset");
     });
     faculty.on('click', '.edit-faculty', function () {
         resetErrorFaculty();
-        idActionResource=$(this).attr('editId');
-        urlResource=facultyPath+"/"+idActionResource;
+        idAction=$(this).attr('editId');
+        urlResource=facultyPath+"/"+idAction;
         callAjax(urlResource,null,getMethodForm)
             .done(data => {
                 let faculty=data.data;
@@ -45,6 +46,8 @@ $(function () {
             .done(data => {
                 $('#newFacultyModal').modal('hide')
                 alertSuccess(data.message);
+                let facultyRow=fillFacultyToRowTable(data.data);
+                $('tbody').prepend(facultyRow);
                 countStt();
             })
             .fail(data => {
@@ -55,10 +58,12 @@ $(function () {
     });
     faculty.on('click', '.update-faculty', function () {
         dataResource = new FormData($('.edit-faculty-form')[0]);
-        urlResource = facultyPath + '/update/' + idActionResource;
+        urlResource = facultyPath + '/update/' + idAction;
         callAjax(urlResource,dataResource,newMethodForm)
             .done(data => {
                 $('#newFacultyModal').modal('hide');
+                let facultyRow=fillFacultyToRowTable(data.data);
+                $(".edit-faculty[editId="+idAction+"]").parents('tr').html(facultyRow);
                 alertSuccess(data.message);
                 countStt();
             })
@@ -68,9 +73,15 @@ $(function () {
             });
     });
     faculty.on('click', '.delete-faculty', function () {
-        idActionResource = $(this).attr('deleteId');
-        urlResource = facultyPath + "/"+idActionResource;
-        destroyResource(urlResource);
+        idAction = $(this).attr('deleteId');
+        urlResource = facultyPath + "/"+idAction;
+        destroyResource(urlResource) .then(data => {
+            alertSuccess(data.message);
+            $(this).parents('tr').remove();
+        })
+            .catch(data => {
+                alertError(data.message);
+            });;
     });
 
     //fill data to modal
