@@ -6,7 +6,7 @@
 
     <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Quản lí nhóm quyền</h1>
-        <button class="ml-2 btn btn-sm btn-primary shadow-sm add-user"
+        <button class="ml-2 btn btn-sm btn-primary shadow-sm add-role"
                 title="thêm mới nhóm quyền"
                 data-toggle="modal"
                 data-target="#newRoleModal"
@@ -22,7 +22,7 @@
         </div>
     @endif
     {{--    table data--}}
-    <div class="row" id="user">
+    <div class="row" id="role">
         <div class="col-12 ">
             <form method="get" action="{{route('roles.index')}}" class=" p-1 d-flex"
             >
@@ -68,16 +68,16 @@
                             {{$role->name}}
                         </td>
                         <td class="d-flex">
-                            <button class="btn btn-outline-primary btn-circle edit-user"
+                            <button class="btn btn-outline-primary btn-circle edit-role"
                                     title="Cập nhật thông tin nhóm quyền"
                                     data-toggle="modal"
                                     editId="{{$role->id}}"
                                     data-target="#editRoleModal">
                                 <i class="fa fa-edit text-dark"></i>
                             </button>
-                            <button class="btn btn-outline-dark delete-user btn-circle" title="Xóa nhóm quyề"
+                            <button class="btn btn-outline-dark delete-role btn-circle" title="Xóa nhóm quyề"
                                     deleteId="{{$role->id}}"><i class="fas fa-trash text-danger"></i></button>
-                            <button class="btn btn-outline-success btn-circle  show-user" title="Chi tiết nhóm quyền"
+                            <button class="btn btn-outline-success btn-circle  show-role" title="Chi tiết nhóm quyền"
                                     data-toggle="modal"
                                     showId="{{$role->id}}"
                                     data-target="#showRoleModal"><i class="fas fa-info-circle text-primary"></i>
@@ -101,7 +101,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="newUserModalTitle">Thêm mới nhóm quyền <span
-                                class="classromm-name"></span></h5>
+                               ></span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -111,10 +111,16 @@
                         <div class="modal-body text-dark ">
                             @csrf
                             <div class="form-group">
-                                <label for="">Tên nhóm quyền</label>
+                                <label for="">Tên hiện thị</label>
                                 <input type="text" class="form-control name" name="name" value="{{old('name')}}"
                                        required>
                                 <span class="text-danger error-name"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Tên nhóm quyền</label>
+                                <input type="text" class="form-control name" name="slug" value="{{old('slug')}}"
+                                       required>
+                                <span class="text-danger error-slug"></span>
                             </div>
                             <div class="form-group">
                                 <label for="permissions">Quyền</label>
@@ -122,11 +128,6 @@
                                     <div class="form-check-inline col-4 m-0">
                                         <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input   select-all" value=""> Chọn tất cả
-                                        </label>
-                                    </div>
-                                    <div class="form-check-inline col-4 m-0">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input   un-select-all" value="0" {{ in_array(old('permissions'), old('permissions', [])) ? 'checked' : '' }}>Bỏ chọn tất cả
                                         </label>
                                     </div>
                                     <div class="form-check-inline col-4 m-0">
@@ -142,7 +143,7 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                <span class="text-danger error-role"></span>
+                                <span class="text-danger error-permissions"></span>
                             </div>
                         </div>
                         <div class="modal-footer">

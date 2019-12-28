@@ -182,5 +182,45 @@ function fillUserToRowTable(user) {
        </tr>
    `;
 
+    //role
+    function showErrorRole(errors) {
+        (errors.name) ? $('.error-name').html(errors.name[0]) : "";
+        (errors.slug) ? $('.error-lug').html(errors.slug[0]) : "";
+        (errors.permissions) ? $('.error-permissions').html(errors.permissions[0]) : "";
+    }
+
+    function resetErrorRole() {
+        $('.error-name').html('');
+        $('.error-slug').html('');
+        $('.error-permissions').html('');
+    }
+
+    function fillRoleToRowTable(role) {
+        return `<tr>
+                <td>
+                    <strong></strong>
+                </td>
+                <td>
+                   ${role.name}
+                </td>
+                <td class="d-flex">
+                    <button class="btn btn-outline-primary btn-circle edit-role"
+                            title="Cập nhật thông tin nhóm quyền"
+                            data-toggle="modal"
+                            editId=" ${role.id}"
+                            data-target="#editRoleModal">
+                        <i class="fa fa-edit text-dark"></i>
+                    </button>
+                    <button class="btn btn-outline-dark delete-role btn-circle" title="Xóa nhóm quyề"
+                            deleteId="${role.id}"><i class="fas fa-trash text-danger"></i></button>
+                    <button class="btn btn-outline-success btn-circle  show-role" title="Chi tiết nhóm quyền"
+                            data-toggle="modal"
+                            showId=" ${role.id}"
+                            data-target="#showRoleModal"><i class="fas fa-info-circle text-primary"></i>
+                    </button>
+                </td>
+            </tr>`;
+    }
+
 }
 
