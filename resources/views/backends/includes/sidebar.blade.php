@@ -35,6 +35,12 @@
             <span>Người dùng</span>
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="{{route('roles.index')}}" title="Quản lí nhóm quyền">
+            <i class="fas fa-fw fa-user-alt text-danger"></i>
+            <span>Quyền và nhóm quyễn</span>
+        </a>
+    </li>
 
     <li class="nav-item">
         <a class="nav-link collapsed" href="{{route('students.index')}}" title="Quản lí sinh viên">

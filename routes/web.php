@@ -26,7 +26,11 @@ Route::group(['prefix' => 'manage', 'namespace' => 'Admins', 'middleware' => ['a
     Route::post('users/update/{id}', 'UserController@update');
     Route::post('users/set-password/{id}', 'UserController@setPassword');
     Route::post('users/change-password/{id}', 'UserController@changePassword');
-
+    Route::resource('/roles', 'RoleController')->except([
+        'update',
+        'edit',
+        'create',
+    ]);
     //facultys
     Route::resource('faculties', 'FacultyController');
     Route::get('faculties/search/{searchkey}', 'FacultyController@search');
