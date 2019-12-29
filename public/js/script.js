@@ -140,5 +140,40 @@ $(function () {
         destroyResource(urlResource);
     });
 
+//classroom
+    $('.classroom-select-faculty').select2();
+    $('.classroom-select-subject').select2();
+
+    let classroom = $('#classroom');
+    let classroomPath = "/manage/classrooms";
+
+     classroom.on('click', '.delete-classroom', function () {
+        idActionResource = $(this).attr('deleteId');
+        urlResource=classroomPath+"/"+idActionResource;
+        destroyResource(urlResource)
+            .then(data => {
+                alertSuccess(data.message);
+                $(this).parents('tr').remove();
+            })
+            .catch(data => {
+                alertError(data.message);
+            });
+
+    });
+    classroom.on('click','.show-classroom',function () {
+        idActionResource=$(this).attr('showId');
+        urlResource=classroomPath+"/"+idActionResource;
+        callAjax(urlResource)
+            .done(data => {
+                let classroom = data.data;
+                $('.classroom-name').html(classroom.name);
+                $('.classroom-description').html(classroom.description);
+                $('.classroom-member').html(classroom.member);
+                $('.classroom-faculty').html(classroom.faculty.name);
+                $('.classroom-subject').html(classroom.subject.name);
+            })
+    });
+
 
 });
+
