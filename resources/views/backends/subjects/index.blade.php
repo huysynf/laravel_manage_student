@@ -62,10 +62,6 @@
                                     editId="{{$subject->id}}"
                                     data-toggle="modal"
                                     data-target="#editSubjectModal"
-                                    data-name="{{$subject->name}}"
-                                    data-lesson="{{$subject->lesson}}"
-                                    data-description="{{$subject->description}}"
-                                    data-id="{{$subject->id}}"
                             ><i
                                     class="fa fa-edit text-warning"></i>
                             </button>

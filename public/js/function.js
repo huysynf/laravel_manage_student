@@ -24,10 +24,11 @@ function alertError(message) {
 //curd resource
 
 
-function callAjax( url,data="",type='get') {
+
+function callAjax(url, data = "", type = 'get') {
     return $.ajax({
         url: url,
-        type:type,
+        type: type,
         data: data,
         processData: false,
         contentType: false,
@@ -92,24 +93,6 @@ function showErrorSubject(errors) {
     (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
     (errors.description) ? $('.description-error').html(errors.description[0]) : "";
 }
-function showErrorFaculty(errors) {
-    (errors.name) ? $('.nameError').html(errors.name[0]) : "";
-    (errors.description) ? $('.descriptionError').html(errors.description[0]) : "";
-
-}
-
-//subject error
-function resetErrorSubject() {
-    $('.name-error').html('');
-    $('.lesson-error').html('');
-    $('.description-error').html('');
-}
-
-function showErrorSubject(errors) {
-    (errors.name) ? $('.name-error').html(errors.name[0]) : "";
-    (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
-    (errors.description) ? $('.description-error').html(errors.description[0]) : "";
-}
 function  fillFacultyToRowTable(faculty) {
     return `<tr>
              <td>
@@ -131,6 +114,35 @@ function  fillFacultyToRowTable(faculty) {
                         deleteId="${faculty.id}"><i class="fas fa-trash text-danger"></i></button>
             </td>
            </tr>`;
+
+}
+
+
+function fillSubjectToRowTable(subject) {
+    return ` <tr
+                ><td>
+                <strong></strong>
+            </td>
+            <td>
+                ${subject.name}
+            </td>
+            <td>
+               ${subject.lesson}
+            </td>
+            <td>${subject.description}</td>
+            <td>
+                <button class="btn btn-outline-primary edit-subject btn-circle"
+                        title="Cập nhật thông tin khoa"
+                        editId="${subject.id}"
+                        data-toggle="modal"
+                        data-target="#editSubjectModal"
+                ><i
+                        class="fa fa-edit text-warning"></i>
+                </button>
+                <button class="btn btn-outline-dark delete-subject btn-circle" title="Xóa nhật khoa"
+                        deleteId="${subject.id}"><i class="fas fa-trash text-danger"></i></button>
+            </td>
+           </tr>`;
 }
 //classroom
 function arrayOjectParseToNameP(data) {
@@ -150,6 +162,7 @@ function readURL(input) {
         };
         reader.readAsDataURL(input.files[0]);
     }
+
 }
 $(".image-input").change(function () {
     readURL(this);

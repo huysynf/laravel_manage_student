@@ -61,6 +61,9 @@ class StudentRepository extends BaseRepository
         $student['listClassroomId'] = $this->classroomStudent->getClassroomIdByStudentId($id);
         return $student;
     }
+    public function create(){
+        return $this->classroom->all(['id','name']);
+    }
     public function show($id)
     {
 
