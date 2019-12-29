@@ -15,15 +15,11 @@ $(function () {
     let searchPath = "";
     let getMethodForm='get';
     let newMethodForm='post';
-    let updateMethodForm='put';
-    let deleteMethodForm='delete';
     //faculty
     //variable
     let faculty = $('#faculty');
     let addFacultyBtn = $('.add-faculty');
     let facultyPath = "/manage/faculties";
-    let facultySearch = $('.faculty-searchkey');
-    let editFacultyId=0;
     // function
     addFacultyBtn.click(function () {
         resetErrorFaculty();
@@ -86,5 +82,63 @@ $(function () {
     });
 
     //fill data to modal
+    //subject
+    //variable
+    let subject = $('#subject');
+    let addSubjectBtn = $('.add-subject');
+    let editSubjectBtn = $('.edit-subject');
+    let subjectPath = "/manage/subjects";
+    // function
+    addSubjectBtn.click(function () {
+        resetErrorSubject();
+    });
+    subject.on('click', '.new-subject', function () {
+        dataResource = new FormData($('.new-subject-form')[0]);
+        callAjax(subjectPath,dataResource,newMethodForm)
+            .done(data => {
+                $('#newsubjectModal').modal('hide');
+                alertSuccess(data.message);
+                countStt();
+            })
+            .fail(data => {
+                const errors = data.responseJSON.errors;
+                resetErrorSubject();
+                showErrorSubject(errors);
+            });
+    });
+    subject.on('click', '.edit-subject', function () {
+        resetErrorSubject();
+        idActionResource=$(this).attr('editId');
+        urlResource=subjectPath+"/"+idActionResource;
+        callAjax(urlResource,null,getMethodForm)
+            .done(data => {
+              let subject=data.data;
+                $('.subject-name').val(subject.name);
+                $('.subject-lesson').val(subject.lesson);
+                $('.subject-description').val(subject.description);
+            })
+    });
+    subject.on('click', '.update-subject', function () {
+        dataResource = new FormData($('.edit-subject-form')[0]);
+        urlResource = subjectPath + "/update/" + idActionResource;
+        callAjax(urlResource,dataResource,newMethodForm)
+            .done(data => {
+                $('#editSubjectModal').modal('hide')
+                alertSuccess(data.message);
+                countStt();
+            })
+            .fail(data => {
+                const errors = data.responseJSON.errors;
+                resetErrorSubject();
+                showErrorSubject(errors);
+            });
+    });
+
+    subject.on('click', '.delete-subject', function () {
+        idActionResource = $(this).attr('deleteId');
+        urlResource=subjectPath + "/"+idActionResource;
+        destroyResource(urlResource);
+    });
+
 
 });

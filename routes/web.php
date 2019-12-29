@@ -35,8 +35,12 @@ Route::group(['prefix' => 'manage', 'namespace' => 'Admins'], function () {
     Route::post('faculties/update/{id}', 'FacultyController@update');
 
     //subject
-    Route::resource('subjects', 'SubjectController');
-    Route::get('subjects/search/{searchkey}', 'FacultyController@search');
+    Route::resource('subjects', 'SubjectController')->except([
+        'update',
+        'edit',
+        'create',
+    ]);
+    Route::post('subjects/update/{id}', 'SubjectController@update');
     //classroom
     Route::resource('/classrooms', 'ClassroomController');
     Route::get('classrooms/search/{searchkey}', 'ClassroomController@search');
