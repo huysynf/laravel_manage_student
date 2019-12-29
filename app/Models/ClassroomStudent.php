@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class Classroom_student extends Model
+class ClassroomStudent extends Pivot
 {
     protected $table='classroom_student';
 
-    public function getclassroomid($id){
+    public function getClassroomIdByStudentId($id){
         return $this->where('student_id',$id)->pluck('classroom_id');
     }
 }

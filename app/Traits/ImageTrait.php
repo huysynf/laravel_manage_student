@@ -5,39 +5,40 @@ use Image;
 
 trait ImageTrait
 {
-    public function veryfyImage($image, $filename = 'image')
+    public function veryfyImage($image)
     {
-        if ($image->hasFile($filename)) {
+        if ($image->isValid()) {
             return true;
         }
         return false;
     }
 
-    public function saveImage($image, $path, $filename = 'image')
+    public function saveImage($image, $path)
     {
-        if ($this->veryfyImage($image, $filename)) {
-            $name = time() . '.' . $image->file($filename)->getClientOriginalExtension();
-            Image::make($image->file($filename))->resize(300, 300)->save($path . $name);
+        if ($this->veryfyImage($image)) {
+            $name = time() . '.' . $image->getClientOriginalExtension();
+            Image::make($image)->resize(300, 300)->save($path . $name);
             return $name;
         }
 
     }
 
-    public function deleteImage($name,$path)
+    public function deleteImage($name, $path)
     {
         if (file_exists($path . $name) && $name != 'default.jpg') {
             unlink($path . $name);
         }
     }
 
-    public function updateImage($image, $path, $currentName, $filename = 'image')
+    public function updateImage($image, $path, $currentName)
     {
-        if ($this->veryfyImage($image,$filename)) {
-            $name = $this->saveimage($image, $path, $filename);
-            $this->deleteImage($currentName,$path);
+        if ($this->veryfyImage($image)) {
+            $name = $this->saveimage($image, $path);
+            $this->deleteImage($currentName, $path);
             return $name;
         } else {
             return $currentName;
         }
     }
+
 }

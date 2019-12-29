@@ -22,16 +22,21 @@ class Student extends Model
 
     public function classrooms()
     {
-        return $this->belongsToMany(Classroom::class, 'classroom_student');
+        return $this->belongsToMany(Classroom::class, 'classroom_student')->withPivot('classroom_id');
     }
 
     public function findOrFail($id)
     {
         return $this->with('classrooms')->findOrFail($id);
     }
-
-    public function search($name, $address, $classroomName)
+    public function getClassroomIdByStudentId($id){
+        return $this->with('classrooms')->findOrFail($id)->pluck('classroom_id');
+    }
+    public function search($data)
     {
+        $name=$data['name']??null;
+        $address=$data['address']??null;
+        $classroomName=$data['classrooms']??null;
         return $this
             ->when($classroomName, function ($query) use ($classroomName) {
                 $query->whereHas('classrooms', function ($q) use ($classroomName) {
