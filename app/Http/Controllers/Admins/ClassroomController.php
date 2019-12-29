@@ -5,124 +5,71 @@ namespace App\Http\Controllers\Admins;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Classrooms\CreateClassroomRequest;
 use App\Http\Requests\Classrooms\UpdateClassroomRequest;
-use App\Models\Classroom;
-use App\Models\Faculty;
-use App\Models\Subject;
+use App\Repositories\Admins\ClassroomRepository;
 use DB;
 use Illuminate\Http\Request;
 
-
 class ClassroomController extends Controller
 {
-    private $classroom;
-    private $faculty;
-    private $subject;
+    protected $classroomRepository;
 
-    public function __construct()
+    public function __construct(ClassroomRepository $classroomRepository)
     {
-        $this->classroom = new Classroom();
-        $this->faculty = new Faculty();
-        $this->subject = new Subject();
-
+        $this->classroomRepository = $classroomRepository;
     }
 
     public function index(Request $request)
     {
-        $subjects = $this->subject->get('name');
-        $faculties = $this->faculty->get('name');
-        $classroomName = $request->input('name');
-        $subjectName = $request->input('subject');
-        $facultyName = $request->input('faculty');
-        $classrooms = $this->classroom->search($classroomName, $facultyName, $subjectName);
-
-        return view('backends.classrooms.index', compact('classrooms', 'faculties', 'subjects'));
+        $data = $this->classroomRepository->search($request->only(['name', 'subject', 'faculty']));
+        return view('backends.classrooms.index')->with([
+            'classrooms' => $data['classrooms'],
+            'faculties' => $data['faculty'],
+            'subjects' => $data['subject']
+        ]);
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        $faculties = $this->faculty->all(['id', 'name']);
-        $subjects = $this->subject->all(['id', 'name']);
-        return view('backends.classrooms.create', compact('faculties', 'subjects'));
+        $data=$this->classroomRepository->create();
+        return view('backends.classrooms.create')->with(['faculties'=>$data['faculty'], 'subjects'=>$data['subject']]);
     }
 
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(CreateClassroomRequest $request)
     {
-        $data = $request->all();
-        $this->classroom->create($data);
-        DB::commit();
+        $this->classroomRepository->store($request->all());
         return redirect(route('classrooms.index'))->with('message', 'Thêm mới lớp học thành công');
     }
 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $classroom=$this->classroom->with('subject')->with('faculty')->findOrFail($id);
         return response()->json([
-            'status'=>200,
-            'message'=>'Thành công',
-            'data'=>$classroom,
+            'status' => 200,
+            'message' => 'Thành công',
+            'data' => $this->classroomRepository->show($id),
         ]);
-
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        $classroom = $this->classroom->findOrFail($id);
-        $faculties = $this->faculty->all(['id', 'name']);
-        $subjects = $this->subject->all(['id', 'name']);
-        return view('backends.classrooms.edit', compact('faculties', 'subjects', 'classroom'));
+        $data = $this->classroomRepository->edit($id);
+        return view('backends.classrooms.edit')->with(['faculties'=>$data['faculty'], 'subjects'=>$data['subject'],'classroom'=>$data['classroom']]);
 
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdateClassroomRequest $request, $id)
     {
-        $classroom = $this->classroom->findOrFail($id);
-        $data = $request->all();
-        $classroom->update($data);
-        return redirect(route('classrooms.index'))->with('message', 'Cập nhật thông tin lớp học thành công');
 
+        $this->classroomRepository->update($request->all(), $id);
+        return redirect(route('classrooms.index'))->with('message', 'Cập nhật thông tin lớp học thành công');
     }
 
     public function destroy($id)
     {
-        $this->classroom->destroy($id);
         return response()->json([
             'status' => 204,
-            'message' => 'Xóa thành công',
+            'message' => $this->classroomRepository->destroy($id),
         ]);
-
     }
 }

@@ -26,9 +26,11 @@ class Classroom extends Model
         return $this->belongsTo(Subject::class);
     }
 
-    public function search($classroomName, $facultyName, $subjectName)
+    public function search(array $data)
     {
-
+        $classroomName=$data['name']??null;
+        $facultyName=$data['faculty']??null;
+        $subjectName=$data['subject']??null;
         return $this->when($classroomName, function ($query) use ($classroomName) {
             $query->orwhere('name', 'LIKE', '%' . $classroomName . '%');
         })
