@@ -1,6 +1,4 @@
-
-//function alert eror
-function alertSuccess(message, reload = 0) {
+function alertSuccess(message) {
     Swal.fire({
         position: 'center',
         icon: 'success',
@@ -10,9 +8,7 @@ function alertSuccess(message, reload = 0) {
     })
         .then((result) => {
             if (result.value) {
-                if (reload == 0) {
-                    location.reload();
-                }
+
             }
         })
 }
@@ -36,27 +32,29 @@ function callAjax( url,data="",type='get') {
         contentType: false,
     });
 }
-function destroyResource(url) {
-    Swal.fire({
-        title: 'Xác nhận xóa?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Xóa ',
-        cancelButtonText: 'Hủy bỏ'
-    }).then((result) => {
-        if (result.value) {
-            callAjax(url,null,'delete')
-                .done(response => {
-                    alertSuccess(response.message);
-                })
-                .fail(error => {
-                    alertError(error.message);
-                });
-        }
-    });
-}
+destroyResource = (url) => {
+    return new Promise(((resolve, reject) => {
+        Swal.fire({
+            title: 'Xác nhận xóa?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Xóa ',
+            cancelButtonText: 'Hủy bỏ'
+        }).then((result) => {
+            if (result.value) {
+                callAjax(url, null, 'delete')
+                    .done(data => {
+                        resolve(data);
+                    })
+                    .fail(data => {
+                        reject(data);
+                    });
+            }
+        });
+    }))
+};
 
 //count row table
 function countStt() {
@@ -91,4 +89,27 @@ function showErrorSubject(errors) {
     (errors.name) ? $('.name-error').html(errors.name[0]) : "";
     (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
     (errors.description) ? $('.description-error').html(errors.description[0]) : "";
+}
+function  fillFacultyToRowTable(faculty) {
+    return `<tr>
+             <td>
+                <strong></strong>
+            </td>
+            <td>
+                ${faculty.name}
+            </td>
+            <td>${faculty.description}</td>
+            <td>
+                <button class="btn btn-outline-primary btn-circle edit-faculty"
+                        title="Cập nhật thông tin khoa"
+                        editId="${faculty.id}"
+                        data-toggle="modal"
+                        data-target="#editFacultyModal"
+                ><i class="fa fa-edit text-warning"></i>
+                </button>
+                <button class="btn btn-outline-dark delete-faculty btn-circle" title="Xóa nhật khoa"
+                        deleteId="${faculty.id}"><i class="fas fa-trash text-danger"></i></button>
+            </td>
+           </tr>`;
+
 }
