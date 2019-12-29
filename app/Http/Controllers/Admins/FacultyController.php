@@ -7,61 +7,60 @@ use App\Http\Requests\Faculties\CreateFacultyRequest;
 use App\Http\Requests\Faculties\UpdateFacultyRequest;
 use App\Models\Faculty;
 use Illuminate\Http\Request;
+use App\Repositories\Admins\FacultyRepository;
 
 class FacultyController extends Controller
 {
-    private $faculty;
+    protected $facultyRepository;
 
-    public function __construct()
+    public function __construct(FacultyRepository $facultyRepository)
     {
-        $this->faculty = new Faculty();
+        $this->facultyRepository = $facultyRepository;
     }
 
     public function index(Request $request)
     {
-        $name = $request->input('name');
-        $description = $request->input('description');
-        $faculties = $this->faculty->search($name, $description);
+        $data=$request->only(['name','lesson']);
+        $faculties = $this->facultyRepository->search($data);
         return view('backends.faculties.index', compact('faculties'));
     }
 
     public function store(CreateFacultyRequest $request)
     {
         $data = $request->all();
-        $this->faculty->create($data);
         return response()->json([
             'status' => 200,
             'message' => 'Thêm mới thành công',
+            'data'=> $this->facultyRepository->create($data),
         ]);
     }
 
     public function update(UpdateFacultyRequest $request, $id)
     {
-        $faculty = $this->faculty->findOrFail($id);
+
         $data = $request->all();
-        $faculty->update($data);
+
         return response()->json([
             'status' => 200,
             'message' => 'Cập nhật thông tin khoa  thành công',
+            'data'=>$this->facultyRepository->update($data,$id),
         ]);
     }
 
     public function show($id)
     {
-        $faculty = $this->faculty->findOrFail($id);
         return response()->json([
             'status' => 200,
             'message' => 'Thành công',
-            'data' => $faculty,
+            'data' => $this->facultyRepository->show($id),
         ]);
     }
 
     public function destroy($id)
     {
-        $this->faculty->destroy($id);
         return response()->json([
-            'status' => 204,
-            'message' => 'Xóa khoa thành  công',
+            'status' => 200,
+            'message' => $this->facultyRepository->destroy($id),
         ]);
     }
 

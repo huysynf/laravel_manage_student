@@ -5,6 +5,7 @@
 /public/images/students
 /storage/*.key
 /vendor
+/public/images/*
 .env
 .env.backup
 .phpunit.result.cache

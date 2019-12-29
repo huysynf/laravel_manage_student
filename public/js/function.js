@@ -1,5 +1,4 @@
-//function alert eror
-function alertSuccess(message, reload = 0) {
+function alertSuccess(message) {
     Swal.fire({
         position: 'center',
         icon: 'success',
@@ -9,9 +8,7 @@ function alertSuccess(message, reload = 0) {
     })
         .then((result) => {
             if (result.value) {
-                if (reload == 0) {
-                    location.reload();
-                }
+
             }
         })
 }
@@ -35,7 +32,6 @@ function callAjax(url, data = "", type = 'get') {
         contentType: false,
     });
 }
-
 destroyResource = (url) => {
     return new Promise(((resolve, reject) => {
         Swal.fire({
