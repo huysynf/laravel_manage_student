@@ -26,6 +26,7 @@ class Classroom extends Model
         return $this->belongsTo(Subject::class);
     }
 
+
     public function search(array $data)
     {
         $classroomName=$data['name']??null;

@@ -4,6 +4,7 @@
 /public/images/users
 /public/images/students
 /storage/*.key
+
 /vendor
 /public/images/*
 .env
