@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Users;
 
+use App\Rules\UpperCase;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRoleRequest extends FormRequest
@@ -13,7 +14,7 @@ class UpdateRoleRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +25,17 @@ class UpdateRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name'=>['required','unique:roles,name,'.$this->role],
+            'slug'=>['required','unique:roles,slug,'.$this->role,new UpperCase()],
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'name.required'=>'* Tên hiện thị không để trống',
+            'name.unique'=>'* Tên hiện thị đã có! Chọn tên khác',
+            'slug.required'=>'* Tên  không để trống',
+            'slug.unique'=>'* Tên đã có! Chọn tên khác ',
         ];
     }
 }

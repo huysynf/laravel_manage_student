@@ -2,13 +2,20 @@
 
 namespace App\Repositories\Admins;
 
+use App\Models\RolePermission;
 use App\Repositories\BaseRepository;
 use App\Models\Role;
+use App\Models\Permission;
 
 class RoleRepository extends  BaseRepository{
+
+    protected $permissions;
+    protected $rolePermisison;
     public function __construct(Role $model)
     {
         $this->model = $model;
+        $this->permissions=new Permission();
+        $this->rolePermisison=new RolePermission();
     }
 
     public function search(array $data)
@@ -28,16 +35,18 @@ class RoleRepository extends  BaseRepository{
       return $this->model->findOrFail($id);
     }
 
+    public function edit($id){
+        $data['role']=$this->show($id);
+        $data['permissions']=$this->permissions->all(['id','name','slug']);
+        $data['listPermission']=$this->rolePermisison->getPermisisonIdByRoleId($id);
+        return $data;
+    }
     public function update(array $data, $id): Role
     {
-//        $user = $this->model->findOrFail($id);
-//        if (isset($data['image'])) {
-//            $current_image = $user->image;
-//            $image = $data['image'];
-//            $data['image'] = $this->user->updateimage($image, $this->imagePath, $current_image);
-//        }
-//        $user->update($data);
-//        return $user;
+        $role=$this->model->findOrFail($id);
+        $role->update($data);
+        $role->permissions()->sync($data['permissions']);
+        return $role;
     }
     public function destroy($id)
     {

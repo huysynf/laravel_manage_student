@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\CreateRoleRequest;
+use App\Http\Requests\Users\UpdateRoleRequest;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -43,12 +44,14 @@ class RoleController extends Controller
 
     public function edit($id)
     {
-        //
+        $data=$this->roleRepository->edit($id);
+        return view('backends.roles.edit')->with(['role'=>$data['role'],'permissions'=>$data['permissions'],'listPermission'=>$data['listPermission']]);
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateRoleRequest $request, $id)
     {
-        //
+        $this->roleRepository->update($request->all(),$id);
+        return redirect()->route('roles.index')->with('message','cập nhật quyền thành công');
     }
 
     public function destroy($id)

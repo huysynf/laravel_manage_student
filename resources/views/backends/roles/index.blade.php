@@ -71,13 +71,9 @@
                             {{$role->name}}
                         </td>
                         <td class="d-flex">
-                            <button class="btn btn-outline-primary btn-circle edit-role"
-                                    title="Cập nhật thông tin nhóm quyền"
-                                    data-toggle="modal"
-                                    editId="{{$role->id}}"
-                                    data-target="#editRoleModal">
+                            <a class="btn btn-outline-primary btn-circle" href="{{route('roles.edit',$role->id)}}"                                 >
                                 <i class="fa fa-edit text-dark"></i>
-                            </button>
+                            </a>
                             <button class="btn btn-outline-dark delete-role btn-circle" title="Xóa nhóm quyền"
                                     deleteId="{{$role->id}}"><i class="fas fa-trash text-danger"></i></button>
                             <button class="btn btn-outline-success btn-circle  show-role" title="Chi tiết nhóm quyền"
@@ -161,76 +157,6 @@
                             </button>
                             <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Trở về
                             </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="editRoleModal" tabindex="-1" role="dialog"
-             aria-labelledby="editRoleModalTitle"
-             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editRoleModalTitle">Cập nhật thông tin nhóm quyền <span
-                            ></span></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form method="post" id="update-role-form"
-                          enctype="multipart/form-data">
-                        <div class="modal-body text-dark ">
-                            @csrf
-                            <div class="form-group">
-                                <label for="">Tên hiện thị</label>
-                                <input type="text" class="form-control role-name" name="name" value="{{old('name')}}"
-                                       required>
-                                <span class="text-danger error-name"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="">Tên nhóm quyền</label>
-                                <input type="text" class="form-control role-slug" name="slug" value="{{old('slug')}}"
-                                       required>
-                                <span class="text-danger error-slug"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="permissions">Quyền</label>
-                                <div class=" row">
-                                    <div class="form-check-inline col-4 m-0">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input   select-all" value=""> Chọn
-                                            tất cả
-                                        </label>
-                                    </div>
-                                    @foreach($permissions as $key=>$permission)
-                                        <div class="form-check-inline col-4 m-0">
-                                            <label class="form-check-label">
-                                                @if($permission->slug=="not-permission")
-                                                    <input type="checkbox" class="form-check-input  un-select-all" checked
-                                                           name="permissions[]"
-                                                           value="999" {{ in_array(old('permissions'), old('permissions', [])) ? 'checked' : '' }}>Không
-                                                    có quyền
-                                                @else
-                                                    <input type="checkbox" class="form-check-input   select-item"
-                                                           name="permissions[]"
-                                                           value="{{$permission->id}}">{{$permission->name}}
-                                                @endif
-                                            </label>
-                                        </div>
-                                    @endforeach
-                                    <span class="text-danger error-permissions"></span>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-outline-primary update-role"><i
-                                        class="fas fa-pencil-alt">
-                                        Cập nhật thông tin
-                                    </i>
-                                </button>
-                                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Trở về
-                                </button>
-                            </div>
                         </div>
                     </form>
                 </div>
