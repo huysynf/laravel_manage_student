@@ -5,6 +5,22 @@ $(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    //select all
+    $('.select-all').change(function() {
+        $('.select-item').prop("checked", $(this).prop("checked"));
+        $('.un-select-all').prop("checked", false);
+    });
+    $('.un-select-all').change(function() {
+        if ($(this).prop("checked") == true) {
+            $('.select-item').prop("checked", false);
+            $('.select-all').prop("checked", false);
+        }
+    });
+    $('.select-item').change(function () {
+        $(this).prop("checked", $(this).prop("checked"));
+        $('.un-select-all').prop("checked", false);
+    });
     //count row table
     countStt();
 
@@ -307,6 +323,73 @@ $(function () {
 
             });
     })
+    //role
+    let role=$('#role');
+    let rolePath='/manage/roles';
+    let addRole=$('.add-role');
+    let roleId=0;
+    $('.role-select-permission').select2();
+    addRole.click(function () {
+        $("#new-role-form").trigger("reset");
+        resetErrorRole();
+    });
+    role.on('click', '.new-role', function () {
+        resetErrorRole();
+      let  roleData = new FormData($('#new-role-form')[0]);
+        callAjax(rolePath, roleData, postMethodForm)
+            .done(data => {
+                $('#newRoleModal').modal('hide');
+                alertSuccess(data.message);
+                let role =fillRoleToRowTable(data.data);
+                $('tbody').prepend(role);
+                countStt();
+            })
+            .fail(data => {
+                const errors = data.responseJSON.errors;
+                console.log(data.responseJSON);
+                resetErrorRole();
+                showErrorRole(errors);
+            });
+    });
+    role.on('click', '.show-role', function () {
+        roleId= $(this).attr('showId');
+       let  urlRole = rolePath + '/' + roleId;
+        callAjax(urlRole)
+            .done(data => {
+                let role = data.data;
+                console.log(role);
+                $('.role-name').html(role.name);
+                let permissions=arrayOjectParseToNameP(role.permissions)
+                $('.permissions-box').html(permissions);
+            })
+    });
+    role.on('click', '.edit-role', function () {
+        resetErrorRole();
+        roleId= $(this).attr('editId');
+       let urlRole = rolePath + "/" + roleId;
+        callAjax(urlRole)
+            .done(data => {
+                let role = data.data;
+                $('.role-name').val(role.name);
+                $('.role-slug').val(role.slug);
+                let permissions=role.permissions;
+                  permissions.forEach(item=>{
 
+               });
 
+            })
+    });
+    role.on('click', '.delete-role', function () {
+        roleId = $(this).attr('deleteId');
+        let urlRole = rolePath + "/" + roleId;
+        destroyResource(urlRole)
+            .then(data => {
+                alertSuccess(data.message);
+                $(this).parents('tr').remove();
+            })
+            .catch(data => {
+                alertError(data.message);
+            });
+
+    });
 });

@@ -31,6 +31,11 @@ Route::group(['prefix' => 'manage', 'namespace' => 'Admins', 'middleware' => ['a
         'edit',
         'create',
     ]);
+    Route::resource('/permissions', 'PermissionController')->except([
+        'update',
+        'edit',
+        'create',
+    ]);
     //facultys
     Route::resource('faculties', 'FacultyController');
     Route::get('faculties/search/{searchkey}', 'FacultyController@search');

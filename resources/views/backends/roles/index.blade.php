@@ -10,8 +10,11 @@
                 title="thêm mới nhóm quyền"
                 data-toggle="modal"
                 data-target="#newRoleModal"
-        ><i class="fas fa-plus fa-sm text-success"></i> Thêm mới Quyền
+        ><i class="fas fa-plus fa-sm text-success"></i> Thêm mới nhóm Quyền
         </button>
+        <a class="ml-2 btn btn-sm btn-primary shadow-sm add-role" href="{{route('permissions.index')}}" title="quản lí quyền"
+        ><i class="fas fa-plus fa-sm text-success"></i> Quản lí Quyền
+        </a>
     </div>
     @if(session('message'))
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -33,11 +36,11 @@
                 </div>
                 <div class="d-flex flex-column ml-1">
                     <lable class="text-primary" for="role">Danh sách quyền</lable>
-                    <select name="permission" class="h-50">
-                        <option value="" {{request()->input('role')==""?'selected':''}}>Tất cả</option>
-                        <option value="1" {{request()->input('role')==1?'selected':''}}>Người dùng</option>
-                        <option value="2"{{request()->input('role')==2?'selected':''}} >Nhân viên</option>
-                        <option value="3" {{request()->input('role')==3?'selected':''}} >Quản trị</option>
+                    <select name="permission" class="h-50 role-select-permission">
+                        <option value="" {{request()->input('permission')==""?'selected':''}}>Tất cả</option>
+                        @foreach($permissions as $key=>$permission)
+                            <option  name="permissions" {{request()->input('permission')==$permission->name?'selected':''}} value="{{$permission->name}}">{{$permission->name}}
+                        @endforeach
                     </select>
                 </div>
                 <div class="align-self-end ml-3">
@@ -75,7 +78,7 @@
                                     data-target="#editRoleModal">
                                 <i class="fa fa-edit text-dark"></i>
                             </button>
-                            <button class="btn btn-outline-dark delete-role btn-circle" title="Xóa nhóm quyề"
+                            <button class="btn btn-outline-dark delete-role btn-circle" title="Xóa nhóm quyền"
                                     deleteId="{{$role->id}}"><i class="fas fa-trash text-danger"></i></button>
                             <button class="btn btn-outline-success btn-circle  show-role" title="Chi tiết nhóm quyền"
                                     data-toggle="modal"
@@ -101,7 +104,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="newUserModalTitle">Thêm mới nhóm quyền <span
-                               ></span></h5>
+                            ></span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -127,18 +130,23 @@
                                 <div class=" row">
                                     <div class="form-check-inline col-4 m-0">
                                         <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input   select-all" value=""> Chọn tất cả
-                                        </label>
-                                    </div>
-                                    <div class="form-check-inline col-4 m-0">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input  un-select-all" name="permissions[]" value="0" {{ in_array(old('permissions'), old('permissions', [])) ? 'checked' : '' }}>Không có quyền
+                                            <input type="checkbox" class="form-check-input   select-all" value=""> Chọn
+                                            tất cả
                                         </label>
                                     </div>
                                     @foreach($permissions as $key=>$permission)
                                         <div class="form-check-inline col-4 m-0">
                                             <label class="form-check-label">
-                                                <input type="checkbox" class="form-check-input   select-item" name="permissions[]" value="{{$permission->id}}">{{$permission->name}}
+                                                @if($permission->slug=="not-permission")
+                                                    <input type="checkbox" class="form-check-input  un-select-all" checked
+                                                           name="permissions[]"
+                                                           value="999" {{ in_array(old('permissions'), old('permissions', [])) ? 'checked' : '' }}>Không
+                                                            có quyền
+                                                @else
+                                                    <input type="checkbox" class="form-check-input   select-item"
+                                                           name="permissions[]"
+                                                           value="{{$permission->id}}">{{$permission->name}}
+                                                @endif
                                             </label>
                                         </div>
                                     @endforeach
@@ -174,35 +182,88 @@
                           enctype="multipart/form-data">
                         <div class="modal-body text-dark ">
                             @csrf
-
                             <div class="form-group">
-                                <label for="">Tên nhóm quyền</label>
-                                <input type="text" class="form-control user-name" name="name" value="{{old('name')}}"
+                                <label for="">Tên hiện thị</label>
+                                <input type="text" class="form-control role-name" name="name" value="{{old('name')}}"
                                        required>
                                 <span class="text-danger error-name"></span>
                             </div>
                             <div class="form-group">
-                                <label for="">Quyền</label>
-                                <select class="form-control role-user" name="permissions[]">
-                                    <option value=" " selected>---- Chọn quyền ----</option>
-                                    <option value="1" {{old('role')==1?'selected':''}}>Người dùng</option>
-                                    <option value="2" {{old('role')==2?'selected':''}} >Nhân viên</option>
-                                    <option value="3" {{old('role')==3?'selected':''}} >Quản trị</option>
-                                </select>
-                                <span class="text-danger error-role"></span>
+                                <label for="">Tên nhóm quyền</label>
+                                <input type="text" class="form-control role-slug" name="slug" value="{{old('slug')}}"
+                                       required>
+                                <span class="text-danger error-slug"></span>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-primary update-role"><i
-                                    class="fas fa-pencil-alt">
-                                    Cập nhật thông tin
-                                </i>
-                            </button>
-                            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Trở về
-                            </button>
+                            <div class="form-group">
+                                <label for="permissions">Quyền</label>
+                                <div class=" row">
+                                    <div class="form-check-inline col-4 m-0">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input   select-all" value=""> Chọn
+                                            tất cả
+                                        </label>
+                                    </div>
+                                    @foreach($permissions as $key=>$permission)
+                                        <div class="form-check-inline col-4 m-0">
+                                            <label class="form-check-label">
+                                                @if($permission->slug=="not-permission")
+                                                    <input type="checkbox" class="form-check-input  un-select-all" checked
+                                                           name="permissions[]"
+                                                           value="999" {{ in_array(old('permissions'), old('permissions', [])) ? 'checked' : '' }}>Không
+                                                    có quyền
+                                                @else
+                                                    <input type="checkbox" class="form-check-input   select-item"
+                                                           name="permissions[]"
+                                                           value="{{$permission->id}}">{{$permission->name}}
+                                                @endif
+                                            </label>
+                                        </div>
+                                    @endforeach
+                                    <span class="text-danger error-permissions"></span>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-primary update-role"><i
+                                        class="fas fa-pencil-alt">
+                                        Cập nhật thông tin
+                                    </i>
+                                </button>
+                                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Trở về
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+        <div class="modal fade" id="showRoleModal" tabindex="-1" role="dialog"
+             aria-labelledby="showRoleModalTitle"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="showRoleModalTitle"> Thông tin người dùng <span
+                            ></span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body text-dark ">
+                        <div class="d-flex flex-column justify-content-between">
+                            <p>Tên quyền: <span class="role-name"></span></p>
+                            <p>Danh sách quyền:</p>
+                            <div class="d-flex permissions-box">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Trở về
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
 
         </div>

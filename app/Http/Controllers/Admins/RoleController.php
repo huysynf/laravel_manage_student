@@ -3,85 +3,59 @@
 namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\CreateRoleRequest;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use App\Repositories\Admins\RoleRepository;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    protected $roleRepository;
+    public function  __construct(RoleRepository $roleRepository)
     {
-        return  view('backends.roles.index')->with(['roles'=>Role::paginate(10),'permissions'=>Permission::all()]);
+        $this->roleRepository=$roleRepository;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function index(Request $request)
     {
-        //
+        $data=$request->only('name','permission');
+        return  view('backends.roles.index')->with(['roles'=>$this->roleRepository->search($data),'permissions'=>Permission::all()]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(CreateRoleRequest $request)
     {
-        //
+        return response()->json([
+            'status'=>200,
+            'message'=>'Thêm mới nhóm quyền thành công',
+            'data'=>$this->roleRepository->create($request->only(['name','slug']),$request->input('permissions')),
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        //
+        return response()->json([
+            'status'=>200,
+            'message'=>'Lấy thông tin nhóm quyền thành công',
+            'data'=>$this->roleRepository->show($id),
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        return response()->json([
+            'status'=>200,
+            'message'=>$this->roleRepository->destroy($id),
+        ]);
     }
 }

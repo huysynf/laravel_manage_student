@@ -14,10 +14,26 @@ class Role extends Model
     ];
 
     public function permissions(){
-        return $this->hasMany(Permission::class);
+        return $this->belongsToMany(Permission::class,'role_permission');
     }
     public function users(){
-        $this->hasMany(User::class);
+        $this->belongsToMany(User::class);
+    }
+    public function findOrFail($id){
+        return $this->with('permissions')->findOrFail($id);
+    }
+    public function search($name,$permission){
+            return $this
+                ->when($permission, function ($query) use ($permission) {
+                    $query->whereHas('permissions', function ($q) use ($permission) {
+                        $q->where('name',$permission );
+                    });
+                })
+                ->when($name, function ($query) use ($name) {
+                    $query->where('name', 'LIKE', '%' . $name . '%');
+                })
+                ->latest('id')
+                ->paginate(10);
     }
     public function  hassAccess(array $permissions):bool
     {

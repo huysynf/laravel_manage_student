@@ -92,7 +92,7 @@ function showErrorSubject(errors) {
 function arrayOjectParseToNameP(data) {
     let html = "";
     data.forEach(item => {
-        html += `<p>${item.name}<p/>`;
+        html += `<span> ${item.name},<span/>`;
     });
     return html;
 }
@@ -180,23 +180,24 @@ function fillUserToRowTable(user) {
             <i class="fas fa-key text-warning"></i></button>
         </td>
        </tr>
-   `;
+   `;}
 
-    //role
-    function showErrorRole(errors) {
-        (errors.name) ? $('.error-name').html(errors.name[0]) : "";
-        (errors.slug) ? $('.error-lug').html(errors.slug[0]) : "";
-        (errors.permissions) ? $('.error-permissions').html(errors.permissions[0]) : "";
-    }
 
-    function resetErrorRole() {
-        $('.error-name').html('');
-        $('.error-slug').html('');
-        $('.error-permissions').html('');
-    }
+//role
+function showErrorRole(errors) {
+    (errors.name) ? $('.error-name').html(errors.name[0]) : "";
+    (errors.slug) ? $('.error-slug').html(errors.slug[0]) : "";
+    (errors.permissions) ? $('.error-permissions').html(errors.permissions[0]) : "";
+}
 
-    function fillRoleToRowTable(role) {
-        return `<tr>
+function resetErrorRole() {
+    $('.error-name').html('');
+    $('.error-slug').html('');
+    $('.error-permissions').html('');
+}
+
+function fillRoleToRowTable(role) {
+    return `<tr>
                 <td>
                     <strong></strong>
                 </td>
@@ -220,7 +221,4 @@ function fillUserToRowTable(user) {
                     </button>
                 </td>
             </tr>`;
-    }
-
 }
-
