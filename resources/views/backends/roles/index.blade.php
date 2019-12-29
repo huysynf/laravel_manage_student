@@ -6,15 +6,20 @@
 
     <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Quản lí nhóm quyền</h1>
-        <button class="ml-2 btn btn-sm btn-primary shadow-sm add-role"
-                title="thêm mới nhóm quyền"
-                data-toggle="modal"
-                data-target="#newRoleModal"
-        ><i class="fas fa-plus fa-sm text-success"></i> Thêm mới nhóm Quyền
-        </button>
-        <a class="ml-2 btn btn-sm btn-primary shadow-sm add-role" href="{{route('permissions.index')}}" title="quản lí quyền"
-        ><i class="fas fa-plus fa-sm text-success"></i> Quản lí Quyền
-        </a>
+        @can('create-role')
+            <button class="ml-2 btn btn-sm btn-primary shadow-sm add-role"
+                    title="thêm mới nhóm quyền"
+                    data-toggle="modal"
+                    data-target="#newRoleModal"
+            ><i class="fas fa-plus fa-sm text-success"></i> Thêm mới nhóm Quyền
+            </button>
+        @endcan
+        @can('view-permission')
+            <a class="ml-2 btn btn-sm btn-primary shadow-sm add-role" href="{{route('permissions.index')}}"
+               title="quản lí quyền"
+            ><i class="fas fa-plus fa-sm text-success"></i> Quản lí Quyền
+            </a>
+        @endcan
     </div>
     @if(session('message'))
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -39,7 +44,8 @@
                     <select name="permission" class="h-50 role-select-permission">
                         <option value="" {{request()->input('permission')==""?'selected':''}}>Tất cả</option>
                         @foreach($permissions as $key=>$permission)
-                            <option  name="permissions" {{request()->input('permission')==$permission->name?'selected':''}} value="{{$permission->name}}">{{$permission->name}}
+                            <option name="permissions"
+                                    {{request()->input('permission')==$permission->name?'selected':''}} value="{{$permission->name}}">{{$permission->name}}
                         @endforeach
                     </select>
                 </div>
@@ -71,11 +77,16 @@
                             {{$role->name}}
                         </td>
                         <td class="d-flex">
-                            <a class="btn btn-outline-primary btn-circle" href="{{route('roles.edit',$role->id)}}"                                 >
-                                <i class="fa fa-edit text-dark"></i>
-                            </a>
-                            <button class="btn btn-outline-dark delete-role btn-circle" title="Xóa nhóm quyền"
-                                    deleteId="{{$role->id}}"><i class="fas fa-trash text-danger"></i></button>
+
+                            @can('create-role')
+                                <a class="btn btn-outline-primary btn-circle" href="{{route('roles.edit',$role->id)}}">
+                                    <i class="fa fa-edit text-dark"></i>
+                                </a>
+                            @endcan
+                            @can('edit-role')
+                                <button class="btn btn-outline-dark delete-role btn-circle" title="Xóa nhóm quyền"
+                                        deleteId="{{$role->id}}"><i class="fas fa-trash text-danger"></i></button>
+                            @endcan
                             <button class="btn btn-outline-success btn-circle  show-role" title="Chi tiết nhóm quyền"
                                     data-toggle="modal"
                                     showId="{{$role->id}}"
@@ -134,10 +145,12 @@
                                         <div class="form-check-inline col-4 m-0">
                                             <label class="form-check-label">
                                                 @if($permission->slug=="not-permission")
-                                                    <input type="checkbox" class="form-check-input  un-select-all" checked
+                                                    <input type="checkbox" class="form-check-input  un-select-all"
+                                                           checked
                                                            name="permissions[]"
-                                                           value="999" {{ in_array(old('permissions'), old('permissions', [])) ? 'checked' : '' }}>Không
-                                                            có quyền
+                                                           value="999" {{ in_array(old('permissions'), old('permissions', [])) ? 'checked' : '' }}>
+                                                    Không
+                                                    có quyền
                                                 @else
                                                     <input type="checkbox" class="form-check-input   select-item"
                                                            name="permissions[]"

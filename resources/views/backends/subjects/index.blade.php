@@ -6,10 +6,14 @@
 
     <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Quản lý môn học</h1>
+
+        @can('create-subject')
         <button type="button" class="ml-2 btn btn-sm btn-primary shadow-sm add-subject"
                 title="Thêm mới môn học" data-toggle="modal" data-target="#newsubjectModal">
             <i class="fas fa-plus fa-sm text-dark"></i> Thêm mới môn học
         </button>
+        @endcan
+
     </div>
     {{--    table data--}}
     <div class="row " id="subject">
@@ -57,6 +61,8 @@
                         </td>
                         <td>{{$subject->description}}</td>
                         <td>
+
+                            @can('edit-subject')
                             <button class="btn btn-outline-primary edit-subject btn-circle"
                                     title="Cập nhật thông tin khoa"
                                     editId="{{$subject->id}}"
@@ -65,8 +71,12 @@
                             ><i
                                     class="fa fa-edit text-warning"></i>
                             </button>
+                            @endcan
+                            @can('destroy-subject')
                             <button class="btn btn-outline-dark delete-subject btn-circle" title="Xóa nhật khoa"
                                     deleteId="{{$subject->id}}"><i class="fas fa-trash text-danger"></i></button>
+                                @endcan
+
                         </td>
                     </tr>
                 @endforeach
