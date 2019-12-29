@@ -1,0 +1,5 @@
+.bg-gradient-sidebar{
+    background-color: #5a5c69;
+    background-image: linear-gradient(180deg,#45464e 10%,rgba(0,0,0,.9) 100%);
+    background-size: cover;
+}
