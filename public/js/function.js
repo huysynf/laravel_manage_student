@@ -1,5 +1,3 @@
-
-//function alert eror
 function alertSuccess(message) {
     Swal.fire({
         position: 'center',
@@ -92,4 +90,26 @@ function showErrorSubject(errors) {
     (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
     (errors.description) ? $('.description-error').html(errors.description[0]) : "";
 }
+function  fillFacultyToRowTable(faculty) {
+    return `<tr>
+             <td>
+                <strong></strong>
+            </td>
+            <td>
+                ${faculty.name}
+            </td>
+            <td>${faculty.description}</td>
+            <td>
+                <button class="btn btn-outline-primary btn-circle edit-faculty"
+                        title="Cập nhật thông tin khoa"
+                        editId="${faculty.id}"
+                        data-toggle="modal"
+                        data-target="#editFacultyModal"
+                ><i class="fa fa-edit text-warning"></i>
+                </button>
+                <button class="btn btn-outline-dark delete-faculty btn-circle" title="Xóa nhật khoa"
+                        deleteId="${faculty.id}"><i class="fas fa-trash text-danger"></i></button>
+            </td>
+           </tr>`;
 
+}
