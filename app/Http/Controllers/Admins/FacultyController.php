@@ -20,6 +20,7 @@ class FacultyController extends Controller
 
     public function index(Request $request)
     {
+        $this->authorize('view-faculty');
         $data=$request->only(['name','lesson']);
         $faculties = $this->facultyRepository->search($data);
         return view('backends.faculties.index', compact('faculties'));
@@ -27,6 +28,7 @@ class FacultyController extends Controller
 
     public function store(CreateFacultyRequest $request)
     {
+
         $data = $request->all();
         return response()->json([
             'status' => 200,
