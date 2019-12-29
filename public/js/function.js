@@ -281,3 +281,26 @@ function fillRoleToRowTable(role) {
 
 //show image when chose
 
+ function fillPermissionToRowTable(permission) {
+    return ` <tr>
+                        <td>
+                            <strong></strong>
+                        </td>
+                        <td>
+                            ${permission.name}
+                        </td>
+                        <td>
+                               ${permission.slug}
+                        </td>
+                        <td class="d-flex">
+                            <button class="btn btn-outline-primary btn-circle edit-permission"
+                                    title="Cập nhật thông tin  quyền"
+                                    data-toggle="modal"
+                                    editId="   ${permission.id}"
+                                    data-target="#editPermissionModal">
+                                <i class="fa fa-edit text-dark"></i>
+                            </button>
+                        </td>
+                    </tr>`;
+
+}

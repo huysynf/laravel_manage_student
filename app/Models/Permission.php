@@ -17,4 +17,14 @@ class Permission extends Model
         return $this->belongsToMany(Role::class);
     }
 
+    public function search($name)
+    {
+        return $this
+            ->when($name, function ($query) use ($name) {
+                $query->orwhere('name', 'LIKE', '%' . $name . '%');
+            })
+            ->latest('id')
+            ->paginate(10);
+    }
+
 }

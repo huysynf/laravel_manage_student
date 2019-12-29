@@ -31,15 +31,15 @@ Route::group(['prefix' => 'manage', 'namespace' => 'Admins', 'middleware' => ['a
     Route::post('users/set-password/{id}', 'UserController@setPassword');
     Route::post('users/change-password/{id}', 'UserController@changePassword');
     Route::resource('/roles', 'RoleController')->except([
-        'update',
-        'edit',
         'create',
     ]);
     Route::resource('/permissions', 'PermissionController')->except([
-        'update',
         'edit',
         'create',
+        'destroy',
+        'update',
     ]);
+    Route::post('permissions/update/{id}', 'PermissionController@update');
     //facultys
     Route::resource('faculties', 'FacultyController')->except([
         'update',

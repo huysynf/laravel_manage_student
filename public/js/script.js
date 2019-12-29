@@ -412,7 +412,9 @@ $(function () {
                 $('.role-name').val(role.name);
                 $('.role-slug').val(role.slug);
                 let permissions=role.permissions;
+                console.log(permissions);
                   permissions.forEach(item=>{
+                      console.log(item.id);
 
                });
 
@@ -428,6 +430,41 @@ $(function () {
             })
             .catch(data => {
                 alertError(data.message);
+            });
+    });
+
+    //permission
+    let permission=$('#permission');
+    let permissionPath='/manage/permissions';
+    let permissionId=0;
+    permission.on('click', '.edit-permission', function () {
+      $('.error-name').html('');
+        permissionId= $(this).attr('editId');
+        let urlPermission = permissionPath + "/" + permissionId;
+        callAjax(urlPermission)
+            .done(data => {
+                let permission = data.data;
+                $('.permission-name').val(permission.name);
+                $('.permission-slug').val(permission.slug);
+
+            })
+    });
+
+    permission.on('click', '.update-permission', function () {
+        let permissionData = new FormData($('#update-permission-form')[0]);
+        let urlUpdate = permissionPath + '/update/' + permissionId;
+        callAjax(urlUpdate, permissionData, postMethodForm)
+            .done(data => {
+                console.log(data);
+                $('#editPermissionModal').modal('hide')
+                alertSuccess(data.message);
+                let permissionRow = fillPermissionToRowTable(data.data);
+                $(".edit-permission[editId="+permissionId+"]").parents('tr').replaceWith(permissionRow);
+                countStt();
+            })
+            .fail(data => {
+                const errors = data.responseJSON.errors;
+                $('.error-name').html(errors.name[0]);
             });
     });
 });
