@@ -3,81 +3,83 @@
 namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Students\CreateStudentRequest;
-use App\Http\Requests\Students\UpdateStudentRequest;
-use App\Models\Classroom;
-use App\Models\ClassroomStudent;
-use App\Models\Student;
-use DB;
 use Illuminate\Http\Request;
-use Image;
-use App\Repositories\Admins\StudentRepository;
 
 class StudentController extends Controller
 {
-    protected $student;
-    protected $classroom;
-    protected $imagePath;
-    protected $classroom_student;
-    protected $studentRepository;
-
-    public function __construct(StudentRepository $studentRepository)
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
     {
-        $this->studentRepository=$studentRepository;
-        $this->classroom = new Classroom();
-        $this->student = new Student();
-        $this->imagePath = 'images/students/';
-        $this->classroom_student = new ClassroomStudent();
+        //
     }
 
-    public function index(Request $request)
-    {
-        $students = $this->studentRepository->search($request->only(['name','address','classrooms']));
-        return view('backends.students.index')->with(['students'=>$students['students'], 'classrooms'=>$students['classrooms']]);
-
-    }
-
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
-        $classrooms = $this->classroom->all(['id', 'name']);
-        return view('backends.students.create', compact('classrooms'));
+        //
     }
 
-    public function store(CreateStudentRequest $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
     {
-        $this->studentRepository->store($request->all());
-        return redirect()->route('students.index')->with('message', 'Tạo mới học sinh thành công');
-
+        //
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function show($id)
     {
-        return response()->json([
-            'status' => 200,
-            'message' => 'Lấy thông tin sinh viên thành công',
-            'data' => $this->student->findOrFail($id),
-        ]);
+        //
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
-        $data=$this->studentRepository->edit($id);
-        return view('backends.students.edit')->with(['student'=>$data['student'], 'classrooms'=>$data['classrooms'], 'listClassroomStudent'=>$data['listClassroomId']]);
-
+        //
     }
 
-    public function update(UpdateStudentRequest $request, $id)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
     {
-        $this->studentRepository->update($request->all(),$id);
-        return redirect()->route('students.index')->with('message', 'Cập nhật thành công');
-
+        //
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
-        return response()->json([
-            'status' => 204,
-            'message' => $this->studentRepository->destroy($id),
-        ]);
+        //
     }
 }

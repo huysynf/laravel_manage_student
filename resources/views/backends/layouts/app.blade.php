@@ -20,8 +20,6 @@
     <link href="{{asset('css/sb-admin-2.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/sweetalert2.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/select2.min.css')}}">
-
-
     <link href="{{asset('css/styles.css')}}" rel="stylesheet">
 
 </head>

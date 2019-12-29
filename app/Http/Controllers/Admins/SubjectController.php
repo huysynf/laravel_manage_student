@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Subjects\CreateSubjectRequest;
 use App\Http\Requests\Subjects\UpdateSubjectRequest;
 use App\Models\Subject;
+use Illuminate\Http\Request;
+
 
 class SubjectController extends Controller
 {
@@ -16,9 +18,11 @@ class SubjectController extends Controller
         $this->subject = new Subject();
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $subjects = $this->subject->getpaginate(10);
+        $name = $request->input('name');
+        $lesson = $request->input('lesson');
+        $subjects = $this->subject->search($name, $lesson);
         return view('backends.subjects.index', compact('subjects'));
     }
 
@@ -31,7 +35,14 @@ class SubjectController extends Controller
             'message' => 'Thêm mới môn học thành công',
         ]);
     }
-
+    public  function  show($id){
+        $subject=$this->subject->findOrFail($id);
+        return response()->json([
+            'status'=>200,
+            'message'=>'Lấy dữ liêu thành công',
+            'data'=>$subject,
+        ]);
+    }
     public function update(UpdateSubjectRequest $request, $id)
     {
         $subject = $this->subject->findOrFail($id);
@@ -52,15 +63,5 @@ class SubjectController extends Controller
         ]);
     }
 
-    public function search($search)
-    {
 
-        $subjects = $this->subject->search($search);
-        return response()->json([
-            'status' => 200,
-            'message' => 'Có ' . count($subjects) . ' kết quả tìm thấy với từ khóa mon:' . $search,
-            'data' => $subjects,
-        ]);
-
-    }
 }

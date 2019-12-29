@@ -23,16 +23,16 @@ function alertError(message) {
 
 //curd resource
 
-function callAjax(url, data = "", type = 'get') {
+
+function callAjax( url,data="",type='get') {
     return $.ajax({
         url: url,
-        type: type,
+        type:type,
         data: data,
         processData: false,
         contentType: false,
     });
 }
-
 destroyResource = (url) => {
     return new Promise(((resolve, reject) => {
         Swal.fire({
@@ -92,12 +92,51 @@ function showErrorSubject(errors) {
     (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
     (errors.description) ? $('.description-error').html(errors.description[0]) : "";
 }
+function showErrorFaculty(errors) {
+    (errors.name) ? $('.nameError').html(errors.name[0]) : "";
+    (errors.description) ? $('.descriptionError').html(errors.description[0]) : "";
 
+}
+
+//subject error
+function resetErrorSubject() {
+    $('.name-error').html('');
+    $('.lesson-error').html('');
+    $('.description-error').html('');
+}
+
+function showErrorSubject(errors) {
+    (errors.name) ? $('.name-error').html(errors.name[0]) : "";
+    (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
+    (errors.description) ? $('.description-error').html(errors.description[0]) : "";
+}
+function  fillFacultyToRowTable(faculty) {
+    return `<tr>
+             <td>
+                <strong></strong>
+            </td>
+            <td>
+                ${faculty.name}
+            </td>
+            <td>${faculty.description}</td>
+            <td>
+                <button class="btn btn-outline-primary btn-circle edit-faculty"
+                        title="Cập nhật thông tin khoa"
+                        editId="${faculty.id}"
+                        data-toggle="modal"
+                        data-target="#editFacultyModal"
+                ><i class="fa fa-edit text-warning"></i>
+                </button>
+                <button class="btn btn-outline-dark delete-faculty btn-circle" title="Xóa nhật khoa"
+                        deleteId="${faculty.id}"><i class="fas fa-trash text-danger"></i></button>
+            </td>
+           </tr>`;
+}
 //classroom
 function arrayOjectParseToNameP(data) {
     let html = "";
     data.forEach(item => {
-        html += `<p>${item.name}<p/>`;
+        html += `<span>${item.name}  ,<span/>`;
     });
     return html;
 }
@@ -108,11 +147,10 @@ function readURL(input) {
         var reader = new FileReader();
         reader.onload = function (e) {
             $('.image-show').attr('src', e.target.result);
-        }
+        };
         reader.readAsDataURL(input.files[0]);
     }
 }
-
 $(".image-input").change(function () {
     readURL(this);
 });
