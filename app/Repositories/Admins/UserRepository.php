@@ -21,7 +21,7 @@ class UserRepository extends BaseRepository
 
     public function search(array $data)
     {
-        return $this->model->search($data['name'], $data['role']);
+        return $this->model->search($data['name']??null, $data['role']??null);
     }
 
     public function create(array $data): User
