@@ -17,11 +17,12 @@ Route::get('/', function () {
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-
 Route::get('/home', 'HomeController@index')->name('home');
-Route::group(['prefix' => 'manage', 'namespace' => 'Admins', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'manage', 'namespace' => 'Admins', 'middleware' => ['auth','can:not-permission']], function () {
 
     Route::get('/', 'DashboardController@index')->name('dashboard.index');
+    Route::get('/error-notfound', 'ErrorController@errorNotFound')->name('errors.notfound');
+    Route::get('/error-forbidden', 'ErrorController@errorForbidden')->name('errors.forbidden');
     Route::resource('/users', 'UserController')->except([
         'update',
         'edit',

@@ -7,11 +7,11 @@ $(function () {
     });
 
     //select all
-    $('.select-all').change(function() {
+    $('.select-all').change(function () {
         $('.select-item').prop("checked", $(this).prop("checked"));
         $('.un-select-all').prop("checked", false);
     });
-    $('.un-select-all').change(function() {
+    $('.un-select-all').change(function () {
         if ($(this).prop("checked") == true) {
             $('.select-item').prop("checked", false);
             $('.select-all').prop("checked", false);
@@ -142,11 +142,11 @@ $(function () {
     subject.on('click', '.update-subject', function () {
         dataResource = new FormData($('.edit-subject-form')[0]);
         urlResource = subjectPath + "/update/" + idAction;
-        callAjax(urlResource,dataResource,newMethodForm)
+        callAjax(urlResource, dataResource, newMethodForm)
             .done(data => {
                 $('#editSubjectModal').modal('hide')
-                let subjectRow=fillSubjectToRowTable(data.data);
-                $(".edit-subject[editId="+idAction+"]").parents('tr').replaceWith(subjectRow);
+                let subjectRow = fillSubjectToRowTable(data.data);
+                $(".edit-subject[editId=" + idAction + "]").parents('tr').replaceWith(subjectRow);
                 alertSuccess(data.message);
                 countStt();
             })
@@ -158,7 +158,7 @@ $(function () {
     });
     subject.on('click', '.delete-subject', function () {
         idAction = $(this).attr('deleteId');
-        urlResource=subjectPath + "/"+idAction;
+        urlResource = subjectPath + "/" + idAction;
         destroyResource(urlResource)
             .then(data => {
                 alertSuccess(data.message);
@@ -168,7 +168,6 @@ $(function () {
                 alertError(data.message);
             });
     });
-
 
 
 //classroom
@@ -180,7 +179,7 @@ $(function () {
 
     classroom.on('click', '.delete-classroom', function () {
         idAction = $(this).attr('deleteId');
-        urlResource=classroomPath+"/"+idAction;
+        urlResource = classroomPath + "/" + idAction;
         destroyResource(urlResource)
             .then(data => {
                 alertSuccess(data.message);
@@ -191,9 +190,9 @@ $(function () {
             });
     });
 
-    classroom.on('click','.show-classroom',function () {
-        idAction=$(this).attr('showId');
-        urlResource=classroomPath+"/"+idAction;
+    classroom.on('click', '.show-classroom', function () {
+        idAction = $(this).attr('showId');
+        urlResource = classroomPath + "/" + idAction;
         callAjax(urlResource)
             .done(data => {
                 let classroom = data.data;
@@ -204,7 +203,6 @@ $(function () {
                 $('.classroom-subject').html(classroom.subject.name);
             })
     });
-
 
 
     //student
@@ -258,6 +256,7 @@ $(function () {
         callAjax(urlResource, dataResource, 'post')
             .done(data => {
                 $('#newUserModal').modal('hide');
+                alertSuccess(data.message);
                 let userRow = fillUserToRowTable(data.data);
                 $('tbody').prepend(userRow);
                 countStt();
@@ -301,10 +300,10 @@ $(function () {
         urlResource = userPath + '/update/' + idAction;
         callAjax(urlResource, dataResource, 'post')
             .done(data => {
-                $('#editUserModal').modal('hide')
+                $('#editUserModal').modal('hide');
                 alertSuccess(data.message);
                 let userRow = fillUserToRowTable(data.data);
-                $(".edit-user[editId="+idAction+"]").parents('tr').replaceWith(userRow);
+                $(".edit-user[editId=" + idAction + "]").parents('tr').replaceWith(userRow);
                 countStt();
             })
             .fail(data => {
@@ -356,10 +355,10 @@ $(function () {
             });
     });
     //role
-    let role=$('#role');
-    let rolePath='/manage/roles';
-    let addRole=$('.add-role');
-    let roleId=0;
+    let role = $('#role');
+    let rolePath = '/manage/roles';
+    let addRole = $('.add-role');
+    let roleId = 0;
     $('.role-select-permission').select2();
     addRole.click(function () {
         $("#new-role-form").trigger("reset");
@@ -367,12 +366,12 @@ $(function () {
     });
     role.on('click', '.new-role', function () {
         resetErrorRole();
-      let  roleData = new FormData($('#new-role-form')[0]);
+        let roleData = new FormData($('#new-role-form')[0]);
         callAjax(rolePath, roleData, postMethodForm)
             .done(data => {
                 $('#newRoleModal').modal('hide');
                 alertSuccess(data.message);
-                let role =fillRoleToRowTable(data.data);
+                let role = fillRoleToRowTable(data.data);
                 $('tbody').prepend(role);
                 countStt();
             })
@@ -384,32 +383,32 @@ $(function () {
             });
     });
     role.on('click', '.show-role', function () {
-        roleId= $(this).attr('showId');
-       let  urlRole = rolePath + '/' + roleId;
+        roleId = $(this).attr('showId');
+        let urlRole = rolePath + '/' + roleId;
         callAjax(urlRole)
             .done(data => {
                 let role = data.data;
                 console.log(role);
                 $('.role-name').html(role.name);
-                let permissions=arrayOjectParseToNameP(role.permissions)
+                let permissions = arrayOjectParseToNameP(role.permissions)
                 $('.permissions-box').html(permissions);
             })
     });
     role.on('click', '.edit-role', function () {
         resetErrorRole();
-        roleId= $(this).attr('editId');
-       let urlRole = rolePath + "/" + roleId;
+        roleId = $(this).attr('editId');
+        let urlRole = rolePath + "/" + roleId;
         callAjax(urlRole)
             .done(data => {
                 let role = data.data;
                 $('.role-name').val(role.name);
                 $('.role-slug').val(role.slug);
-                let permissions=role.permissions;
+                let permissions = role.permissions;
                 console.log(permissions);
-                  permissions.forEach(item=>{
-                      console.log(item.id);
+                permissions.forEach(item => {
+                    console.log(item.id);
 
-               });
+                });
 
             })
     });
@@ -427,12 +426,12 @@ $(function () {
     });
 
     //permission
-    let permission=$('#permission');
-    let permissionPath='/manage/permissions';
-    let permissionId=0;
+    let permission = $('#permission');
+    let permissionPath = '/manage/permissions';
+    let permissionId = 0;
     permission.on('click', '.edit-permission', function () {
-      $('.error-name').html('');
-        permissionId= $(this).attr('editId');
+        $('.error-name').html('');
+        permissionId = $(this).attr('editId');
         let urlPermission = permissionPath + "/" + permissionId;
         callAjax(urlPermission)
             .done(data => {
@@ -452,7 +451,7 @@ $(function () {
                 $('#editPermissionModal').modal('hide')
                 alertSuccess(data.message);
                 let permissionRow = fillPermissionToRowTable(data.data);
-                $(".edit-permission[editId="+permissionId+"]").parents('tr').replaceWith(permissionRow);
+                $(".edit-permission[editId=" + permissionId + "]").parents('tr').replaceWith(permissionRow);
                 countStt();
             })
             .fail(data => {

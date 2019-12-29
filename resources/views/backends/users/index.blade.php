@@ -4,8 +4,6 @@
 @section('title',' Quản người dùng')
 
 @section('content')
-    <p> {{Auth::guard()->user()->hasAccessPermissionByRoleId('view-user',Auth::guard()->user()->role_id)}}</p>
-
     <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Quản lí người dùng</h1>
         <button class="ml-2 btn btn-sm btn-primary shadow-sm add-user"
@@ -76,6 +74,7 @@
                             {{$user->name}}
                         </td>
                         <td class="d-flex">
+                            @can('update-user')
                             <button class="btn btn-outline-primary btn-circle edit-user"
                                     title="Cập nhật thông tin người dùng"
                                     data-toggle="modal"
@@ -83,13 +82,15 @@
                                     data-target="#editUserModal">
                                 <i class="fa fa-edit text-dark"></i>
                             </button>
+                            @endcan
+                            @can('destroy-user')
                             <button class="btn btn-outline-dark delete-user btn-circle" title="Xóa người dùng"
                                     deleteId="{{$user->id}}"><i class="fas fa-trash text-danger"></i></button>
                             <button class="btn btn-outline-success btn-circle  show-user" title="Chi tiết người dùng"
                                     data-toggle="modal"
                                     showId="{{$user->id}}"
                                     data-target="#showUserModal"><i class="fas fa-info-circle text-primary"></i>
-                            </button>
+                            </button>@endcan
                             <button class="btn btn-outline-primary  btn-circle change-user-password " title="Đổi mật khẩu"
                                     data-toggle="modal"
                                     userId="{{$user->id}}"
