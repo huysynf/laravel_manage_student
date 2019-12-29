@@ -20,7 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role',
+        'role_id',
         'image',
         'phone',
     ];
@@ -57,16 +57,20 @@ class User extends Authenticatable
             $query->orwhere('name', 'LIKE', '%' . $name . '%');
         })
             ->when($role, function ($query) use ($role) {
-                $query->orwhere('role', $role);
+                $query->whereHas('role', function ($q) use ($role) {
+                    $q->where('name',$role );
+                });
             })
             ->latest('id')
             ->paginate(10);
     }
-    public function roles()
+    public function role()
     {
-        return $this->belongsToMany(Role::class,'role_user');
+        return $this->belongsTo(Role::class,'role_id');
     }
-
+    public  function findOrFail($id){
+        return $this->with('role')->findOrFail($id);
+    }
     public function hasAccess(array $permissions){
         foreach ($this->roles as $role){
             if($role->hasAcess($permissions)){
@@ -75,8 +79,6 @@ class User extends Authenticatable
         }
         return false;
     }
-    public function inRole(String $role){
-        return $this->roles()->where('slug',$role)->count()==1;
-    }
+
 
 }

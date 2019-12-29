@@ -33,12 +33,12 @@
                            name="name" value="">
                 </div>
                 <div class="d-flex flex-column ml-1">
-                    <lable class="text-primary" for="role">Quyền</lable>
-                    <select name="role" class="h-50">
-                        <option value="" {{request()->input('role')==""?'selected':''}}>Tất cả</option>
-                        <option value="1" {{request()->input('role')==1?'selected':''}}>Người dùng</option>
-                        <option value="2"{{request()->input('role')==2?'selected':''}} >Nhân viên</option>
-                        <option value="3" {{request()->input('role')==3?'selected':''}} >Quản trị</option>
+                    <lable class="text-primary" for="role">Nhóm quyền</lable>
+                    <select class="form-control user-select-role" name="role">
+                        <option value=" " selected>Tất cả</option>
+                        @foreach($roles as $role)
+                            <option value="{{$role->name}}" {{request()->input('role')==$role->name?'selected':''}}>{{$role->name}}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="align-self-end ml-3">
@@ -159,11 +159,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Quyền</label>
-                                <select class="form-control " name="role">
+                                <select class="form-control user-select-role user-role" name="role_id">
                                     <option value=" " selected>---- Chọn quyền ----</option>
-                                    <option value="1" {{old('role')==1?'selected':''}}>Người dùng</option>
-                                    <option value="2" {{old('role')==2?'selected':''}} >Nhân viên</option>
-                                    <option value="3" {{old('role')==3?'selected':''}} >Quản trị</option>
+                                    @foreach($roles as $role)
+                                        <option value="{{$role->id}}" {{old('role_id')==$role->id?'selected':''}}>{{$role->name}}</option>
+                                    @endforeach
                                 </select>
                                 <span class="text-danger error-role"></span>
                             </div>
@@ -250,11 +250,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Quyền</label>
-                                <select class="form-control role-user" name="role">
+                                <select class="form-control user-select-role user-role" name="role_id">
                                     <option value=" " selected>---- Chọn quyền ----</option>
-                                    <option value="1" {{old('role')==1?'selected':''}}>Người dùng</option>
-                                    <option value="2" {{old('role')==2?'selected':''}} >Nhân viên</option>
-                                    <option value="3" {{old('role')==3?'selected':''}} >Quản trị</option>
+                                    @foreach($roles as $role)
+                                        <option value="{{$role->id}}" {{old('role_id')==$role->id?'selected':''}}>{{$role->name}}</option>
+                                    @endforeach
                                 </select>
                                 <span class="text-danger error-role"></span>
                             </div>

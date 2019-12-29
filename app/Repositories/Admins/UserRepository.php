@@ -3,6 +3,7 @@
 namespace App\Repositories\Admins;
 
 
+use App\Models\Role;
 use App\Repositories\BaseRepository;
 use App\User;
 use DB;
@@ -12,16 +13,19 @@ use Image;
 class UserRepository extends BaseRepository
 {
     protected $imagePath;
-
+    protected  $role;
     public function __construct(User $model)
     {
         $this->model = $model;
         $this->imagePath = 'images/users/';
+        $this->role=new Role();
     }
 
     public function search(array $data)
     {
-        return $this->model->search($data['name']??null, $data['role']??null);
+        $data['users']=$this->model->search($data['name']??null, $data['role']??null);
+        $data['roles']=$this->role->all(['id','name']);
+        return $data;
     }
 
     public function create(array $data): User
@@ -35,7 +39,7 @@ class UserRepository extends BaseRepository
 
     public function show($id)
     {
-        return $this->model->find($id);
+        return $this->model->findOrFail($id);
     }
 
     public function update(array $data, $id): User

@@ -25,7 +25,7 @@ class CreateUserRequest extends FormRequest
     {
         return [
             'name'=>'required',
-            'role'=>'required',
+            'role_id'=>'required',
             'email'=>'required|unique:users,email','email',
             'phone'=>'required|regex:/\d{3}-\d{4}-\d{3}/',
             'image'=>'required|image|mimes:jpeg,bmp,png,jpg',
@@ -36,7 +36,7 @@ class CreateUserRequest extends FormRequest
     {
         return [
             'name.required'=>'* Tên không để trống',
-            'role.required'=>'* Chọn quyền',
+            'role_id.required'=>'* Chọn quyền',
             'email.required'=>'* Email không được để trống',
             'email.unique'=>'* Email đã được sử dụng! Hãy sử dụng email khác.',
             'email.email'=>'* Email không đúng định dạng.',

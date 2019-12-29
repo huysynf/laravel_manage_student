@@ -20,14 +20,15 @@ class UserController extends Controller
 
     public function __construct(UserRepository $userRepository)
     {
-        $this->middleware('check.employee');
+
         $this->userRepository = $userRepository;
     }
 
     public function index(Request $request)
     {
-        return view('backends.users.index')->with('users',
-            $this->userRepository->search($request->only(['name', 'role'])));
+        $data= $this->userRepository->search($request->only(['name', 'role']));
+        return view('backends.users.index')->with(['users'=>$data['users'],'roles'=>$data['roles']
+           ]);
     }
 
     public function store(CreateUserRequest $request)
@@ -36,7 +37,7 @@ class UserController extends Controller
             'name',
             'email',
             'password',
-            'role',
+            'role_id',
             'image',
             'phone',
         ]));
@@ -62,7 +63,7 @@ class UserController extends Controller
         $user = $this->userRepository->update($request->only([
             'name',
             'email',
-            'role',
+            'role_id',
             'image',
             'phone',
         ]), $id);

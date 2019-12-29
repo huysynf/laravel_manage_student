@@ -247,6 +247,7 @@ $(function () {
     let user = $('#user');
     let addUserBtn = $('.add-user');
     let userPath = "/manage/users";
+    $('.user-select-role').select2();
     // function
     addUserBtn.click(function () {
         $("#new-user-form").trigger("reset");
@@ -272,13 +273,13 @@ $(function () {
         idAction = $(this).attr('editId');
         urlResource = userPath + "/" + idAction;
         callAjax(urlResource)
-            .done(response => {
-                let user = response.data;
+            .done(data => {
+                let user = data.data;
                 $('.user-name').val(user.name);
                 $('.user-email').val(user.email);
                 $('.user-phone').val(user.phone);
                 $('.user-image').attr('src', '/images/users/' + user.image);
-                $('.role-user').val(user.role);
+                $('.user-role').val(user.role.id);
             })
     });
 
@@ -286,20 +287,13 @@ $(function () {
         idAction = $(this).attr('showId');
         urlResource = userPath + '/' + idAction;
         callAjax(urlResource)
-            .done(response => {
-                let user = response.data;
+            .done(data => {
+                let user = data.data;
                 $('.user-name').html(user.name);
                 $('.user-email').html(user.email);
                 $('.user-phone').html(user.phone);
                 $('.user-image').attr('src', '/images/users/' + user.image);
-                let role = "người dùng";
-                if (user.role == 2) {
-                    role = "nhân viên";
-                }
-                if (user.role == 3) {
-                    role = "Quản trị";
-                }
-                $('.user-role').html(role);
+                $('.user-role').html(user.role.name);
             })
     });
     user.on('click', '.update-user', function () {
@@ -311,7 +305,6 @@ $(function () {
                 alertSuccess(data.message);
                 let userRow = fillUserToRowTable(data.data);
                 $(".edit-user[editId="+idAction+"]").parents('tr').replaceWith(userRow);
-
                 countStt();
             })
             .fail(data => {

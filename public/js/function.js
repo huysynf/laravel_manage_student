@@ -197,7 +197,7 @@ function showErrorUser(errors) {
     (errors.password) ? $('.error-password').html(errors.password[0]) : "";
     (errors.password_confirmation) ? $('.error-password_confirmation').html(errors.password_confirmation[0]) : "";
     (errors.phone) ? $('.error-phone').html(errors.phone[0]) : "";
-    (errors.role) ? $('.error-role').html(errors.role[0]) : "";
+    (errors.role_id) ? $('.error-role').html(errors.role_id[0]) : "";
 
 }
 
