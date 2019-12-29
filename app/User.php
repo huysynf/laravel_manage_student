@@ -71,14 +71,8 @@ class User extends Authenticatable
     public  function findOrFail($id){
         return $this->with('role')->findOrFail($id);
     }
-    public function hasAccess(array $permissions){
-        foreach ($this->roles as $role){
-            if($role->hasAcess($permissions)){
-                return true;
-            }
-        }
-        return false;
+    public function hasAccessPermissionByRoleId($name,$id){
+      return $this->role->hasPermission('view-user',$id);
     }
-
 
 }

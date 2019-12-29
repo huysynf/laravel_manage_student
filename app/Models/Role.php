@@ -35,16 +35,13 @@ class Role extends Model
                 ->latest('id')
                 ->paginate(10);
     }
-    public function  hassAccess(array $permissions):bool
+    public function hasPermission($slug,$id)
     {
-        foreach ($permissions as $permission) {
-            if ($this->hasPermission($permission))
-                return true;
-        }
-        return false;
-    }
-    private function hasPermission(string $permission) : bool
-    {
-        return $this->permissions()->where('slug',$permission);
+        return $this
+        ->when($slug, function ($query) use ($slug) {
+            $query->whereHas('permissions', function ($q) use ($slug) {
+                $q->where('slug',$slug );
+            });
+        })->where('id',$id)->count()>0 ;
     }
 }

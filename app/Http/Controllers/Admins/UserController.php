@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admins;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Users\ChangePasswordRequest;
 use App\Http\Requests\Users\CreateUserRequest;
@@ -10,6 +11,7 @@ use App\Repositories\Admins\UserRepository;
 use DB;
 use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Image;
 
 
@@ -26,13 +28,18 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $data= $this->userRepository->search($request->only(['name', 'role']));
-        return view('backends.users.index')->with(['users'=>$data['users'],'roles'=>$data['roles']
-           ]);
+        $this->authorize('view-user');
+        $data = $this->userRepository->search($request->only(['name', 'role']));
+        return view('backends.users.index')->with([
+            'users' => $data['users'],
+            'roles' => $data['roles']
+        ]);
+
     }
 
     public function store(CreateUserRequest $request)
     {
+        $this->authorize('create-user');
         $user = $this->userRepository->create($request->only([
             'name',
             'email',
@@ -60,6 +67,7 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, $id)
     {
+        $this->authorize('update-user');
         $user = $this->userRepository->update($request->only([
             'name',
             'email',
@@ -76,6 +84,7 @@ class UserController extends Controller
 
     public function destroy($id)
     {
+        $this->authorize('destroy-user');
         return response()->json([
             'status' => 200,
             'message' => $this->userRepository->destroy($id),

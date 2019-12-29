@@ -4,6 +4,7 @@
 @section('title',' Quản người dùng')
 
 @section('content')
+    <p> {{Auth::guard()->user()->hasAccessPermissionByRoleId('view-user',Auth::guard()->user()->role_id)}}</p>
 
     <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Quản lí người dùng</h1>

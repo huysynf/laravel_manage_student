@@ -49,6 +49,9 @@ class Handler extends ExceptionHandler
         if($exception instanceof ModelNotFoundException){
             return redirect()->route('errors.notfound');
         }
+        if ($exception instanceof HttpException && $exception->getStatusCode() == 403){
+            return redirect()->route('errors.forbidden');
+        }
 
         return parent::render($request, $exception);
     }
