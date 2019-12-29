@@ -1,3 +1,4 @@
+
 alertSuccess = (message) => {
     Swal.fire({
         position: 'center',
@@ -5,6 +6,7 @@ alertSuccess = (message) => {
         title: message,
         showConfirmButton: true,
         confirmButtonText: 'ok'
+
     });
 };
 
@@ -27,7 +29,6 @@ function callAjax(url, data = "", type = 'get') {
         contentType: false,
     });
 }
-
 destroyResource = (url) => {
     return new Promise(((resolve, reject) => {
         Swal.fire({
@@ -86,8 +87,63 @@ function showErrorSubject(errors) {
     (errors.name) ? $('.name-error').html(errors.name[0]) : "";
     (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
     (errors.description) ? $('.description-error').html(errors.description[0]) : "";
+
+}
+function  fillFacultyToRowTable(faculty) {
+    return `<tr>
+             <td>
+                <strong></strong>
+            </td>
+            <td>
+                ${faculty.name}
+            </td>
+            <td>${faculty.description}</td>
+            <td>
+                <button class="btn btn-outline-primary btn-circle edit-faculty"
+                        title="Cập nhật thông tin khoa"
+                        editId="${faculty.id}"
+                        data-toggle="modal"
+                        data-target="#editFacultyModal"
+                ><i class="fa fa-edit text-warning"></i>
+                </button>
+                <button class="btn btn-outline-dark delete-faculty btn-circle" title="Xóa nhật khoa"
+                        deleteId="${faculty.id}"><i class="fas fa-trash text-danger"></i></button>
+            </td>
+           </tr>`;
+
 }
 
+function showErrorSubject(errors) {
+    (errors.name) ? $('.name-error').html(errors.name[0]) : "";
+    (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
+    (errors.description) ? $('.description-error').html(errors.description[0]) : "";
+}
+function fillSubjectToRowTable(subject) {
+    return ` <tr
+                ><td>
+                <strong></strong>
+            </td>
+            <td>
+                ${subject.name}
+            </td>
+            <td>
+               ${subject.lesson}
+            </td>
+            <td>${subject.description}</td>
+            <td>
+                <button class="btn btn-outline-primary edit-subject btn-circle"
+                        title="Cập nhật thông tin khoa"
+                        editId="${subject.id}"
+                        data-toggle="modal"
+                        data-target="#editSubjectModal"
+                ><i
+                        class="fa fa-edit text-warning"></i>
+                </button>
+                <button class="btn btn-outline-dark delete-subject btn-circle" title="Xóa nhật khoa"
+                        deleteId="${subject.id}"><i class="fas fa-trash text-danger"></i></button>
+            </td>
+           </tr>`;
+}
 //classroom
 function arrayOjectParseToNameP(data) {
     let html = "";
@@ -103,7 +159,7 @@ function readURL(input) {
         var reader = new FileReader();
         reader.onload = function (e) {
             $('.image-show').attr('src', e.target.result);
-        }
+        };
         reader.readAsDataURL(input.files[0]);
     }
 }
@@ -222,3 +278,6 @@ function fillRoleToRowTable(role) {
                 </td>
             </tr>`;
 }
+
+//show image when chose
+

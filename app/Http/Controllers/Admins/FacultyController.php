@@ -6,62 +6,63 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Faculties\CreateFacultyRequest;
 use App\Http\Requests\Faculties\UpdateFacultyRequest;
 use App\Models\Faculty;
+use Illuminate\Http\Request;
+use App\Repositories\Admins\FacultyRepository;
 
 class FacultyController extends Controller
 {
-    private $faculty;
+    protected $facultyRepository;
 
-    public function __construct()
+    public function __construct(FacultyRepository $facultyRepository)
     {
-        $this->faculty = new Faculty();
+        $this->facultyRepository = $facultyRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $faculties = $this->faculty->orderBy('id', 'desc')->paginate(10);
+        $data=$request->only(['name','lesson']);
+        $faculties = $this->facultyRepository->search($data);
         return view('backends.faculties.index', compact('faculties'));
     }
 
     public function store(CreateFacultyRequest $request)
     {
         $data = $request->all();
-        $this->faculty->create($data);
         return response()->json([
             'status' => 200,
             'message' => 'Thêm mới thành công',
+            'data'=> $this->facultyRepository->create($data),
         ]);
     }
 
     public function update(UpdateFacultyRequest $request, $id)
     {
-        $faculty = $this->faculty->findOrFail($id);
+
         $data = $request->all();
-        $faculty->update($data);
+
         return response()->json([
             'status' => 200,
             'message' => 'Cập nhật thông tin khoa  thành công',
+            'data'=>$this->facultyRepository->update($data,$id),
         ]);
     }
 
+    public function show($id)
+    {
+        return response()->json([
+            'status' => 200,
+            'message' => 'Thành công',
+            'data' => $this->facultyRepository->show($id),
+        ]);
+    }
 
     public function destroy($id)
     {
-        Faculty::destroy($id);
-        return response()->json([
-            'status' => 204,
-            'message' => 'Xóa khoa thành  công',
-        ]);
-    }
-
-    public function search($search)
-    {
-
-        $faculties = $this->faculty->search($search);
         return response()->json([
             'status' => 200,
-            'message' => 'Có ' . count($faculties) . ' kết quả tìm thấy với từ khóa:' . $search,
-            'data' => $faculties,
+            'message' => $this->facultyRepository->destroy($id),
         ]);
-
     }
+
+
 }

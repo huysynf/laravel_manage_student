@@ -16,7 +16,11 @@ Route::get('/', function () {
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['prefix' => 'manage', 'namespace' => 'Admins', 'middleware' => ['auth','check.user']], function () {
+
     Route::get('/', 'DashboardController@index')->name('dashboard.index');
     Route::resource('/users', 'UserController')->except([
         'update',
@@ -37,17 +41,24 @@ Route::group(['prefix' => 'manage', 'namespace' => 'Admins', 'middleware' => ['a
         'create',
     ]);
     //facultys
-    Route::resource('faculties', 'FacultyController');
-    Route::get('faculties/search/{searchkey}', 'FacultyController@search');
+    Route::resource('faculties', 'FacultyController')->except([
+        'update',
+        'edit',
+        'create',
+    ]);
+    Route::post('faculties/update/{id}', 'FacultyController@update');
+
     //subject
-    Route::resource('subjects', 'SubjectController');
-    Route::get('subjects/search/{searchkey}', 'SubjectController@search');
+    Route::resource('subjects', 'SubjectController')->except([
+        'update',
+        'edit',
+        'create',
+    ]);
+    Route::post('subjects/update/{id}', 'SubjectController@update');
     //classroom
     Route::resource('/classrooms', 'ClassroomController');
-    Route::get('classrooms/search/{searchkey}', 'ClassroomController@search');
     //classroom
     Route::resource('/students', 'StudentController');
-    Route::get('students/search/{searchkey}', 'StudentController@search');
 
 });
 Auth::routes([

@@ -1,10 +1,11 @@
 /node_modules
 /public/hot
 /public/storage
+/public/images/users
+/public/images/students
 /storage/*.key
-/public/images/students/
-/public/images/users/
 /vendor
+/public/images/*
 .env
 .env.backup
 .phpunit.result.cache

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
-    protected $tablle = 'subjects';
+
     protected $fillable = [
         'name',
         'lesson',
@@ -14,16 +14,19 @@ class Subject extends Model
     ];
     public $timestamps = false;
 
-    public function search($searchKey)
+    public function search($name, $lesson)
     {
-        return $this->where('name', 'LIKE', '%' . $searchKey . '%')
-            ->orwhere('description', 'LIKE', '%' . $searchKey . '%')
-            ->orwhere('lesson', 'LIKE', '%' . $searchKey . '%')
-            ->get(['id', 'name','lesson','description']);
+        return $this
+            ->when($name, function ($query) use ($name) {
+                $query->orwhere('name', 'LIKE', '%' . $name . '%');
+            })
+            ->when($lesson, function ($query) use ($lesson) {
+                $query->orwhere('lesson', 'LIKE', '%' . $lesson . '%');
+            })
+            ->latest('id')
+            ->paginate(10);
+
     }
 
-    public function getpaginate($number){
-        return $this->orderBy('id', 'desc')->paginate($number);
-    }
 
 }

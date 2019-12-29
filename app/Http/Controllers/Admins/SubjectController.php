@@ -5,62 +5,58 @@ namespace App\Http\Controllers\Admins;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Subjects\CreateSubjectRequest;
 use App\Http\Requests\Subjects\UpdateSubjectRequest;
-use App\Models\Subject;
+use Illuminate\Http\Request;
+use App\Repositories\Admins\SubjectRepository;
 
 class SubjectController extends Controller
 {
-    private $subject;
+    private $subjectRepository;
 
-    public function __construct()
+    public function __construct(SubjectRepository $subjectRepository)
     {
-        $this->subject = new Subject();
+        $this->subjectRepository = $subjectRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $subjects = $this->subject->getpaginate(10);
+
+        $subjects = $this->subjectRepository->search($request->only(['name','lesson']));
         return view('backends.subjects.index', compact('subjects'));
     }
 
     public function store(CreateSubjectRequest $request)
     {
         $data = $request->all();
-        $this->subject->create($data);
         return response()->json([
-            'status' => 201,
+            'status' => 200,
             'message' => 'Thêm mới môn học thành công',
+            'data'=>$this->subjectRepository->create($data),
         ]);
     }
-
+    public  function  show($id){
+        return response()->json([
+            'status'=>200,
+            'message'=>'Lấy dữ liêu thành công',
+            'data'=>$this->subjectRepository->show($id),
+        ]);
+    }
     public function update(UpdateSubjectRequest $request, $id)
     {
-        $subject = $this->subject->findOrFail($id);
         $data = $request->all();
-        $subject->update($data);
         return response()->json([
             'status' => 200,
             'message' => 'Cập nhật thông tin môn học  thành công',
+            'data'=>$this->update($data,$id),
         ]);
     }
 
     public function destroy($id)
     {
-        $this->subject->destroy($id);
-        return response()->json([
-            'status' => 204,
-            'message' => 'Xóa môn học thành  công',
-        ]);
-    }
-
-    public function search($search)
-    {
-
-        $subjects = $this->subject->search($search);
         return response()->json([
             'status' => 200,
-            'message' => 'Có ' . count($subjects) . ' kết quả tìm thấy với từ khóa mon:' . $search,
-            'data' => $subjects,
+            'message' => $this->subjectRepository->destroy($id),
         ]);
-
     }
+
+
 }
