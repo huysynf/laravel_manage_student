@@ -23,10 +23,10 @@ function alertError(message) {
 
 //curd resource
 
-function callAjax( url,data="",type='get') {
+function callAjax(url, data = "", type = 'get') {
     return $.ajax({
         url: url,
-        type:type,
+        type: type,
         data: data,
         processData: false,
         contentType: false,
@@ -72,6 +72,7 @@ function resetErrorFaculty() {
     $('.nameError').html('');
     $('.descriptionError').html('');
 }
+
 function showErrorFaculty(errors) {
     (errors.name) ? $('.nameError').html(errors.name[0]) : "";
     (errors.description) ? $('.descriptionError').html(errors.description[0]) : "";
@@ -90,26 +91,30 @@ function showErrorSubject(errors) {
     (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
     (errors.description) ? $('.description-error').html(errors.description[0]) : "";
 }
-function  fillFacultyToRowTable(faculty) {
-    return `<tr>
-             <td>
+
+function fillSubjectToRowTable(subject) {
+    return ` <tr
+                ><td>
                 <strong></strong>
             </td>
             <td>
-                ${faculty.name}
+                ${subject.name}
             </td>
-            <td>${faculty.description}</td>
             <td>
-                <button class="btn btn-outline-primary btn-circle edit-faculty"
-                        title="Cập nhật thông tin khoa"
-                        editId="${faculty.id}"
-                        data-toggle="modal"
-                        data-target="#editFacultyModal"
-                ><i class="fa fa-edit text-warning"></i>
-                </button>
-                <button class="btn btn-outline-dark delete-faculty btn-circle" title="Xóa nhật khoa"
-                        deleteId="${faculty.id}"><i class="fas fa-trash text-danger"></i></button>
+               ${subject.lesson}
             </td>
-           </tr>`;
-
+            <td>${subject.description}</td>
+            <td>
+                <button class="btn btn-outline-primary edit-subject btn-circle"
+                        title="Cập nhật thông tin khoa"
+                        editId="${subject.id}"
+                        data-toggle="modal"
+                        data-target="#editSubjectModal"
+                ><i
+                        class="fa fa-edit text-warning"></i>
+                </button>
+                <button class="btn btn-outline-dark delete-subject btn-circle" title="Xóa nhật khoa"
+                        deleteId="${subject.id}"><i class="fas fa-trash text-danger"></i></button>
+            </td>
+            </tr>`;
 }

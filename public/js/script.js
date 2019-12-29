@@ -91,12 +91,15 @@ $(function () {
     // function
     addSubjectBtn.click(function () {
         resetErrorSubject();
+        $(".new-subject-form").trigger("reset");
     });
     subject.on('click', '.new-subject', function () {
         dataResource = new FormData($('.new-subject-form')[0]);
         callAjax(subjectPath,dataResource,newMethodForm)
             .done(data => {
                 $('#newsubjectModal').modal('hide');
+                let subjectRow=fillSubjectToRowTable(data.data);
+                $('tbody').prepend(subjectRow);
                 alertSuccess(data.message);
                 countStt();
             })
@@ -108,8 +111,8 @@ $(function () {
     });
     subject.on('click', '.edit-subject', function () {
         resetErrorSubject();
-        idActionResource=$(this).attr('editId');
-        urlResource=subjectPath+"/"+idActionResource;
+        idAction=$(this).attr('editId');
+        urlResource=subjectPath+"/"+idAction;
         callAjax(urlResource,null,getMethodForm)
             .done(data => {
               let subject=data.data;
@@ -120,10 +123,12 @@ $(function () {
     });
     subject.on('click', '.update-subject', function () {
         dataResource = new FormData($('.edit-subject-form')[0]);
-        urlResource = subjectPath + "/update/" + idActionResource;
+        urlResource = subjectPath + "/update/" + idAction;
         callAjax(urlResource,dataResource,newMethodForm)
             .done(data => {
                 $('#editSubjectModal').modal('hide')
+                let subjectRow=fillSubjectToRowTable(data.data);
+                $(".edit-subject[editId="+idAction+"]").parents('tr').replaceWith(subjectRow);
                 alertSuccess(data.message);
                 countStt();
             })
@@ -135,9 +140,17 @@ $(function () {
     });
 
     subject.on('click', '.delete-subject', function () {
-        idActionResource = $(this).attr('deleteId');
-        urlResource=subjectPath + "/"+idActionResource;
-        destroyResource(urlResource);
+        idAction = $(this).attr('deleteId');
+        urlResource=subjectPath + "/"+idAction;
+        destroyResource(urlResource)
+            .then(data => {
+                alertSuccess(data.message);
+                $(this).parents('tr').remove();
+            })
+            .catch(data => {
+                alertError(data.message);
+            });
+        ;
     });
 
 //classroom
