@@ -377,7 +377,6 @@ $(function () {
             })
             .fail(data => {
                 const errors = data.responseJSON.errors;
-                console.log(data.responseJSON);
                 resetErrorRole();
                 showErrorRole(errors);
             });
@@ -388,28 +387,9 @@ $(function () {
         callAjax(urlRole)
             .done(data => {
                 let role = data.data;
-                console.log(role);
                 $('.role-name').html(role.name);
                 let permissions = arrayOjectParseToNameP(role.permissions)
                 $('.permissions-box').html(permissions);
-            })
-    });
-    role.on('click', '.edit-role', function () {
-        resetErrorRole();
-        roleId = $(this).attr('editId');
-        let urlRole = rolePath + "/" + roleId;
-        callAjax(urlRole)
-            .done(data => {
-                let role = data.data;
-                $('.role-name').val(role.name);
-                $('.role-slug').val(role.slug);
-                let permissions = role.permissions;
-                console.log(permissions);
-                permissions.forEach(item => {
-                    console.log(item.id);
-
-                });
-
             })
     });
     role.on('click', '.delete-role', function () {
@@ -447,7 +427,6 @@ $(function () {
         let urlUpdate = permissionPath + '/update/' + permissionId;
         callAjax(urlUpdate, permissionData, postMethodForm)
             .done(data => {
-                console.log(data);
                 $('#editPermissionModal').modal('hide')
                 alertSuccess(data.message);
                 let permissionRow = fillPermissionToRowTable(data.data);
