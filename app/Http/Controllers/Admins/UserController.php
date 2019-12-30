@@ -3,83 +3,107 @@
 namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\ChangePasswordRequest;
+use App\Http\Requests\Users\CreateUserRequest;
+use App\Http\Requests\Users\SetPasswordRequest;
+use App\Http\Requests\Users\UpdateUserRequest;
+use App\Repositories\Admins\UserRepository;
+use DB;
+use Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Image;
+
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    private $userRepository;
+
+    public function __construct(UserRepository $userRepository)
     {
-        //
+
+        $this->userRepository = $userRepository;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function index(Request $request)
     {
-        //
+        $this->authorize('view-user');
+        $data = $this->userRepository->search($request->only(['name', 'role']));
+        return view('backends.users.index')->with([
+            'users' => $data['users'],
+            'roles' => $data['roles']
+        ]);
+
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(CreateUserRequest $request)
     {
-        //
+        $this->authorize('create-user');
+        $user = $this->userRepository->create($request->only([
+            'name',
+            'email',
+            'password',
+            'role_id',
+            'image',
+            'phone',
+        ]));
+        return response()->json([
+            'status' => 200,
+            'message' => 'Tạo mới nguoi dùng thành công',
+            'data' => $user,
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
-        //
+        return response()->json([
+            'status' => 200,
+            'message' => 'lấy thông tin người  dùng thành công',
+            'data' => $this->userRepository->show($id),
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function update(UpdateUserRequest $request, $id)
     {
-        //
+        $this->authorize('update-user');
+        $user = $this->userRepository->update($request->only([
+            'name',
+            'email',
+            'role_id',
+            'image',
+            'phone',
+        ]), $id);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Cập nhật thông tin nguoi dùng thành công',
+            'data' => $user,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
+        $this->authorize('destroy-user');
+        return response()->json([
+            'status' => 200,
+            'message' => $this->userRepository->destroy($id),
+        ]);
+    }
+
+    public function setPassword(SetPasswordRequest $request, $id)
+    {
+        return response()->json([
+            'status' => 200,
+            'message' => $this->userRepository->changePassword($request->input('password'), $id),
+        ]);
+    }
+
+    public function changePassword(ChangePasswordRequest $request, $id)
+    {
+        return response()->json([
+            'status' => 200,
+            'message' => $this->userRepository->changePassword($request->input('password'), $id),
+        ]);
     }
 }

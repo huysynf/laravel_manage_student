@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admins;
 
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Students\CreateStudentRequest;
 use App\Http\Requests\Students\UpdateStudentRequest;
@@ -26,6 +27,7 @@ class StudentController extends Controller
 
     public function index(Request $request)
     {
+        $this->authorize('view-student');
         $students = $this->studentRepository->search($request->only(['name','address','classrooms']));
         return view('backends.students.index')->with(['students'=>$students['students'], 'classrooms'=>$students['classrooms']]);
 
@@ -33,6 +35,7 @@ class StudentController extends Controller
 
     public function create()
     {
+        $this->authorize('create-student');
         $classrooms = $this->studentRepository->create();
         return view('backends.students.create', compact('classrooms'));
     }
@@ -55,6 +58,7 @@ class StudentController extends Controller
 
     public function edit($id)
     {
+        $this->authorize('edit-student');
         $data=$this->studentRepository->edit($id);
         return view('backends.students.edit')->with(['student'=>$data['student'], 'classrooms'=>$data['classrooms'], 'listClassroomStudent'=>$data['listClassroomId']]);
 
@@ -69,10 +73,11 @@ class StudentController extends Controller
 
     public function destroy($id)
     {
+        $this->authorize('destroy-student');
         return response()->json([
             'status' => 204,
             'message' => $this->studentRepository->destroy($id),
         ]);
     }
-}
 
+}

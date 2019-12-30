@@ -19,7 +19,7 @@ class SubjectController extends Controller
 
     public function index(Request $request)
     {
-
+        $this->authorize('view-subject');
         $subjects = $this->subjectRepository->search($request->only(['name','lesson']));
         return view('backends.subjects.index', compact('subjects'));
     }

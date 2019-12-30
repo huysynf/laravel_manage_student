@@ -6,10 +6,12 @@
 
     <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Quản lý khoa</h1>
-        <button type="button" class="ml-2 btn btn-sm btn-primary shadow-sm add-faculty"
-                title="Thêm mới khoa" data-toggle="modal" data-target="#newFacultyModal">
-            <i class="fas fa-plus fa-sm text-dark"></i> Thêm mới khoa
-        </button>
+        @can('create-faculty')
+            <button type="button" class="ml-2 btn btn-sm btn-primary shadow-sm add-faculty"
+                    title="Thêm mới khoa" data-toggle="modal" data-target="#newFacultyModal">
+                <i class="fas fa-plus fa-sm text-dark"></i> Thêm mới khoa
+            </button>
+        @endcan
     </div>
     {{--    table data--}}
     <div class="row " id="faculty">
@@ -56,15 +58,19 @@
                         </td>
                         <td>{{$faculty->description}}</td>
                         <td>
-                            <button class="btn btn-outline-primary btn-circle edit-faculty"
-                                    title="Cập nhật thông tin khoa"
-                                    editId="{{$faculty->id}}"
-                                    data-toggle="modal"
-                                    data-target="#editFacultyModal"
-                            ><i class="fa fa-edit text-warning"></i>
-                            </button>
-                            <button class="btn btn-outline-dark delete-faculty btn-circle" title="Xóa nhật khoa"
-                                    deleteId="{{$faculty->id}}"><i class="fas fa-trash text-danger"></i></button>
+                            @can('edit-faculty')
+                                <button class="btn btn-outline-primary btn-circle edit-faculty"
+                                        title="Cập nhật thông tin khoa"
+                                        editId="{{$faculty->id}}"
+                                        data-toggle="modal"
+                                        data-target="#editFacultyModal"
+                                ><i class="fa fa-edit text-warning"></i>
+                                    @endcan
+                                </button>
+                                @can('delete-faculty')
+                                <button class="btn btn-outline-dark delete-faculty btn-circle" title="Xóa nhật khoa"
+                                        deleteId="{{$faculty->id}}"><i class="fas fa-trash text-danger"></i></button>
+                                @endcan
                         </td>
                     </tr>
                 @endforeach

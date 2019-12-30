@@ -6,10 +6,12 @@
 
     <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Quản lí sinh viên</h1>
-        <a href="{{route('students.create')}}" class="ml-2 btn btn-sm btn-primary shadow-sm "
-           title="thêm mới sinh viên">
-            <i class="fas fa-plus fa-sm text-success"></i> thêm mới sinh viên
-        </a>
+        @can('create-student')
+            <a href="{{route('students.create')}}" class="ml-2 btn btn-sm btn-primary shadow-sm "
+               title="thêm mới sinh viên">
+                <i class="fas fa-plus fa-sm text-success"></i> thêm mới sinh viên
+            </a>
+        @endcan
     </div>
     @if(session('message'))
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -26,23 +28,27 @@
                   id="subjectFormSearch">
                 <div class="d-flex flex-column">
                     <lable class="text-primary" for="name">Tên tìm kiếm</lable>
-                    <input value="{{request()->input('name')}}" class="h-50" type="text" placeholder="Tên tìm kiếm..." name="name"  >
+                    <input value="{{request()->input('name')}}" class="h-50" type="text" placeholder="Tên tìm kiếm..."
+                           name="name">
                 </div>
                 <div class="d-flex flex-column ml-1">
                     <lable class="text-primary" for="address">Địa chỉ</lable>
-                    <input value="{{request()->input('address')}}" class="h-50" type="text" placeholder="Địa chỉ tìm kiếm..." name="address"  >
+                    <input value="{{request()->input('address')}}" class="h-50" type="text"
+                           placeholder="Địa chỉ tìm kiếm..." name="address">
                 </div>
                 <div class="d-flex flex-column ml-1">
-                    <lable class="text-primary" for="role" >Tên lớp</lable>
+                    <lable class="text-primary" for="role">Tên lớp</lable>
                     <select name="classroom" class="h-50 student-select-classroom">
                         <option value="">Tất cả</option>
                         @foreach($classrooms as $classroom)
-                            <option value="{{$classroom->name}}" {{(request()->input('classroom')==$classroom->name)?'selected':''}}  >{{$classroom->name}}</option>
+                            <option
+                                value="{{$classroom->name}}" {{(request()->input('classroom')==$classroom->name)?'selected':''}} >{{$classroom->name}}</option>
                         @endforeach
                     </select>
                 </div>
                 <div class="align-self-end ml-1">
-                    <button class="btn btn-primary  aqua-gradient btn-rounded btn-sm my-0" type="submit" title="Tìm kiếm">
+                    <button class="btn btn-primary  aqua-gradient btn-rounded btn-sm my-0" type="submit"
+                            title="Tìm kiếm">
                         <i class="fas fa-search fa-sm"></i>
                     </button>
                 </div>
@@ -85,12 +91,16 @@
                         </td>
                         <td>{{$student->phone}}</td>
                         <td>
-                            <a class="btn btn-outline-primary btn-circle" title="Cập nhật sinh viên"
-                               href=" {{route('students.edit',$student->id)}}">
-                                <i class="fa fa-edit text-dark"></i>
-                            </a>
-                            <button class="btn btn-outline-dark delete-student btn-circle" title="Xóa sinh viên"
-                                    deleteId="{{$student->id}}"><i class="fas fa-trash text-danger"></i></button>
+                            @can('edit-student')
+                                <a class="btn btn-outline-primary btn-circle" title="Cập nhật sinh viên"
+                                   href=" {{route('students.edit',$student->id)}}">
+                                    <i class="fa fa-edit text-dark"></i>
+                                </a>
+                            @endcan
+                            @can('delete-student')
+                                <button class="btn btn-outline-dark delete-student btn-circle" title="Xóa sinh viên"
+                                        deleteId="{{$student->id}}"><i class="fas fa-trash text-danger"></i></button>
+                            @endcan
                             <button class="btn btn-outline-success btn-circle  show-student" title="chi tiết sinh v"
                                     data-toggle="modal"
                                     showId="{{$student->id}}"

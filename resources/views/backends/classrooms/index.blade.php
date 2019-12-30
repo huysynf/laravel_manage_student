@@ -6,10 +6,12 @@
 
     <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Quản lí lớp học</h1>
+        @can('create-classroom')
         <a href="{{route('classrooms.create')}}" class="ml-2 btn btn-sm btn-primary shadow-sm "
            title="thêm mới lớp học">
             <i class="fas fa-plus fa-sm text-success"></i> Thêm mới lớp học
         </a>
+        @endcan
     </div>
     @if(session('message'))
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -79,12 +81,16 @@
                         </td>
                         <td>{{$classroom->description}}</td>
                         <td>
+                            @can('edit-classroom')
                             <a class="btn btn-outline-primary btn-circle " title="Cập nhật lớp  học"
                                href=" {{route('classrooms.edit',$classroom->id)}}">
                                 <i class="fa fa-edit text-dark"></i>
                             </a>
+                            @endcan
+                            @can('delete-classroom')
                             <button class="btn btn-outline-dark btn-circle delete-classroom" title="Xóa lớp học"
                                     deleteId="{{$classroom->id}}"><i class="fas fa-trash text-danger"></i></button>
+                                @endcan
                             <button class="btn btn-outline-success btn-circle  show-classroom" title="chi tiết lớp học"
                                     data-toggle="modal"
                                     showId="{{$classroom->id}}"

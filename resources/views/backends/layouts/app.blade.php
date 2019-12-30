@@ -46,6 +46,8 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
                 @yield('content')
+                @include('backends.users.show')
+                @include('backends.users.user_change_password')
             </div>
             <!-- /.container-fluid -->
 
@@ -92,12 +94,11 @@
 <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="{{asset('js/jquery/jquery.easing.min.js')}}"></script>
-
 <!-- Custom scripts for all pages-->
 <script src="{{asset('js/sb-admin-2.min.js')}}"></script>
 <script src="{{asset('js/sweetalert2.min.js')}}"></script>
 <script src="{{asset('js/select2.min.js')}}"></script>
+<script src="{{asset('js/jquery.counterup.min.js')}}"></script>
 <script src="{{asset('js/function.js')}}"></script>
 <script src="{{asset('js/script.js')}}"></script>
 </body>

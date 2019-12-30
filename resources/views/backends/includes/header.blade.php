@@ -72,37 +72,43 @@
         <div class="topbar-divider d-none d-sm-block"></div>
 
         <!-- Nav Item - User Information -->
+        @if(Auth::guard()->check())
+            <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{Auth::guard()->user()->name}}</span>
+                    <img class="img-profile rounded-circle"
+                         src="{{asset('images/users/'.Auth::guard()->user()->image)}}">
+                </a>
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                     aria-labelledby="userDropdown">
+                    <button class="dropdown-item btn  show-user" title="Chi tiết người dùng"
+                            data-toggle="modal"
+                            showId="{{Auth::guard()->user()->id}}"
+                            data-target="#showUserModal">
+                        <i class="fa fa-info text-warning fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Profile
+                    </button>
+                    <button class="dropdown-item btn change-user-password" title="Đổi mật khẩu"
+                            data-toggle="modal"
+                            userId="{{Auth::guard()->user()->id}}"
+                            data-target="#changeUserPasswordModal">
+                        <i class="fa fa-key text-warning fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Đổi mật khẩu
+                    </button>
 
-        <li class="nav-item dropdown no-arrow">
-            @if(Auth()->check())
-            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{Auth::user()->name}}</span>
-                <img class="img-profile rounded-circle" src="{{asset('images/profile/user.jpg')}}">
-            </a>
-            <!-- Dropdown - User Information -->
-            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                 aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                    <i class="text-primary fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profile
-                </a>
-                <a class="dropdown-item" href="#">
-                    <i class="text-warning fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Settings
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{{Auth::logout()}}" >
-                    <i class="text-danger fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Logout
-                </a>
-{{--                <a class="dropdown-item" href="{{route('logout')}}" data-toggle="modal" data-target="#logoutModal">--}}
-{{--                    <i class="text-danger fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>--}}
-{{--                    Logout--}}
-{{--                </a>--}}
-            </div>
-                @endif
-        </li>
+                    <div class="dropdown-divider"></div>
+
+                    <a class="dropdown-item btn" href="" onclick="event.preventDefault();
+                       document.getElementById('logout-form').submit();"> <i
+                            class="text-danger fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout</a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </div>
+
+            </li>
+        @endif
 
     </ul>
 

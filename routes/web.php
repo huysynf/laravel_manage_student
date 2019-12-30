@@ -15,17 +15,32 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
-
 Route::get('/home', 'HomeController@index')->name('home');
 
-
 Route::get('/home', 'HomeController@index')->name('home');
-Route::group(['prefix' => 'manage', 'namespace' => 'Admins'], function () {
+Route::group(['prefix' => 'manage', 'namespace' => 'Admins', 'middleware' => ['auth','check.user']], function () {
+
     Route::get('/', 'DashboardController@index')->name('dashboard.index');
-
-    Route::resource('/users', 'UserController');
-    Route::get('users/search/{searchkey}', 'UserController@search');
+    Route::get('/error-notfound', 'ErrorController@errorNotFound')->name('errors.notfound');
+    Route::get('/error-forbidden', 'ErrorController@errorForbidden')->name('errors.forbidden');
+    Route::resource('/users', 'UserController')->except([
+        'update',
+        'edit',
+        'create',
+    ]);
+    Route::post('users/update/{id}', 'UserController@update');
+    Route::post('users/set-password/{id}', 'UserController@setPassword');
+    Route::post('users/change-password/{id}', 'UserController@changePassword');
+    Route::resource('/roles', 'RoleController')->except([
+        'create',
+    ]);
+    Route::resource('/permissions', 'PermissionController')->except([
+        'edit',
+        'create',
+        'destroy',
+        'update',
+    ]);
+    Route::post('permissions/update/{id}', 'PermissionController@update');
     //facultys
     Route::resource('faculties', 'FacultyController')->except([
         'update',
@@ -43,9 +58,12 @@ Route::group(['prefix' => 'manage', 'namespace' => 'Admins'], function () {
     Route::post('subjects/update/{id}', 'SubjectController@update');
     //classroom
     Route::resource('/classrooms', 'ClassroomController');
-    Route::get('classrooms/search/{searchkey}', 'ClassroomController@search');
     //classroom
     Route::resource('/students', 'StudentController');
-    Route::get('students/search/{searchkey}', 'StudentController@search');
 
 });
+Auth::routes([
+    'register' => false,
+    'verify' => true,
+    'reset' => false
+]);
