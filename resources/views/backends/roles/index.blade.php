@@ -83,15 +83,18 @@
                                     <i class="fa fa-edit text-dark"></i>
                                 </a>
                             @endcan
-                            @can('edit-role')
+                            @can('delete-role')
                                 <button class="btn btn-outline-dark delete-role btn-circle" title="Xóa nhóm quyền"
                                         deleteId="{{$role->id}}"><i class="fas fa-trash text-danger"></i></button>
                             @endcan
-                            <button class="btn btn-outline-success btn-circle  show-role" title="Chi tiết nhóm quyền"
-                                    data-toggle="modal"
-                                    showId="{{$role->id}}"
-                                    data-target="#showRoleModal"><i class="fas fa-info-circle text-primary"></i>
-                            </button>
+                            @can('view-role')
+                                <button class="btn btn-outline-success btn-circle  show-role"
+                                        title="Chi tiết nhóm quyền"
+                                        data-toggle="modal"
+                                        showId="{{$role->id}}"
+                                        data-target="#showRoleModal"><i class="fas fa-info-circle text-primary"></i>
+                                </button>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach

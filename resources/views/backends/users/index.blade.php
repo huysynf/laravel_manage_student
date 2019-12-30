@@ -83,7 +83,7 @@
                                 <i class="fa fa-edit text-dark"></i>
                             </button>
                             @endcan
-                            @can('destroy-user')
+                            @can('delete-user')
                             <button class="btn btn-outline-dark delete-user btn-circle" title="Xóa người dùng"
                                     deleteId="{{$user->id}}"><i class="fas fa-trash text-danger"></i></button>
                             <button class="btn btn-outline-success btn-circle  show-user" title="Chi tiết người dùng"

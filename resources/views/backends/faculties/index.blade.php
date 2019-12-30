@@ -67,7 +67,7 @@
                                 ><i class="fa fa-edit text-warning"></i>
                                     @endcan
                                 </button>
-                                @can('destroy-faculty')
+                                @can('delete-faculty')
                                 <button class="btn btn-outline-dark delete-faculty btn-circle" title="Xóa nhật khoa"
                                         deleteId="{{$faculty->id}}"><i class="fas fa-trash text-danger"></i></button>
                                 @endcan
