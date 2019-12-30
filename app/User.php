@@ -72,7 +72,7 @@ class User extends Authenticatable
         return $this->with('role')->findOrFail($id);
     }
     public function hasAccessPermissionByRoleId($name,$id){
-      return $this->role->hasPermission('view-user',$id);
+      return $this->role->hasPermission($name,$id);
     }
 
 }

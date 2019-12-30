@@ -16,7 +16,7 @@ class checkUser
      */
     public function handle($request, Closure $next)
     {
-        if (!Auth::guard()->user()->hasAccessPermissionByRoleId('not-permission',Auth::guard()->user()->role_id)) {
+        if (Auth::guard()->user()->hasAccessPermissionByRoleId('not-permission',Auth::guard()->user()->role_id)) {
             return redirect()->route('home');
         }
         return $next($request);
