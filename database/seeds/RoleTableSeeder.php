@@ -55,6 +55,8 @@ class RoleTableSeeder extends Seeder
             ['name' => 'sửa Khoa','slug' => 'edit-faculty',],
             ['name' => 'Cập nhật Khoa','slug' => 'update-faculty',],
             ['name' => 'Xóa Khoa','slug' => 'delete-faculty',],
+
+            ['name' => 'Không có quyền','slug' => 'not-permission',],
         ]);
         DB::table('roles')->insert([
             ['name'=>'Super admin','slug'=>'SUPER ADMIN'],
