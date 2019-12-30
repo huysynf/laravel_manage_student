@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Admins;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Faculties\CreateFacultyRequest;
 use App\Http\Requests\Faculties\UpdateFacultyRequest;
-use App\Models\Faculty;
-use Illuminate\Http\Request;
 use App\Repositories\Admins\FacultyRepository;
+use Illuminate\Http\Request;
 
 class FacultyController extends Controller
 {
@@ -21,7 +20,7 @@ class FacultyController extends Controller
     public function index(Request $request)
     {
         $this->authorize('view-faculty');
-        $data=$request->only(['name','lesson']);
+        $data = $request->only(['name', 'lesson']);
         $faculties = $this->facultyRepository->search($data);
         return view('backends.faculties.index', compact('faculties'));
     }
@@ -33,7 +32,7 @@ class FacultyController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'Thêm mới thành công',
-            'data'=> $this->facultyRepository->create($data),
+            'data' => $this->facultyRepository->create($data),
         ]);
     }
 
@@ -45,7 +44,7 @@ class FacultyController extends Controller
         return response()->json([
             'status' => 200,
             'message' => 'Cập nhật thông tin khoa  thành công',
-            'data'=>$this->facultyRepository->update($data,$id),
+            'data' => $this->facultyRepository->update($data, $id),
         ]);
     }
 

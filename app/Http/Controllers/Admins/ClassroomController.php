@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Admins;
+
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Classrooms\CreateClassroomRequest;
 use App\Http\Requests\Classrooms\UpdateClassroomRequest;
@@ -32,8 +33,11 @@ class ClassroomController extends Controller
     public function create()
     {
         $this->authorize('create-classroom');
-        $data=$this->classroomRepository->create();
-        return view('backends.classrooms.create')->with(['faculties'=>$data['faculty'], 'subjects'=>$data['subject']]);
+        $data = $this->classroomRepository->create();
+        return view('backends.classrooms.create')->with([
+            'faculties' => $data['faculty'],
+            'subjects' => $data['subject']
+        ]);
     }
 
     public function store(CreateClassroomRequest $request)
@@ -56,7 +60,11 @@ class ClassroomController extends Controller
     {
         $this->authorize('edit-classroom');
         $data = $this->classroomRepository->edit($id);
-        return view('backends.classrooms.edit')->with(['faculties'=>$data['faculty'], 'subjects'=>$data['subject'],'classroom'=>$data['classroom']]);
+        return view('backends.classrooms.edit')->with([
+            'faculties' => $data['faculty'],
+            'subjects' => $data['subject'],
+            'classroom' => $data['classroom']
+        ]);
 
     }
 

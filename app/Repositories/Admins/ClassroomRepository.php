@@ -34,18 +34,20 @@ class ClassroomRepository extends BaseRepository
     {
         $this->model->create($data);
     }
+
     public function create()
     {
         $data['faculty'] = $this->faculty->all(['id', 'name']);
         $data['subject'] = $this->subject->all(['id', 'name']);
-       return $data;
+        return $data;
     }
+
     public function edit($id)
     {
 
-       $data=$this->create();
-       $data['classroom']=  $this->model->findOrFail($id);
-       return $data;
+        $data = $this->create();
+        $data['classroom'] = $this->model->findOrFail($id);
+        return $data;
     }
 
     public function update(array $data, $id)

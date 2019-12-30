@@ -7,12 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Students\CreateStudentRequest;
 use App\Http\Requests\Students\UpdateStudentRequest;
 use App\Models\Classroom;
-use App\Models\ClassroomStudent;
-use App\Models\Student;
+use App\Repositories\Admins\StudentRepository;
 use DB;
 use Illuminate\Http\Request;
 use Image;
-use App\Repositories\Admins\StudentRepository;
 
 class StudentController extends Controller
 {
@@ -21,15 +19,18 @@ class StudentController extends Controller
 
     public function __construct(StudentRepository $studentRepository)
     {
-        $this->studentRepository=$studentRepository;
+        $this->studentRepository = $studentRepository;
         $this->classroom = new Classroom();
     }
 
     public function index(Request $request)
     {
         $this->authorize('view-student');
-        $students = $this->studentRepository->search($request->only(['name','address','classrooms']));
-        return view('backends.students.index')->with(['students'=>$students['students'], 'classrooms'=>$students['classrooms']]);
+        $students = $this->studentRepository->search($request->only(['name', 'address', 'classrooms']));
+        return view('backends.students.index')->with([
+            'students' => $students['students'],
+            'classrooms' => $students['classrooms']
+        ]);
 
     }
 
@@ -59,14 +60,18 @@ class StudentController extends Controller
     public function edit($id)
     {
         $this->authorize('edit-student');
-        $data=$this->studentRepository->edit($id);
-        return view('backends.students.edit')->with(['student'=>$data['student'], 'classrooms'=>$data['classrooms'], 'listClassroomStudent'=>$data['listClassroomId']]);
+        $data = $this->studentRepository->edit($id);
+        return view('backends.students.edit')->with([
+            'student' => $data['student'],
+            'classrooms' => $data['classrooms'],
+            'listClassroomStudent' => $data['listClassroomId']
+        ]);
 
     }
 
     public function update(UpdateStudentRequest $request, $id)
     {
-        $this->studentRepository->update($request->all(),$id);
+        $this->studentRepository->update($request->all(), $id);
         return redirect()->route('students.index')->with('message', 'Cập nhật thành công');
 
     }
