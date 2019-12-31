@@ -7,6 +7,4 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class ClassroomStudent extends Pivot
 {
 
-       
-
 }

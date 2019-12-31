@@ -20,19 +20,16 @@ class ClassroomController extends Controller
 
     public function index(Request $request)
     {
-        $this->authorize('view-classroom');
         $data = $this->classroomRepository->search($request->only(['name', 'subject', 'faculty']));
         return view('backends.classrooms.index')->with([
             'classrooms' => $data['classrooms'],
             'faculties' => $data['faculty'],
             'subjects' => $data['subject']
         ]);
-
     }
 
     public function create()
     {
-        $this->authorize('create-classroom');
         $data = $this->classroomRepository->create();
         return view('backends.classrooms.create')->with([
             'faculties' => $data['faculty'],
@@ -46,7 +43,6 @@ class ClassroomController extends Controller
         return redirect(route('classrooms.index'))->with('message', 'Thêm mới lớp học thành công');
     }
 
-
     public function show($id)
     {
         return response()->json([
@@ -58,26 +54,22 @@ class ClassroomController extends Controller
 
     public function edit($id)
     {
-        $this->authorize('edit-classroom');
         $data = $this->classroomRepository->edit($id);
         return view('backends.classrooms.edit')->with([
             'faculties' => $data['faculty'],
             'subjects' => $data['subject'],
             'classroom' => $data['classroom']
         ]);
-
     }
 
     public function update(UpdateClassroomRequest $request, $id)
     {
-
         $this->classroomRepository->update($request->all(), $id);
         return redirect(route('classrooms.index'))->with('message', 'Cập nhật thông tin lớp học thành công');
     }
 
     public function destroy($id)
     {
-        $this->authorize('destroy-classroom');
         return response()->json([
             'status' => 204,
             'message' => $this->classroomRepository->destroy($id),

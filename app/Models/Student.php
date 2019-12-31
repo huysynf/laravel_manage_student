@@ -10,6 +10,7 @@ class Student extends Model
     use ImageTrait;
 
     protected $table = 'students';
+
     protected $fillable = [
         'name',
         'address',

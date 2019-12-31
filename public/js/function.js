@@ -6,7 +6,6 @@ alertSuccess = (message) => {
         title: message,
         showConfirmButton: true,
         confirmButtonText: 'ok'
-
     });
 };
 
@@ -19,7 +18,6 @@ function alertError(message) {
 }
 
 //curd resource
-
 function callAjax(url, data = "", type = 'get') {
     return $.ajax({
         url: url,
@@ -54,14 +52,12 @@ destroyResource = (url) => {
 };
 
 //count row table
-function countStt() {
+function countIndexTableOfPage() {
     let index = 1;
     $("tr td strong").each(function () {
         $(this).text(index);
         index++;
-
     });
-
 }
 
 //faculty error function
@@ -87,8 +83,8 @@ function showErrorSubject(errors) {
     (errors.name) ? $('.name-error').html(errors.name[0]) : "";
     (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
     (errors.description) ? $('.description-error').html(errors.description[0]) : "";
-
 }
+
 function  fillFacultyToRowTable(faculty) {
     return `<tr>
              <td>
@@ -118,6 +114,7 @@ function showErrorSubject(errors) {
     (errors.lesson) ? $('.lesson-error').html(errors.lesson[0]) : "";
     (errors.description) ? $('.description-error').html(errors.description[0]) : "";
 }
+
 function fillSubjectToRowTable(subject) {
     return ` <tr
                 ><td>
@@ -144,6 +141,7 @@ function fillSubjectToRowTable(subject) {
             </td>
            </tr>`;
 }
+
 //classroom
 function arrayOjectParseToNameP(data) {
     let html = "";
@@ -169,7 +167,6 @@ $(".image-input").change(function () {
 });
 
 //user
-
 function showErrorPassword(errors) {
     (errors.oldPassword) ? $('.error-old-password').html(errors.oldPassword[0]) : "";
     (errors.password) ? $('.error-password').html(errors.password[0]) : "";
@@ -236,8 +233,8 @@ function fillUserToRowTable(user) {
             <i class="fas fa-key text-warning"></i></button>
         </td>
        </tr>
-   `;}
-
+   `;
+}
 
 //role
 function showErrorRole(errors) {
@@ -283,24 +280,24 @@ function fillRoleToRowTable(role) {
 
  function fillPermissionToRowTable(permission) {
     return ` <tr>
-                        <td>
-                            <strong></strong>
-                        </td>
-                        <td>
-                            ${permission.name}
-                        </td>
-                        <td>
-                               ${permission.slug}
-                        </td>
-                        <td class="d-flex">
-                            <button class="btn btn-outline-primary btn-circle edit-permission"
-                                    title="Cập nhật thông tin  quyền"
-                                    data-toggle="modal"
-                                    editId="   ${permission.id}"
-                                    data-target="#editPermissionModal">
-                                <i class="fa fa-edit text-dark"></i>
-                            </button>
-                        </td>
-                    </tr>`;
+                <td>
+                    <strong></strong>
+                </td>
+                <td>
+                    ${permission.name}
+                </td>
+                <td>
+                       ${permission.slug}
+                </td>
+                <td class="d-flex">
+                    <button class="btn btn-outline-primary btn-circle edit-permission"
+                            title="Cập nhật thông tin  quyền"
+                            data-toggle="modal"
+                            editId="   ${permission.id}"
+                            data-target="#editPermissionModal">
+                        <i class="fa fa-edit text-dark"></i>
+                    </button>
+                </td>
+            </tr>`;
 
-}
+    }

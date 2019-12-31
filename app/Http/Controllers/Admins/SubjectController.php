@@ -19,45 +19,46 @@ class SubjectController extends Controller
 
     public function index(Request $request)
     {
-        $this->authorize('view-subject');
         $subjects = $this->subjectRepository->search($request->only(['name', 'lesson']));
         return view('backends.subjects.index', compact('subjects'));
     }
 
     public function store(CreateSubjectRequest $request)
     {
-        $data = $request->all();
+        $subject = $this->subjectRepository->create($request->all());
         return response()->json([
             'status' => 200,
             'message' => 'Thêm mới môn học thành công',
-            'data' => $this->subjectRepository->create($data),
+            'data' => $subject,
         ]);
     }
 
     public function show($id)
     {
+        $subject = $this->subjectRepository->show($id);
         return response()->json([
             'status' => 200,
             'message' => 'Lấy dữ liêu thành công',
-            'data' => $this->subjectRepository->show($id),
+            'data' => $subject,
         ]);
     }
 
     public function update(UpdateSubjectRequest $request, $id)
     {
-        $data = $request->all();
+        $subject = $this->subjectRepository->update($request->all(), $id);
         return response()->json([
             'status' => 200,
             'message' => 'Cập nhật thông tin môn học  thành công',
-            'data' => $this->update($data, $id),
+            'data' => $subject,
         ]);
     }
 
     public function destroy($id)
     {
+        $message = $this->subjectRepository->destroy($id);
         return response()->json([
             'status' => 200,
-            'message' => $this->subjectRepository->destroy($id),
+            'message' => $message,
         ]);
     }
 

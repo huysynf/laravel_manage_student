@@ -19,7 +19,6 @@ class FacultyController extends Controller
 
     public function index(Request $request)
     {
-        $this->authorize('view-faculty');
         $data = $request->only(['name', 'lesson']);
         $faculties = $this->facultyRepository->search($data);
         return view('backends.faculties.index', compact('faculties'));
@@ -27,41 +26,40 @@ class FacultyController extends Controller
 
     public function store(CreateFacultyRequest $request)
     {
-
-        $data = $request->all();
+        $faculty = $this->facultyRepository->create($request->all());
         return response()->json([
             'status' => 200,
             'message' => 'Thêm mới thành công',
-            'data' => $this->facultyRepository->create($data),
+            'data' => $faculty,
         ]);
     }
 
     public function update(UpdateFacultyRequest $request, $id)
     {
-
-        $data = $request->all();
-
+        $faculty = $this->facultyRepository->update($request->all(), $id);
         return response()->json([
             'status' => 200,
             'message' => 'Cập nhật thông tin khoa  thành công',
-            'data' => $this->facultyRepository->update($data, $id),
+            'data' => $faculty,
         ]);
     }
 
     public function show($id)
     {
+        $faculty = $this->facultyRepository->show($id);
         return response()->json([
             'status' => 200,
             'message' => 'Thành công',
-            'data' => $this->facultyRepository->show($id),
+            'data' => $faculty,
         ]);
     }
 
     public function destroy($id)
     {
+        $message = $this->facultyRepository->destroy($id);
         return response()->json([
             'status' => 200,
-            'message' => $this->facultyRepository->destroy($id),
+            'message' => $message,
         ]);
     }
 

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Permission extends Model
 {
     protected $table = 'permissions';
+
     protected $fillable = [
         'name',
         'slug'
@@ -26,5 +27,4 @@ class Permission extends Model
             ->latest('id')
             ->paginate(10);
     }
-
 }

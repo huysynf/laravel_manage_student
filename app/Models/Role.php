@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     protected $table = 'roles';
+
     protected $fillable = [
         'name',
         'slug',
@@ -46,11 +47,13 @@ class Role extends Model
     public function hasPermission($slug, $id)
     {
         return $this
-                ->when($slug, function ($query) use ($slug) {
-                    $query->whereHas('permissions', function ($q) use ($slug) {
-                        $q->where('slug', $slug);
-                    });
-                })->where('id', $id)->count() > 0;
+            ->when($slug, function ($query) use ($slug) {
+                $query->whereHas('permissions', function ($q) use ($slug) {
+                    $q->where('slug', $slug);
+                });
+            })
+            ->where('id', $id)
+            ->count() > 0;
     }
 
     public function getPermisisonIdBy($id)

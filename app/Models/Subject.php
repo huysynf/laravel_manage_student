@@ -24,6 +24,5 @@ class Subject extends Model
             })
             ->latest('id')
             ->paginate(10);
-
     }
 }

@@ -11,28 +11,30 @@ $(function () {
         $('.select-item').prop("checked", $(this).prop("checked"));
         $('.un-select-all').prop("checked", false);
     });
+
     $('.un-select-all').change(function () {
         if ($(this).prop("checked") == true) {
             $('.select-item').prop("checked", false);
             $('.select-all').prop("checked", false);
         }
     });
+
     $('.select-item').change(function () {
         $(this).prop("checked", $(this).prop("checked"));
         $('.un-select-all').prop("checked", false);
     });
+
     //count row table
-    countStt();
+     countIndexTableOfPage();
 
     //variable
-    let idAction = 0;
-    let urlResource = "";
-    let dataResource = "";
+
     let getMethodForm = 'get';
     let postMethodForm = 'post';
 
     //faculty
     //variable
+
     let faculty = $('#faculty');
     let addFacultyBtn = $('.add-faculty');
     let facultyPath = "/manage/faculties";
@@ -43,6 +45,7 @@ $(function () {
         resetErrorFaculty();
         $(".new-faculty-form").trigger("reset");
     });
+
     faculty.on('click', '.edit-faculty', function () {
         resetErrorFaculty();
         facultyId = $(this).attr('editId');
@@ -56,7 +59,6 @@ $(function () {
     });
 
     faculty.on('click', '.new-faculty', function () {
-
         let facultyData = new FormData($('.new-faculty-form')[0]);
         callAjax(facultyPath, facultyData, postMethodForm)
             .done(data => {
@@ -64,7 +66,7 @@ $(function () {
                 alertSuccess(data.message);
                 let facultyRow = fillFacultyToRowTable(data.data);
                 $('tbody').prepend(facultyRow);
-                countStt();
+                 countStt();
             })
             .fail(data => {
                 let errors = data.responseJSON.errors;
@@ -72,6 +74,7 @@ $(function () {
                 showErrorFaculty(errors);
             });
     });
+
     faculty.on('click', '.update-faculty', function () {
         let facultyData = new FormData($('.edit-faculty-form')[0]);
         let urlUpdate = facultyPath + '/update/' + facultyId;
@@ -81,20 +84,22 @@ $(function () {
                 let facultyRow = fillFacultyToRowTable(data.data);
                 $(".edit-faculty[editId=" + facultyId + "]").parents('tr').replaceWith(facultyRow);
                 alertSuccess(data.message);
-                countStt();
+                 countIndexTableOfPage();
             })
             .fail(data => {
                 let errors = data.responseJSON.errors;
                 showErrorFaculty(errors);
             });
     });
+
     faculty.on('click', '.delete-faculty', function () {
         facultyId = $(this).attr('deleteId');
         let urlDelete = facultyPath + "/" + facultyId;
-        destroyResource(urlDelete).then(data => {
-            alertSuccess(data.message);
-            $(this).parents('tr').remove();
-        })
+        destroyResource(urlDelete)
+            .then(data => {
+                alertSuccess(data.message);
+                $(this).parents('tr').remove();
+            })
             .catch(data => {
                 alertError(data.message);
             });
@@ -113,6 +118,7 @@ $(function () {
         resetErrorSubject();
         $(".new-subject-form").trigger("reset");
     });
+
     subject.on('click', '.new-subject', function () {
         let subjectData = new FormData($('.new-subject-form')[0]);
         callAjax(subjectPath, subjectData, postMethodForm)
@@ -121,7 +127,7 @@ $(function () {
                 let subjectRow = fillSubjectToRowTable(data.data);
                 $('tbody').prepend(subjectRow);
                 alertSuccess(data.message);
-                countStt();
+                 countIndexTableOfPage();
             })
             .fail(data => {
                 let errors = data.responseJSON.errors;
@@ -129,6 +135,7 @@ $(function () {
                 showErrorSubject(errors);
             });
     });
+
     subject.on('click', '.edit-subject', function () {
         resetErrorSubject();
         subjectId = $(this).attr('editId');
@@ -141,6 +148,7 @@ $(function () {
                 $('.subject-description').val(subject.description);
             })
     });
+
     subject.on('click', '.update-subject', function () {
         let subjectData = new FormData($('.edit-subject-form')[0]);
         let subjectUrl = subjectPath + "/update/" + subjectId;
@@ -148,9 +156,9 @@ $(function () {
             .done(data => {
                 $('#editSubjectModal').modal('hide')
                 let subjectRow = fillSubjectToRowTable(data.data);
-                $(".edit-subject[editId=" + idAction + "]").parents('tr').replaceWith(subjectRow);
+                $(".edit-subject[editId=" + subjectId + "]").parents('tr').replaceWith(subjectRow);
                 alertSuccess(data.message);
-                countStt();
+                 countIndexTableOfPage();
             })
             .fail(data => {
                 let errors = data.responseJSON.errors;
@@ -158,6 +166,7 @@ $(function () {
                 showErrorSubject(errors);
             });
     });
+
     subject.on('click', '.delete-subject', function () {
         subjectId = $(this).attr('deleteId');
         let subjectUrl = subjectPath + "/" + subjectId;
@@ -171,7 +180,6 @@ $(function () {
             });
     });
 
-
 //classroom
     $('.classroom-select-faculty').select2();
     $('.classroom-select-subject').select2();
@@ -179,6 +187,7 @@ $(function () {
     let classroom = $('#classroom');
     let classroomPath = "/manage/classrooms";
     let classroomId = 0;
+
     classroom.on('click', '.delete-classroom', function () {
         classroomId = $(this).attr('deleteId');
         let ClassroomUrl = classroomPath + "/" + classroomId;
@@ -206,13 +215,13 @@ $(function () {
             })
     });
 
-
     //student
 
     let student = $('#student');
     let studentPath = "/manage/students/";
     $('.student-select-classroom').select2();
     let studentId = 0;
+
     student.on('click', '.delete-student', function () {
         studentId = $(this).attr('deleteId');
         let studentUrl = studentPath + studentId;
@@ -224,7 +233,6 @@ $(function () {
             .catch(data => {
                 alertError(data.message);
             });
-        ;
     });
 
     student.on('click', '.show-student', function () {
@@ -235,7 +243,7 @@ $(function () {
                 let student = data.data;
                 $('.student-name').html(student.name);
                 $('.student-address').html(student.address);
-                $(' .student-gender').html((student.gender == 0) ? 'Nam' : 'Nữ');
+                $(' .student-gender').html((student.gender == 1) ? 'Nam' : 'Nữ');
                 $(' .student-image').attr('src', '/images/students/' + student.image);
                 let classrooms = (student.classrooms.length > 0) ? arrayOjectParseToNameP(student.classrooms) : 'Không có';
                 $('.student-classroom').html(classrooms);
@@ -244,17 +252,20 @@ $(function () {
 
             })
     });
+
     //user
     let user = $('#user');
     let addUserBtn = $('.add-user');
     let userPath = "/manage/users";
     $('.user-select-role').select2();
     let userId = 0;
+
     // function
     addUserBtn.click(function () {
         $("#new-user-form").trigger("reset");
         resetErrorUser();
     });
+
     user.on('click', '.new-user', function () {
         let userData = new FormData($('#new-user-form')[0]);
         callAjax(userPath, userData, postMethodForm)
@@ -263,7 +274,7 @@ $(function () {
                 alertSuccess(data.message);
                 let userRow = fillUserToRowTable(data.data);
                 $('tbody').prepend(userRow);
-                countStt();
+                 countIndexTableOfPage();
             })
             .fail(data => {
                 let errors = data.responseJSON.errors;
@@ -271,6 +282,7 @@ $(function () {
                 showErrorUser(errors);
             });
     });
+
     user.on('click', '.edit-user', function () {
         resetErrorUser();
         userId = $(this).attr('editId');
@@ -289,7 +301,7 @@ $(function () {
     $('body').on('click', '.show-user', function () {
         userId = $(this).attr('showId');
         let userUrl = userPath + '/' + userId;
-        callAjax(urlResource)
+        callAjax(userUrl)
             .done(data => {
                 let user = data.data;
                 $('.user-name').html(user.name);
@@ -299,6 +311,7 @@ $(function () {
                 $('.user-role').html(user.role.name);
             })
     });
+
     user.on('click', '.update-user', function () {
         let userData = new FormData($('#update-user-form')[0]);
         let userUrl = userPath + '/update/' + userId;
@@ -307,8 +320,8 @@ $(function () {
                 $('#editUserModal').modal('hide');
                 alertSuccess(data.message);
                 let userRow = fillUserToRowTable(data.data);
-                $(".edit-user[editId=" + idAction + "]").parents('tr').replaceWith(userRow);
-                countStt();
+                $(".edit-user[editId=" + userId + "]").parents('tr').replaceWith(userRow);
+                 countIndexTableOfPage();
             })
             .fail(data => {
                 let errors = data.responseJSON.errors;
@@ -336,7 +349,7 @@ $(function () {
             .done(data => {
                 $('#setPasswordModal').modal('hide');
                 alertSuccess(data.message,);
-                countStt();
+                 countIndexTableOfPage();
             })
             .fail(data => {
                 let errors = data.responseJSON.errors;
@@ -344,6 +357,7 @@ $(function () {
                 showErrorUser(errors);
             });
     });
+
     $('body').on('click', '.change-password', function () {
         let passwordData = new FormData($('#change-password-form')[0]);
         let changePasswordUrl = userPath + "/change-password/" + userId;
@@ -358,16 +372,19 @@ $(function () {
                 showErrorPassword(errors);
             });
     });
+
     //role
     let role = $('#role');
     let rolePath = '/manage/roles';
     let addRole = $('.add-role');
     let roleId = 0;
     $('.role-select-permission').select2();
+
     addRole.click(function () {
         $("#new-role-form").trigger("reset");
         resetErrorRole();
     });
+
     role.on('click', '.new-role', function () {
         resetErrorRole();
         let roleData = new FormData($('#new-role-form')[0]);
@@ -377,7 +394,7 @@ $(function () {
                 alertSuccess(data.message);
                 let role = fillRoleToRowTable(data.data);
                 $('tbody').prepend(role);
-                countStt();
+                 countIndexTableOfPage();
             })
             .fail(data => {
                 let errors = data.responseJSON.errors;
@@ -385,6 +402,7 @@ $(function () {
                 showErrorRole(errors);
             });
     });
+
     role.on('click', '.show-role', function () {
         roleId = $(this).attr('showId');
         let urlRole = rolePath + '/' + roleId;
@@ -396,6 +414,7 @@ $(function () {
                 $('.permissions-box').html(permissions);
             })
     });
+
     role.on('click', '.delete-role', function () {
         roleId = $(this).attr('deleteId');
         let urlRole = rolePath + "/" + roleId;
@@ -413,6 +432,7 @@ $(function () {
     let permission = $('#permission');
     let permissionPath = '/manage/permissions';
     let permissionId = 0;
+
     permission.on('click', '.edit-permission', function () {
         $('.error-name').html('');
         permissionId = $(this).attr('editId');
@@ -422,7 +442,6 @@ $(function () {
                 let permission = data.data;
                 $('.permission-name').val(permission.name);
                 $('.permission-slug').val(permission.slug);
-
             })
     });
 
@@ -435,7 +454,7 @@ $(function () {
                 alertSuccess(data.message);
                 let permissionRow = fillPermissionToRowTable(data.data);
                 $(".edit-permission[editId=" + permissionId + "]").parents('tr').replaceWith(permissionRow);
-                countStt();
+                 countIndexTableOfPage();
             })
             .fail(data => {
                 let errors = data.responseJSON.errors;
