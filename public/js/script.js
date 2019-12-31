@@ -106,14 +106,16 @@ $(function () {
     let subject = $('#subject');
     let addSubjectBtn = $('.add-subject');
     let subjectPath = "/manage/subjects";
+    let subjectId=0;
+
     // function
     addSubjectBtn.click(function () {
         resetErrorSubject();
         $(".new-subject-form").trigger("reset");
     });
     subject.on('click', '.new-subject', function () {
-        dataResource = new FormData($('.new-subject-form')[0]);
-        callAjax(subjectPath, dataResource, postMethodForm)
+        let subjectData = new FormData($('.new-subject-form')[0]);
+        callAjax(subjectPath, subjectData, postMethodForm)
             .done(data => {
                 $('#newsubjectModal').modal('hide');
                 let subjectRow = fillSubjectToRowTable(data.data);
@@ -129,9 +131,9 @@ $(function () {
     });
     subject.on('click', '.edit-subject', function () {
         resetErrorSubject();
-        idAction = $(this).attr('editId');
-        urlResource = subjectPath + "/" + idAction;
-        callAjax(urlResource, null, getMethodForm)
+        subjectId = $(this).attr('editId');
+       let  subjectUrl = subjectPath + "/" + subjectId;
+        callAjax(subjectUrl)
             .done(data => {
                 let subject = data.data;
                 $('.subject-name').val(subject.name);
@@ -140,9 +142,9 @@ $(function () {
             })
     });
     subject.on('click', '.update-subject', function () {
-        dataResource = new FormData($('.edit-subject-form')[0]);
-        urlResource = subjectPath + "/update/" + idAction;
-        callAjax(urlResource, dataResource, newMethodForm)
+        let subjectData = new FormData($('.edit-subject-form')[0]);
+       let  subjectUrl = subjectPath + "/update/" + subjectId;
+        callAjax(subjectUrl, subjectData, postMethodForm)
             .done(data => {
                 $('#editSubjectModal').modal('hide')
                 let subjectRow = fillSubjectToRowTable(data.data);
@@ -157,9 +159,9 @@ $(function () {
             });
     });
     subject.on('click', '.delete-subject', function () {
-        idAction = $(this).attr('deleteId');
-        urlResource = subjectPath + "/" + idAction;
-        destroyResource(urlResource)
+        subjectId = $(this).attr('deleteId');
+        let   subjectUrl = subjectPath + "/" + subjectId;
+        destroyResource(subjectUrl)
             .then(data => {
                 alertSuccess(data.message);
                 $(this).parents('tr').remove();
@@ -176,11 +178,11 @@ $(function () {
 
     let classroom = $('#classroom');
     let classroomPath = "/manage/classrooms";
-
+    let classroomId=0;
     classroom.on('click', '.delete-classroom', function () {
-        idAction = $(this).attr('deleteId');
-        urlResource = classroomPath + "/" + idAction;
-        destroyResource(urlResource)
+        classroomId = $(this).attr('deleteId');
+        let ClassroomUrl = classroomPath + "/" + classroomId;
+        destroyResource(ClassroomUrl)
             .then(data => {
                 alertSuccess(data.message);
                 $(this).parents('tr').remove();
@@ -191,9 +193,9 @@ $(function () {
     });
 
     classroom.on('click', '.show-classroom', function () {
-        idAction = $(this).attr('showId');
-        urlResource = classroomPath + "/" + idAction;
-        callAjax(urlResource)
+        classroomId = $(this).attr('showId');
+        let classroomUrl = classroomPath + "/" + classroomId;
+        callAjax(classroomUrl)
             .done(data => {
                 let classroom = data.data;
                 $('.classroom-name').html(classroom.name);
@@ -210,10 +212,11 @@ $(function () {
     let student = $('#student');
     let studentPath = "/manage/students/";
     $('.student-select-classroom').select2();
+    let studentId=0;
     student.on('click', '.delete-student', function () {
-        idAction = $(this).attr('deleteId');
-        urlResource = studentPath + idAction;
-        destroyResource(urlResource)
+        studentId = $(this).attr('deleteId');
+        let studentUrl = studentPath + studentId;
+        destroyResource(studentUrl)
             .then(data => {
                 alertSuccess(data.message);
                 $(this).parents('tr').remove();
@@ -225,9 +228,9 @@ $(function () {
     });
 
     student.on('click', '.show-student', function () {
-        idAction = $(this).attr('showId');
-        urlResource = studentPath + idAction;
-        callAjax(urlResource)
+        studentId = $(this).attr('showId');
+        let studentUrl = studentPath + studentId;
+        callAjax(studentUrl)
             .done(data => {
                 let student = data.data;
                 $('.student-name').html(student.name);
@@ -246,14 +249,15 @@ $(function () {
     let addUserBtn = $('.add-user');
     let userPath = "/manage/users";
     $('.user-select-role').select2();
+    let userId=0;
     // function
     addUserBtn.click(function () {
         $("#new-user-form").trigger("reset");
         resetErrorUser();
     });
     user.on('click', '.new-user', function () {
-        dataResource = new FormData($('#new-user-form')[0]);
-        callAjax(urlResource, dataResource, 'post')
+        let userData = new FormData($('#new-user-form')[0]);
+        callAjax(userPath, userData, postMethodForm)
             .done(data => {
                 $('#newUserModal').modal('hide');
                 alertSuccess(data.message);
@@ -269,9 +273,9 @@ $(function () {
     });
     user.on('click', '.edit-user', function () {
         resetErrorUser();
-        idAction = $(this).attr('editId');
-        urlResource = userPath + "/" + idAction;
-        callAjax(urlResource)
+        userId = $(this).attr('editId');
+        let userUrl = userPath + "/" + userId;
+        callAjax(userUrl)
             .done(data => {
                 let user = data.data;
                 $('.user-name').val(user.name);
@@ -283,8 +287,8 @@ $(function () {
     });
 
     $('body').on('click', '.show-user', function () {
-        idAction = $(this).attr('showId');
-        urlResource = userPath + '/' + idAction;
+        userId = $(this).attr('showId');
+        let userUrl = userPath + '/' + userId;
         callAjax(urlResource)
             .done(data => {
                 let user = data.data;
@@ -296,9 +300,9 @@ $(function () {
             })
     });
     user.on('click', '.update-user', function () {
-        dataResource = new FormData($('#update-user-form')[0]);
-        urlResource = userPath + '/update/' + idAction;
-        callAjax(urlResource, dataResource, 'post')
+        let userData = new FormData($('#update-user-form')[0]);
+        let userUrl = userPath + '/update/' + userId;
+        callAjax(userUrl, userData, postMethodForm)
             .done(data => {
                 $('#editUserModal').modal('hide');
                 alertSuccess(data.message);
@@ -313,9 +317,9 @@ $(function () {
     });
 
     user.on('click', '.delete-user', function () {
-        idAction = $(this).attr('deleteId');
-        urlResource = userPath + "/" + idAction
-        destroyResource(urlResource)
+        userId = $(this).attr('deleteId');
+        let userUrl = userPath + "/" + userId;
+        destroyResource(userUrl)
             .then(data => {
                 alertSuccess(data.message);
                 $(this).parents('tr').remove();
@@ -326,11 +330,11 @@ $(function () {
     });
 
     user.on('click', '.set-password', function () {
-        dataResource = new FormData($('#set-password-form')[0]);
-        urlResource = userPath + "/set-password/" + idAction;
-        callAjax(urlResource, dataResource, postMethodForm)
+        let passwordData = new FormData($('#set-password-form')[0]);
+        let setPasswordUrl = userPath + "/set-password/" + userId;
+        callAjax(setPasswordUrl, passwordData, postMethodForm)
             .done(data => {
-                $('#setPasswordModal').modal('hide')
+                $('#setPasswordModal').modal('hide');
                 alertSuccess(data.message,);
                 countStt();
             })
@@ -341,11 +345,11 @@ $(function () {
             });
     });
     $('body').on('click', '.change-password', function () {
-        dataResource = new FormData($('#change-password-form')[0]);
-        urlResource = userPath + "/change-password/" + idAction;
-        callAjax(urlResource, dataResource, postMethodForm)
+        let passwordData = new FormData($('#change-password-form')[0]);
+        let changePasswordUrl = userPath + "/change-password/" + userId;
+        callAjax(changePasswordUrl, passwordData, postMethodForm)
             .done(data => {
-                $('#changeUserPasswordModal').modal('hide')
+                $('#changeUserPasswordModal').modal('hide');
                 alertSuccess(data.message);
             })
             .fail(data => {
