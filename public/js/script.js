@@ -67,7 +67,7 @@ $(function () {
                 countStt();
             })
             .fail(data => {
-                const errors = data.responseJSON.errors;
+                let errors = data.responseJSON.errors;
                 resetErrorFaculty();
                 showErrorFaculty(errors);
             });
@@ -84,7 +84,7 @@ $(function () {
                 countStt();
             })
             .fail(data => {
-                const errors = data.responseJSON.errors;
+                let errors = data.responseJSON.errors;
                 showErrorFaculty(errors);
             });
     });
@@ -122,7 +122,7 @@ $(function () {
                 countStt();
             })
             .fail(data => {
-                const errors = data.responseJSON.errors;
+                let errors = data.responseJSON.errors;
                 resetErrorSubject();
                 showErrorSubject(errors);
             });
@@ -151,7 +151,7 @@ $(function () {
                 countStt();
             })
             .fail(data => {
-                const errors = data.responseJSON.errors;
+                let errors = data.responseJSON.errors;
                 resetErrorSubject();
                 showErrorSubject(errors);
             });
@@ -262,7 +262,7 @@ $(function () {
                 countStt();
             })
             .fail(data => {
-                const errors = data.responseJSON.errors;
+                let errors = data.responseJSON.errors;
                 resetErrorUser();
                 showErrorUser(errors);
             });
@@ -307,7 +307,7 @@ $(function () {
                 countStt();
             })
             .fail(data => {
-                const errors = data.responseJSON.errors;
+                let errors = data.responseJSON.errors;
                 showErrorUser(errors);
             });
     });
@@ -335,7 +335,7 @@ $(function () {
                 countStt();
             })
             .fail(data => {
-                const errors = data.responseJSON.errors;
+                let errors = data.responseJSON.errors;
                 resetErrorUser();
                 showErrorUser(errors);
             });
@@ -349,7 +349,7 @@ $(function () {
                 alertSuccess(data.message);
             })
             .fail(data => {
-                const errors = data.responseJSON.errors;
+                let errors = data.responseJSON.errors;
                 resetErrorPassword();
                 showErrorPassword(errors);
             });
@@ -376,7 +376,7 @@ $(function () {
                 countStt();
             })
             .fail(data => {
-                const errors = data.responseJSON.errors;
+                let errors = data.responseJSON.errors;
                 resetErrorRole();
                 showErrorRole(errors);
             });
@@ -434,7 +434,7 @@ $(function () {
                 countStt();
             })
             .fail(data => {
-                const errors = data.responseJSON.errors;
+                let errors = data.responseJSON.errors;
                 $('.error-name').html(errors.name[0]);
             });
     });
