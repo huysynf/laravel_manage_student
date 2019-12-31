@@ -41,7 +41,7 @@ class RoleRepository extends BaseRepository
     {
         $data['role'] = $this->show($id);
         $data['permissions'] = $this->permissions->all(['id', 'name', 'slug']);
-        $data['listPermission'] = $this->rolePermisison->getPermisisonIdByRoleId($id);
+        $data['listPermission'] = $this->model->getPermisisonIdBy($id);
         return $data;
     }
 

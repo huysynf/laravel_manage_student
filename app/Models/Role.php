@@ -52,4 +52,9 @@ class Role extends Model
                     });
                 })->where('id', $id)->count() > 0;
     }
+
+    public function getPermisisonIdBy($id)
+    {
+        return $this->findOrFail($id)->permissions()->pluck('permission_id')->toArray();
+    }
 }
