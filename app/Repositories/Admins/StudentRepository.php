@@ -3,25 +3,19 @@
 namespace App\Repositories\Admins;
 
 use App\Models\Classroom;
-use App\Models\ClassroomStudent;
 use App\Models\Student;
 use App\Repositories\BaseRepository;
-use DB;
-use Hash;
-use Image;
 
 class StudentRepository extends BaseRepository
 {
     protected $classroom;
     protected $imagePath;
-    protected $classroomStudent;
 
     public function __construct(Student $model)
     {
         $this->model = $model;
         $this->imagePath = 'images/students/';
         $this->classroom = new Classroom();
-        $this->classroomStudent = new ClassroomStudent();
     }
 
     public function search(array $data)
@@ -61,7 +55,7 @@ class StudentRepository extends BaseRepository
     {
         $student['student'] = $this->model->findOrFail($id);
         $student['classrooms'] = $this->classroom->all(['id', 'name']);
-        $student['listClassroomId'] = $this->classroomStudent->getClassroomIdBy($id);
+        $student['listClassroomId'] = $this->model->getClassroomIdBy($id);
         return $student;
     }
 

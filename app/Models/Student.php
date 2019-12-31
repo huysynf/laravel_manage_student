@@ -32,7 +32,7 @@ class Student extends Model
 
     public function getClassroomIdBy($id)
     {
-        return $this->with('classrooms')->findOrFail($id)->pluck('classroom_id');
+        return $this->findOrFail($id)->classrooms()->pluck('classroom_id')->toArray();
     }
 
     public function search($data)

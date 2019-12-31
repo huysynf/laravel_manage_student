@@ -63,7 +63,7 @@
                         <select name="classrooms[]" id="" class="form-control student-select-classroom" multiple>
                             @foreach($classrooms as $classroom)
                                 <option
-                                    value="{{$classroom->id}}" {{( $listClassroomStudent->contains($classroom->id)) ? 'selected' : '' }}  {{in_array($classroom->id,old('classrooms',[]))? 'selected' : '' }}>{{$classroom->name}}</option>
+                                    value="{{$classroom->id}}" {{in_array($classroom->id, $listClassroomStudent) ? 'selected' : '' }}  {{in_array($classroom->id,old('classrooms',[]))? 'selected' : '' }}>{{$classroom->name}}</option>
                             @endforeach
                         </select>
                         @error('classrooms')
