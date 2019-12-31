@@ -29,9 +29,9 @@ class Classroom extends Model
 
     public function search(array $data)
     {
-        $classroomName=$data['name']??null;
-        $facultyName=$data['faculty']??null;
-        $subjectName=$data['subject']??null;
+        $classroomName = $data['name'] ?? null;
+        $facultyName = $data['faculty'] ?? null;
+        $subjectName = $data['subject'] ?? null;
         return $this->when($classroomName, function ($query) use ($classroomName) {
             $query->orwhere('name', 'LIKE', '%' . $classroomName . '%');
         })

@@ -26,6 +26,4 @@ class Faculty extends Model
             ->latest('id')
             ->paginate(10);
     }
-
-
 }

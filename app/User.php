@@ -58,21 +58,27 @@ class User extends Authenticatable
         })
             ->when($role, function ($query) use ($role) {
                 $query->whereHas('role', function ($q) use ($role) {
-                    $q->where('name',$role );
+                    $q->where('name', $role);
                 });
             })
             ->latest('id')
             ->paginate(10);
     }
+
     public function role()
     {
-        return $this->belongsTo(Role::class,'role_id');
+        return $this->belongsTo(Role::class, 'role_id');
     }
-    public  function findOrFail($id){
+
+    public function findOrFail($id)
+    {
         return $this->with('role')->findOrFail($id);
     }
-    public function hasAccessPermissionByRoleId($name,$id){
-      return $this->role->hasPermission($name,$id);
+
+    public function hasAccessPermissionByRoleId($name, $role_id)
+    {
+        return $this->role->hasPermission($name, $role_id);
     }
+
 
 }

@@ -106,7 +106,7 @@ $(function () {
     let subject = $('#subject');
     let addSubjectBtn = $('.add-subject');
     let subjectPath = "/manage/subjects";
-    let subjectId=0;
+    let subjectId = 0;
 
     // function
     addSubjectBtn.click(function () {
@@ -132,7 +132,7 @@ $(function () {
     subject.on('click', '.edit-subject', function () {
         resetErrorSubject();
         subjectId = $(this).attr('editId');
-       let  subjectUrl = subjectPath + "/" + subjectId;
+        let subjectUrl = subjectPath + "/" + subjectId;
         callAjax(subjectUrl)
             .done(data => {
                 let subject = data.data;
@@ -143,7 +143,7 @@ $(function () {
     });
     subject.on('click', '.update-subject', function () {
         let subjectData = new FormData($('.edit-subject-form')[0]);
-       let  subjectUrl = subjectPath + "/update/" + subjectId;
+        let subjectUrl = subjectPath + "/update/" + subjectId;
         callAjax(subjectUrl, subjectData, postMethodForm)
             .done(data => {
                 $('#editSubjectModal').modal('hide')
@@ -160,7 +160,7 @@ $(function () {
     });
     subject.on('click', '.delete-subject', function () {
         subjectId = $(this).attr('deleteId');
-        let   subjectUrl = subjectPath + "/" + subjectId;
+        let subjectUrl = subjectPath + "/" + subjectId;
         destroyResource(subjectUrl)
             .then(data => {
                 alertSuccess(data.message);
@@ -178,7 +178,7 @@ $(function () {
 
     let classroom = $('#classroom');
     let classroomPath = "/manage/classrooms";
-    let classroomId=0;
+    let classroomId = 0;
     classroom.on('click', '.delete-classroom', function () {
         classroomId = $(this).attr('deleteId');
         let ClassroomUrl = classroomPath + "/" + classroomId;
@@ -212,7 +212,7 @@ $(function () {
     let student = $('#student');
     let studentPath = "/manage/students/";
     $('.student-select-classroom').select2();
-    let studentId=0;
+    let studentId = 0;
     student.on('click', '.delete-student', function () {
         studentId = $(this).attr('deleteId');
         let studentUrl = studentPath + studentId;
@@ -249,7 +249,7 @@ $(function () {
     let addUserBtn = $('.add-user');
     let userPath = "/manage/users";
     $('.user-select-role').select2();
-    let userId=0;
+    let userId = 0;
     // function
     addUserBtn.click(function () {
         $("#new-user-form").trigger("reset");
@@ -431,7 +431,7 @@ $(function () {
         let urlUpdate = permissionPath + '/update/' + permissionId;
         callAjax(urlUpdate, permissionData, postMethodForm)
             .done(data => {
-                $('#editPermissionModal').modal('hide')
+                $('#editPermissionModal').modal('hide');
                 alertSuccess(data.message);
                 let permissionRow = fillPermissionToRowTable(data.data);
                 $(".edit-permission[editId=" + permissionId + "]").parents('tr').replaceWith(permissionRow);

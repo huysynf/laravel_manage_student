@@ -61,7 +61,7 @@ class StudentRepository extends BaseRepository
     {
         $student['student'] = $this->model->findOrFail($id);
         $student['classrooms'] = $this->classroom->all(['id', 'name']);
-        $student['listClassroomId'] = $this->classroomStudent->getClassroomIdByStudentId($id);
+        $student['listClassroomId'] = $this->classroomStudent->getClassroomIdBy($id);
         return $student;
     }
 
