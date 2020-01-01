@@ -11,7 +11,6 @@ use App\Repositories\Admins\UserRepository;
 use DB;
 use Hash;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Image;
 
 

@@ -13,53 +13,57 @@ class RoleTableSeeder extends Seeder
     public function run()
     {
         DB::table('permissions')->insert([
-            ['name' => 'view permission', 'slug' => 'view-permission',],
-            ['name' => 'create permission', 'slug' => 'create-permission',],
-            ['name' => 'edit permission','slug' => 'edit-permission', ],
-            ['name' => 'update permission', 'slug' => 'update-permission'],
-            ['name' => 'delete permission', 'slug' => 'delete-permission',],
 
-            ['name' => 'view role','slug' => 'view-role',],
-            ['name' => 'create role','slug' => 'create-role',],
-            ['name' => 'edit role','slug' => 'edit-role',],
-            ['name' => 'update role','slug' => 'update-role',],
-            ['name' => 'delete role','slug' => 'delete-role',],
+            ['name' => 'Xem quyền', 'slug' => 'view-permission',],
+            ['name' => 'Tạo mới quyền', 'slug' => 'create-permission',],
+            ['name' => 'Sửa quyền','slug' => 'edit-permission', ],
+            ['name' => 'Cập nhật quyền', 'slug' => 'update-permission'],
+            ['name' => 'Xóa quyền', 'slug' => 'delete-permission',],
 
-            ['name' => 'view user','slug' => 'view-user',],
-            ['name' => 'create user','slug' => 'create-user',],
-            ['name' => 'edit user','slug' => 'edit-user',],
-            ['name' => 'update user','slug' => 'update-user',],
-            ['name' => 'delete user','slug' => 'delete-user',],
+            ['name' => 'Xem Nhóm quyền','slug' => 'view-role',],
+            ['name' => 'Th Nhóm quyền','slug' => 'create-role',],
+            ['name' => 'Tạo Nhóm quyền','slug' => 'edit-role',],
+            ['name' => 'Cập nhật Nhóm quyền','slug' => 'update-role',],
+            ['name' => 'xóa Nhóm quyền','slug' => 'delete-role',],
 
-            ['name' => 'view student','slug' => 'view-student',],
-            ['name' => 'create student','slug' => 'create-student',],
-            ['name' => 'edit student','slug' => 'edit-student',],
-            ['name' => 'update student','slug' => 'update-student',],
-            ['name' => 'delete student','slug' => 'delete-student',],
+            ['name' => 'Xem người dùng','slug' => 'view-user',],
+            ['name' => 'Tạo mới người dùng','slug' => 'create-user',],
+            ['name' => 'Sửa người dùng','slug' => 'edit-user',],
+            ['name' => 'Cập nhật người dùng','slug' => 'update-user',],
+            ['name' => 'Xóa người dùng','slug' => 'delete-user',],
 
-            ['name' => 'view classroom','slug' => 'view-classroom',],
-            ['name' => 'create classroom','slug' => 'create-classroom',],
-            ['name' => 'edit classroom','slug' => 'edit-classroom',],
-            ['name' => 'update classroom','slug' => 'update-classroom',],
-            ['name' => 'delete classroom','slug' => 'delete-classroom',],
+            ['name' => 'Xem danh sách sinh viên','slug' => 'view-student',],
+            ['name' => 'Thêm  sinh viên','slug' => 'create-student',],
+            ['name' => 'Sửa sinh viên','slug' => 'edit-student',],
+            ['name' => 'Cập nhật sinh viên','slug' => 'update-student',],
+            ['name' => 'Xóa sinh viên','slug' => 'delete-student',],
 
-            ['name' => 'view subject','slug' => 'view-subject',],
-            ['name' => 'create subject','slug' => 'create-subject',],
-            ['name' => 'edit subject','slug' => 'edit-subject',],
-            ['name' => 'update subject','slug' => 'update-subject',],
-            ['name' => 'delete subject','slug' => 'delete-subject',],
+            ['name' => 'Xem danh sách lớp học','slug' => 'view-classroom',],
+            ['name' => 'Thêm lớp học','slug' => 'create-classroom',],
+            ['name' => 'Sửa lớp học','slug' => 'edit-classroom',],
+            ['name' => 'Cập nhật lớp học','slug' => 'update-classroom',],
+            ['name' => 'Xóa lớp học','slug' => 'delete-classroom',],
 
-            ['name' => 'view faculty','slug' => 'view-faculty',],
-            ['name' => 'create faculty','slug' => 'create-faculty',],
-            ['name' => 'edit faculty','slug' => 'edit-faculty',],
-            ['name' => 'update faculty','slug' => 'update-faculty',],
-            ['name' => 'delete faculty','slug' => 'delete-faculty',],
+            ['name' => 'Xem danh sách môn học','slug' => 'view-subject',],
+            ['name' => 'Tạo  môn học','slug' => 'create-subject',],
+            ['name' => 'Sửa môn học','slug' => 'edit-subject',],
+            ['name' => 'Cập nhật môn học','slug' => 'update-subject',],
+            ['name' => 'Xóa môn học','slug' => 'delete-subject',],
+
+            ['name' => 'Xem danh sách Khoa','slug' => 'view-faculty',],
+            ['name' => 'Tạo mới Khoa','slug' => 'create-faculty',],
+            ['name' => 'sửa Khoa','slug' => 'edit-faculty',],
+            ['name' => 'Cập nhật Khoa','slug' => 'update-faculty',],
+            ['name' => 'Xóa Khoa','slug' => 'delete-faculty',],
+
+            ['name' => 'Không có quyền','slug' => 'not-permission',],
         ]);
         DB::table('roles')->insert([
-            ['name'=>'super admin','slug'=>'super-admin'],
-        ]);
-        DB::table('role_user')->insert([
-            ['user_id'=>1,'role_id'=>1],
+            ['name'=>'Super admin','slug'=>'SUPER ADMIN'],
+            ['name'=>'admin','slug'=>'ADMIN'],
+            ['name'=>'Nhân viên','slug'=>'EMPLOYEE'],
+            ['name'=>'Nguời dùng','slug'=>'USER']
+            ,
         ]);
         for($i=1;$i<36;$i++){
             DB::table('role_permission')->insert([

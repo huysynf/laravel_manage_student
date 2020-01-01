@@ -24,7 +24,7 @@
                            name="name">
                 </div>
                 <div class="d-flex flex-column ml-1">
-                    <lable class="text-primary" for="description">Số tiết</lable>
+                    <lable class="text-primary" for="description">Mô tả</lable>
                     <input value="{{request()->input('description')}}" class="h-50" type="text"
                            placeholder="Mô tả tìm kiếm..." name="description">
                 </div>

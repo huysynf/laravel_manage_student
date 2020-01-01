@@ -31,11 +31,12 @@ class PermissionController extends Controller
         ]);
     }
 
-    public  function update(UpdatePermissionRequest $request,$id){
+    public function update(UpdatePermissionRequest $request, $id)
+    {
         return response()->json([
             'status' => 200,
             'message' => 'Cập nhật thành công',
-            'data' => $this->permissionRepository->update($request->all(),$id),
+            'data' => $this->permissionRepository->update($request->all(), $id),
         ]);
     }
 }

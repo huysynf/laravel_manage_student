@@ -25,7 +25,7 @@ class UpdateStudentRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>['required','unique:students,name,'.$this->student,new UpperCase()],
+            'name'=>['required','unique:students,name,'.$this->id,new UpperCase()],
             'birthday'=>'required',
             'phone'=>'required|regex:/\d{3}-\d{4}-\d{3}/',
             'gender'=>'required',

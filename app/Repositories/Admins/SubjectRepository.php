@@ -1,11 +1,11 @@
 <?php
+
 namespace App\Repositories\Admins;
 
-use App\Repositories\BaseRepository;
 use App\Models\Subject;
+use App\Repositories\BaseRepository;
 use DB;
 use Hash;
-use Illuminate\Http\Request;
 use Image;
 
 class SubjectRepository extends BaseRepository
@@ -14,14 +14,15 @@ class SubjectRepository extends BaseRepository
     {
         $this->model = $model;
     }
+
     public function search(array $data)
     {
-        return $this->model->search($data['name']??null, $data['lesson']??null);;
+        return $this->model->search($data['name'] ?? null, $data['lesson'] ?? null);;
     }
 
-    public function create(array $data):Subject
+    public function create(array $data): Subject
     {
-        return   $this->model->create($data);
+        return $this->model->create($data);
 
     }
 

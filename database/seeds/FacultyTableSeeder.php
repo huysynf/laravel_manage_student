@@ -11,6 +11,6 @@ class FacultyTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Models\Faculty::class, 50)->create();
+        factory(App\Models\Faculty::class, 10)->create();
     }
 }

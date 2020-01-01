@@ -10,6 +10,7 @@ class Student extends Model
     use ImageTrait;
 
     protected $table = 'students';
+
     protected $fillable = [
         'name',
         'address',
@@ -29,18 +30,22 @@ class Student extends Model
     {
         return $this->with('classrooms')->findOrFail($id);
     }
-    public function getClassroomIdByStudentId($id){
-        return $this->with('classrooms')->findOrFail($id)->pluck('classroom_id');
+
+    public function getClassroomIdBy($id)
+    {
+        return $this->findOrFail($id)->classrooms()->pluck('classroom_id')->toArray();
     }
+
     public function search($data)
     {
-        $name=$data['name']??null;
-        $address=$data['address']??null;
-        $classroomName=$data['classrooms']??null;
+        $name = $data['name'] ?? null;
+        $address = $data['address'] ?? null;
+        $classroomName = $data['classrooms'] ?? null;
+
         return $this
             ->when($classroomName, function ($query) use ($classroomName) {
                 $query->whereHas('classrooms', function ($q) use ($classroomName) {
-                    $q->where('name',$classroomName );
+                    $q->where('name', $classroomName);
                 });
             })
             ->when($name, function ($query) use ($name) {
