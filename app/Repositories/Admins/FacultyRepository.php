@@ -1,11 +1,11 @@
 <?php
+
 namespace App\Repositories\Admins;
 
-use App\Repositories\BaseRepository;
 use App\Models\Faculty;
+use App\Repositories\BaseRepository;
 use DB;
 use Hash;
-use Illuminate\Http\Request;
 use Image;
 
 class FacultyRepository extends BaseRepository
@@ -14,17 +14,18 @@ class FacultyRepository extends BaseRepository
     {
         $this->model = $model;
     }
+
     public function search(array $data)
     {
 
-        $faculties = $this->model->search($data['name']??null, $data['lesson']??null);
+        $faculties = $this->model->search($data['name'] ?? null, $data['lesson'] ?? null);
         return $faculties;
     }
 
-    public function create(array $data):Faculty
+    public function create(array $data): Faculty
     {
-        $faculty= $this->model->create($data);
-        return  $faculty;
+        $faculty = $this->model->create($data);
+        return $faculty;
 
     }
 

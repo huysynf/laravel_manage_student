@@ -1,4 +1,3 @@
-
 @extends('backends.layouts.app')
 
 @section('title',' Quản người dùng')
@@ -6,12 +5,14 @@
 @section('content')
     <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Quản lí người dùng</h1>
-        <button class="ml-2 btn btn-sm btn-primary shadow-sm add-user"
-                title="thêm mới người dùng"
-                data-toggle="modal"
-                data-target="#newUserModal"
-        ><i class="fas fa-plus fa-sm text-success"></i> Thêm mới người dùng
-        </button>
+        @can('create-user')
+            <button class="ml-2 btn btn-sm btn-primary shadow-sm add-user"
+                    title="thêm mới người dùng"
+                    data-toggle="modal"
+                    data-target="#newUserModal"
+            ><i class="fas fa-plus fa-sm text-success"></i> Thêm mới người dùng
+            </button>
+        @endcan
     </div>
     @if(session('message'))
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -36,7 +37,8 @@
                     <select class="form-control user-select-role" name="role">
                         <option value=" " selected>Tất cả</option>
                         @foreach($roles as $role)
-                            <option value="{{$role->name}}" {{request()->input('role')==$role->name?'selected':''}}>{{$role->name}}</option>
+                            <option
+                                value="{{$role->name}}" {{request()->input('role')==$role->name?'selected':''}}>{{$role->name}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -73,30 +75,36 @@
                         <td>
                             {{$user->name}}
                         </td>
+
                         <td class="d-flex">
                             @can('update-user')
-                            <button class="btn btn-outline-primary btn-circle edit-user"
-                                    title="Cập nhật thông tin người dùng"
-                                    data-toggle="modal"
-                                    editId="{{$user->id}}"
-                                    data-target="#editUserModal">
-                                <i class="fa fa-edit text-dark"></i>
-                            </button>
+                                <button class="btn btn-outline-primary btn-circle edit-user"
+                                        title="Cập nhật thông tin người dùng"
+                                        data-toggle="modal"
+                                        editId="{{$user->id}}"
+                                        data-target="#editUserModal">
+                                    <i class="fa fa-edit text-dark"></i>
+                                </button>
                             @endcan
-                            @can('destroy-user')
-                            <button class="btn btn-outline-dark delete-user btn-circle" title="Xóa người dùng"
-                                    deleteId="{{$user->id}}"><i class="fas fa-trash text-danger"></i></button>
-                            <button class="btn btn-outline-success btn-circle  show-user" title="Chi tiết người dùng"
-                                    data-toggle="modal"
-                                    showId="{{$user->id}}"
-                                    data-target="#showUserModal"><i class="fas fa-info-circle text-primary"></i>
-                            </button>@endcan
-                            <button class="btn btn-outline-primary  btn-circle change-user-password " title="Đổi mật khẩu"
-                                    data-toggle="modal"
-                                    userId="{{$user->id}}"
-                                    data-target="#setPasswordModal">
-                                <i class="fas fa-key text-warning"></i></button>
+                            @can('delete-user')
+                                <button class="btn btn-outline-dark delete-user btn-circle" title="Xóa người dùng"
+                                        deleteId="{{$user->id}}"><i class="fas fa-trash text-danger"></i></button>
+                                <button class="btn btn-outline-success btn-circle  show-user"
+                                        title="Chi tiết người dùng"
+                                        data-toggle="modal"
+                                        showId="{{$user->id}}"
+                                        data-target="#showUserModal"><i class="fas fa-info-circle text-primary"></i>
+                                </button>@endcan
+                            @can('edit-user')
+                                <button class="btn btn-outline-primary  btn-circle change-user-password "
+                                        title="Đổi mật khẩu"
+                                        data-toggle="modal"
+                                        userId="{{$user->id}}"
+                                        data-target="#setPasswordModal">
+                                    <i class="fas fa-key text-warning"></i></button>
+                            @endcan
                         </td>
+
                     </tr>
                 @endforeach
                 </tbody>
@@ -164,7 +172,8 @@
                                 <select class="form-control user-select-role user-role" name="role_id">
                                     <option value=" " selected>---- Chọn quyền ----</option>
                                     @foreach($roles as $role)
-                                        <option value="{{$role->id}}" {{old('role_id')==$role->id?'selected':''}}>{{$role->name}}</option>
+                                        <option
+                                            value="{{$role->id}}" {{old('role_id')==$role->id?'selected':''}}>{{$role->name}}</option>
                                     @endforeach
                                 </select>
                                 <span class="text-danger error-role"></span>
@@ -255,7 +264,8 @@
                                 <select class="form-control user-select-role user-role" name="role_id">
                                     <option value=" " selected>---- Chọn quyền ----</option>
                                     @foreach($roles as $role)
-                                        <option value="{{$role->id}}" {{old('role_id')==$role->id?'selected':''}}>{{$role->name}}</option>
+                                        <option
+                                            value="{{$role->id}}" {{old('role_id')==$role->id?'selected':''}}>{{$role->name}}</option>
                                     @endforeach
                                 </select>
                                 <span class="text-danger error-role"></span>

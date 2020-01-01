@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
-
     protected $fillable = [
         'name',
         'lesson',
@@ -25,8 +24,5 @@ class Subject extends Model
             })
             ->latest('id')
             ->paginate(10);
-
     }
-
-
 }

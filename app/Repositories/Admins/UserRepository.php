@@ -13,18 +13,19 @@ use Image;
 class UserRepository extends BaseRepository
 {
     protected $imagePath;
-    protected  $role;
+    protected $role;
+
     public function __construct(User $model)
     {
         $this->model = $model;
         $this->imagePath = 'images/users/';
-        $this->role=new Role();
+        $this->role = new Role();
     }
 
     public function search(array $data)
     {
-        $data['users']=$this->model->search($data['name']??null, $data['role']??null);
-        $data['roles']=$this->role->all(['id','name']);
+        $data['users'] = $this->model->search($data['name'] ?? null, $data['role'] ?? null);
+        $data['roles'] = $this->role->all(['id', 'name']);
         return $data;
     }
 
@@ -65,7 +66,7 @@ class UserRepository extends BaseRepository
 
     public function changePassword($password, $id)
     {
-        $this->model->changePassword($id,  Hash::make($password));
+        $this->model->changePassword($id, Hash::make($password));
         return 'Cập nhật mật khẩu thành công';
 
     }

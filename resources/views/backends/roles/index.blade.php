@@ -83,15 +83,18 @@
                                     <i class="fa fa-edit text-dark"></i>
                                 </a>
                             @endcan
-                            @can('edit-role')
+                            @can('delete-role')
                                 <button class="btn btn-outline-dark delete-role btn-circle" title="Xóa nhóm quyền"
                                         deleteId="{{$role->id}}"><i class="fas fa-trash text-danger"></i></button>
                             @endcan
-                            <button class="btn btn-outline-success btn-circle  show-role" title="Chi tiết nhóm quyền"
-                                    data-toggle="modal"
-                                    showId="{{$role->id}}"
-                                    data-target="#showRoleModal"><i class="fas fa-info-circle text-primary"></i>
-                            </button>
+                            @can('view-role')
+                                <button class="btn btn-outline-success btn-circle  show-role"
+                                        title="Chi tiết nhóm quyền"
+                                        data-toggle="modal"
+                                        showId="{{$role->id}}"
+                                        data-target="#showRoleModal"><i class="fas fa-info-circle text-primary"></i>
+                                </button>
+                            @endcan
                         </td>
                     </tr>
                 @endforeach
@@ -181,7 +184,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="showRoleModalTitle"> Thông tin người dùng <span
+                        <h5 class="modal-title" id="showRoleModalTitle"> Thông tin nhóm quyền <span
                             ></span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -190,7 +193,7 @@
 
                     <div class="modal-body text-dark ">
                         <div class="d-flex flex-column justify-content-between">
-                            <p>Tên quyền: <span class="role-name"></span></p>
+                            <p>Tên nhóm quyền: <span class="role-name"></span></p>
                             <p>Danh sách quyền:</p>
                             <div class="d-flex permissions-box">
                             </div>

@@ -87,7 +87,7 @@
                                 <i class="fa fa-edit text-dark"></i>
                             </a>
                             @endcan
-                            @can('destroy-classroom')
+                            @can('delete-classroom')
                             <button class="btn btn-outline-dark btn-circle delete-classroom" title="Xóa lớp học"
                                     deleteId="{{$classroom->id}}"><i class="fas fa-trash text-danger"></i></button>
                                 @endcan

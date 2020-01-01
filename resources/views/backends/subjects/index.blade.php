@@ -72,7 +72,7 @@
                                     class="fa fa-edit text-warning"></i>
                             </button>
                             @endcan
-                            @can('destroy-subject')
+                            @can('delete-subject')
                             <button class="btn btn-outline-dark delete-subject btn-circle" title="Xóa nhật khoa"
                                     deleteId="{{$subject->id}}"><i class="fas fa-trash text-danger"></i></button>
                                 @endcan

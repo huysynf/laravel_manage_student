@@ -6,7 +6,7 @@
 
     <div class="d-sm-flex align-items-center mb-2">
         <h1 class="h3 mb-0 text-gray-800">Thêm mới sinh viên</h1>
-        <a href="{{route('classrooms.index')}}" class="ml-2 btn btn-sm btn-primary shadow-sm "
+        <a href="{{route('students.index')}}" class="ml-2 btn btn-sm btn-primary shadow-sm "
            title="Quản lí sinh viên">
             <i class="fas fa-undo fa-sm text-success"></i> Quản lí sinh viên
         </a>

@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(App\Models\Subject::class, function (Faker $faker) {
     return [
-        'name'=>'subject'.$faker->numberBetween(1,100),
+        'name'=>'Môn học'.$faker->numberBetween(1,100),
         'lesson'=>$faker->numberBetween(1,100),
         'description'=>$faker->text,
     ];

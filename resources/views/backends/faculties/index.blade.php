@@ -24,7 +24,7 @@
                            name="name">
                 </div>
                 <div class="d-flex flex-column ml-1">
-                    <lable class="text-primary" for="description">Số tiết</lable>
+                    <lable class="text-primary" for="description">Mô tả</lable>
                     <input value="{{request()->input('description')}}" class="h-50" type="text"
                            placeholder="Mô tả tìm kiếm..." name="description">
                 </div>
@@ -67,7 +67,7 @@
                                 ><i class="fa fa-edit text-warning"></i>
                                     @endcan
                                 </button>
-                                @can('destroy-faculty')
+                                @can('delete-faculty')
                                 <button class="btn btn-outline-dark delete-faculty btn-circle" title="Xóa nhật khoa"
                                         deleteId="{{$faculty->id}}"><i class="fas fa-trash text-danger"></i></button>
                                 @endcan
