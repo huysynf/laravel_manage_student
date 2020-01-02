@@ -27,7 +27,6 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $this->authorize('view-user');
         $data = $this->userRepository->search($request->only(['name', 'role']));
         return view('backends.users.index')->with([
             'users' => $data['users'],
@@ -38,7 +37,6 @@ class UserController extends Controller
 
     public function store(CreateUserRequest $request)
     {
-        $this->authorize('create-user');
         $user = $this->userRepository->create($request->only([
             'name',
             'email',
@@ -57,16 +55,16 @@ class UserController extends Controller
 
     public function show($id)
     {
+        $user=$this->userRepository->show($id);
         return response()->json([
             'status' => 200,
             'message' => 'lấy thông tin người  dùng thành công',
-            'data' => $this->userRepository->show($id),
+            'data' =>$user,
         ]);
     }
 
     public function update(UpdateUserRequest $request, $id)
     {
-        $this->authorize('update-user');
         $user = $this->userRepository->update($request->only([
             'name',
             'email',
@@ -83,26 +81,28 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        $this->authorize('destroy-user');
+        $message=$this->userRepository->destroy($id);
         return response()->json([
             'status' => 200,
-            'message' => $this->userRepository->destroy($id),
+            'message' => $message,
         ]);
     }
 
     public function setPassword(SetPasswordRequest $request, $id)
     {
+        $message=$this->userRepository->changePassword($request->input('password'), $id);
         return response()->json([
             'status' => 200,
-            'message' => $this->userRepository->changePassword($request->input('password'), $id),
+            'message' =>$message,
         ]);
     }
 
     public function changePassword(ChangePasswordRequest $request, $id)
     {
+        $message=$this->userRepository->changePassword($request->input('password'), $id);
         return response()->json([
             'status' => 200,
-            'message' => $this->userRepository->changePassword($request->input('password'), $id),
+            'message' => $message,
         ]);
     }
 }
