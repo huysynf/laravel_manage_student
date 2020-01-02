@@ -72,6 +72,14 @@ Route::group(['prefix' => 'manage', 'namespace' => 'Admins', 'middleware' => ['a
         Route::put('update/{id}','ClassroomController@update')->name('classrooms.update')->middleware('role:update-classroom');
         Route::delete('/{id}', 'ClassroomController@destroy')->middleware('role:delete-classroom');
     });
+    //classrooms schedule
+    Route::group(['prefix' => 'classroomschedules'], function () {
+        Route::get('{id}', 'ClassroomScheduleController@create')->name('classroomchedules.create');
+        Route::post('/{id}','ClassroomScheduleController@store')->name('classroomchedules.store');
+        Route::delete('{id}', 'ClassroomScheduleController@destroy')->name('classroomchedules.store');
+    });
+
+
     //student
     Route::group(['prefix' => 'students'], function () {
         Route::get('/', 'StudentController@index')->name('students.index')->middleware('role:view-student');
