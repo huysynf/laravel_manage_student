@@ -51,4 +51,13 @@ class Classroom extends Model
             ->paginate(10);
     }
 
+    public function classroomShedule()
+    {
+        return $this->hasMany(ClassroomSchedule::class);
+    }
+
+    public function findOrFail($id)
+    {
+        return $this->with('classroomShedule')->findOrFail($id);
+    }
 }

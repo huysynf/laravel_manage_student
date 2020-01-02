@@ -43,28 +43,35 @@
                     </select>
                 </div>
                 <div class="align-self-end ml-1">
-                    <button type="submit" class="btn btn-primary" title="thêm mới lịch lớp học"><i class="fa fa-plus"></i></button>
+                    <button type="submit" class="btn btn-primary" title="thêm mới lịch lớp học"><i
+                            class="fa fa-plus"></i></button>
                 </div>
             </form>
         </div>
-        <div class="col-12">
-            <h4>Lịch  của lớp: {{$classroom->name}}</h4>
+        <div class="col-12" id="classroomSchedule">
+            <h4>Lịch của lớp: {{$classroom->name}}</h4>
             <table class=" table table-bordered">
                 <tr>
                     <td>Ca/Thứ</td>
                     @for($i=2;$i<=7;$i++)
-                        <th >Thứ {{$i}}</th>
+                        <th>Thứ {{$i}}</th>
                     @endfor
                 </tr>
                 @for($i=1;$i<=4;$i++)
                     <tr>
                         <td>Ca{{$i}}</td>
                         @for($j=2;$j<=7;$j++)
-                            <td>
+                            <td class="position-relative">
                                 @foreach($classroom->classroomShedule as $classroomSchedule)
                                     @if($classroomSchedule->day==$j && $classroomSchedule->time==$i)
-                                        <i class="fa fa-check text-primary"></i>
-                                        {{$classroomSchedule->id}}
+                                        <div>
+                                            <i class="fa fa-check text-primary " style="font-size:2vw;"></i>
+                                            <a classroomScheduleId="{{$classroomSchedule->id}}"
+                                               class="delete-classroom-schedule position-absolute "
+                                               style="top:0;right:1%;cursor: pointer">
+                                                <i class="fas fa-times text-danger" style="font-size:1.5vw;"
+                                                   title="xóa"></i></a>
+                                        </div>
                                         @break
                                     @endif
                                 @endforeach

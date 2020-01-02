@@ -76,7 +76,7 @@ Route::group(['prefix' => 'manage', 'namespace' => 'Admins', 'middleware' => ['a
     Route::group(['prefix' => 'classroomschedules'], function () {
         Route::get('{id}', 'ClassroomScheduleController@create')->name('classroomchedules.create');
         Route::post('/{id}','ClassroomScheduleController@store')->name('classroomchedules.store');
-        Route::delete('{id}', 'ClassroomScheduleController@destroy')->name('classroomchedules.store');
+        Route::delete('/{id}', 'ClassroomScheduleController@destroy');
     });
 
 

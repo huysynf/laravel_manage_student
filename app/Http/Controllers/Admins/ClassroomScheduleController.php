@@ -8,7 +8,6 @@ use App\Models\ClassroomSchedule;
 use Illuminate\Http\Request;
 
 
-
 class ClassroomScheduleController extends Controller
 {
     protected $classroom;
@@ -16,30 +15,37 @@ class ClassroomScheduleController extends Controller
 
     public function __construct()
     {
-        $this->classroom=new Classroom();
-        $this->classroomSchedule=new ClassroomSchedule();
+        $this->classroom = new Classroom();
+        $this->classroomSchedule = new ClassroomSchedule();
     }
 
-    public function create($id){
-        $classroom=$this->classroom->findOrFail($id);
-
-        return view('backends.classrooms.classroom_schedule',compact('classroom'));
+    public function create($id)
+    {
+        $classroom = $this->classroom->findOrFail($id);
+        return view('backends.classrooms.classroom_schedule', compact('classroom'));
     }
-    public function store(Request $request,$id){
-        $data=$request->all();
-        $flag=$this->classroomSchedule->checkDayTimeClassroom($data);
-        if(!$flag){
+
+    public function store(Request $request, $id)
+    {
+        $data = $request->all();
+        $flag = $this->classroomSchedule->checkDayTimeClassroom($data);
+        if (!$flag) {
             $this->classroomSchedule->create($data);
-            return redirect()->route('classroomchedules.create',$id)->with('massage','Tạo lịch cho lớp học  thành công!');
+            return redirect()->route('classroomchedules.create', $id)->with('massage',
+                'Tạo lịch cho lớp học  thành công!');
 
-        }else{
-            return redirect()->route('classroomchedules.create',$id)->with('massage','Lich  này đã có !');
+        } else {
+            return redirect()->route('classroomchedules.create', $id)->with('massage', 'Lich  này đã có !');
         }
     }
 
-    public function destroy($id){
-
+    public function destroy($id)
+    {
+        $this->classroomSchedule->destroy($id);
+        return response()->json([
+            'status' => 200,
+            'message' => 'Xóa thành công',
+        ]);
     }
-
 
 }

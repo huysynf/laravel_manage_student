@@ -467,5 +467,21 @@ $(function () {
                 $('.error-name').html(errors.name[0]);
             });
     });
+
+    //classroom schedule
+    let classroomSchedule=$('#classroomSchedule');
+
+    classroomSchedule.on('click','.delete-classroom-schedule',function () {
+        let classroomScheduleId=$(this).attr('classroomScheduleId');
+        let url='/manage/classroomschedules/'+classroomScheduleId;
+        destroyResource(url)
+            .then(data=>{
+                alertSuccess(data.message);
+                $(this).parent().remove();
+            })
+            .catch(data=>{
+                alertError(data.message);
+            });
+    })
 });
 
