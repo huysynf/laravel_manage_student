@@ -35,9 +35,10 @@ Route::group(['prefix' => 'manage', 'namespace' => 'Admins', 'middleware' => ['a
     //role
     Route::group(['prefix' => 'roles'], function () {
         Route::get('/', 'RoleController@index')->name('roles.index')->middleware('role:view-role');
-        Route::get('/{id}', 'RoleController@show')->name('roles.edit')->middleware('role:view-role');
+        Route::get('/{id}', 'RoleController@show')->where('id', '[0-9]+')->middleware('role:view-role');
+        Route::get('{id}/edit', 'RoleController@edit')->name('roles.edit')->middleware('role:edit-role');
         Route::post('/', 'RoleController@store')->name('roles.store')->middleware('role:create-role');
-        Route::put('update/{id}', 'RoleController@update')->middleware('role:update-role');
+        Route::put('update/{id}', 'RoleController@update')->name('roles.update')->middleware('role:update-role');
         Route::delete('/{id}', 'RoleController@destroy')->middleware('role:delete-role');
     });
 //    //permission

@@ -47,7 +47,9 @@ class RoleController extends Controller
 
     public function edit($id)
     {
+
         $data = $this->roleRepository->edit($id);
+
         return view('backends.roles.edit')->with([
             'role' => $data['role'],
             'permissions' => $data['permissions'],
