@@ -49,7 +49,7 @@ class UserRepository extends BaseRepository
         if (isset($data['image'])) {
             $current_image = $user->image;
             $image = $data['image'];
-            $data['image'] = $this->user->updateimage($image, $this->imagePath, $current_image);
+            $data['image'] = $this->model->updateimage($image, $this->imagePath, $current_image);
         }
         $user->update($data);
         return $user;
