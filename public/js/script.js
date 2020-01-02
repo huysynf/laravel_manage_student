@@ -66,7 +66,7 @@ $(function () {
                 alertSuccess(data.message);
                 let facultyRow = fillFacultyToRowTable(data.data);
                 $('tbody').prepend(facultyRow);
-                 countStt();
+                countIndexTableOfPage();
             })
             .fail(data => {
                 let errors = data.responseJSON.errors;
@@ -99,6 +99,7 @@ $(function () {
             .then(data => {
                 alertSuccess(data.message);
                 $(this).parents('tr').remove();
+                countIndexTableOfPage();
             })
             .catch(data => {
                 alertError(data.message);
@@ -174,6 +175,7 @@ $(function () {
             .then(data => {
                 alertSuccess(data.message);
                 $(this).parents('tr').remove();
+                countIndexTableOfPage();
             })
             .catch(data => {
                 alertError(data.message);
@@ -195,6 +197,7 @@ $(function () {
             .then(data => {
                 alertSuccess(data.message);
                 $(this).parents('tr').remove();
+                countIndexTableOfPage();
             })
             .catch(data => {
                 alertError(data.message);
@@ -229,6 +232,7 @@ $(function () {
             .then(data => {
                 alertSuccess(data.message);
                 $(this).parents('tr').remove();
+                countIndexTableOfPage();
             })
             .catch(data => {
                 alertError(data.message);
@@ -336,6 +340,7 @@ $(function () {
             .then(data => {
                 alertSuccess(data.message);
                 $(this).parents('tr').remove();
+                countIndexTableOfPage();
             })
             .catch(data => {
                 alertError(data.message);
@@ -422,6 +427,7 @@ $(function () {
             .then(data => {
                 alertSuccess(data.message);
                 $(this).parents('tr').remove();
+                countIndexTableOfPage();
             })
             .catch(data => {
                 alertError(data.message);
