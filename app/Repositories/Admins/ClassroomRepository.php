@@ -59,7 +59,7 @@ class ClassroomRepository extends BaseRepository
     public function show($id)
     {
 
-        return $this->model->with('subject')->with('faculty')->findOrFail($id);
+        return $this->model->findOrFail($id);
     }
 
     public function destroy($id)

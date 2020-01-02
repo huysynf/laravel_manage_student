@@ -215,6 +215,9 @@ $(function () {
                 $('.classroom-member').html(classroom.member);
                 $('.classroom-faculty').html(classroom.faculty.name);
                 $('.classroom-subject').html(classroom.subject.name);
+                let classroomScheduleTable=fillClassroomScheduleToTable(classroom.classroom_shedule);
+                $('.classroom-schedule').html(classroomScheduleTable);
+
             })
     });
 

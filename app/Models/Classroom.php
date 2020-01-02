@@ -58,6 +58,6 @@ class Classroom extends Model
 
     public function findOrFail($id)
     {
-        return $this->with('classroomShedule')->findOrFail($id);
+        return $this->with('subject')->with('faculty')->with('classroomShedule')->findOrFail($id);
     }
 }
