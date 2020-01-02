@@ -96,7 +96,9 @@
                                     showId="{{$classroom->id}}"
                                     data-target="#showClassroomModal">
                                 <i class="fas fa-info-circle text-primary"></i></button>
+                                <a href="{{route('classroomchedules.create',$classroom->id)}}"  title="quản lí lịch lớp học" class="btn btn-circle btn-outline-success"><i class="fa fa-plus text-primary"></i></a>
                         </td>
+
                     </tr>
                 @endforeach
                 </tbody>
@@ -125,7 +127,9 @@
                     <p> Mô tả : <span class="classroom-description"></span></p>
                     <p>Tên môn học ở lớp:<span class="classroom-subject"></span></p>
                     <p>Tên khoa:<span class="classroom-faculty"></span></p>
+                    <div class="classroom-schedule">
 
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Trở về</button>

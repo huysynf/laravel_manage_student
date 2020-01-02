@@ -301,3 +301,37 @@ function fillRoleToRowTable(role) {
             </tr>`;
 
     }
+
+
+    function fillClassroomScheduleToTable(classroomSchedules) {
+        let tdTitle = "<h4>lịch của lớp học<h4>";
+        for (i = 2; i <= 7; i++) {
+            tdTitle += "<th>Thứ" + i + "</th>";
+        }
+        let rowTable = "";
+        for (i = 1; i <= 4; i++){
+            rowTable += " <tr>";
+            rowTable += "<td>Ca" + i + "</td>";
+            for (j = 2; j <= 7; j++) {
+                rowTable += " <td class='position-relative'>";
+                classroomSchedules.forEach( classroomSchedule=>{
+                    if (classroomSchedule.day == j && classroomSchedule.time == i) {
+                        rowTable += `<div>
+                                         <i class="fa fa-check text-primary " style="font-size:2vw;"></i>
+                                     </div>`;
+                    }
+
+                });
+            rowTable += "</td>";
+        }
+        rowTable+=" </tr>";
+    }
+    return `<table class=" table table-bordered">
+                <tr>
+                    <td>Ca/Thứ</td>
+                   ${tdTitle}
+                </tr>
+                ${rowTable}
+            </table>`;
+
+    }
