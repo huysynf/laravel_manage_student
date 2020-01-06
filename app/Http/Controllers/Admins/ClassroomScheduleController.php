@@ -3,48 +3,45 @@
 namespace App\Http\Controllers\Admins;
 
 use App\Http\Controllers\Controller;
-use App\Models\Classroom;
-use App\Models\ClassroomSchedule;
+use App\Repositories\Admins\ClassroomScheduleRepository;
 use Illuminate\Http\Request;
-
 
 class ClassroomScheduleController extends Controller
 {
-    protected $classroom;
-    protected $classroomSchedule;
+    protected $classroomScheduleRepository;
 
-    public function __construct()
+    public function __construct(ClassroomScheduleRepository $classroomScheduleRepository)
     {
-        $this->classroom = new Classroom();
-        $this->classroomSchedule = new ClassroomSchedule();
+        $this->classroomScheduleRepository = $classroomScheduleRepository;
     }
 
     public function create($id)
     {
-        $classroom = $this->classroom->findOrFail($id);
-        return view('backends.classrooms.classroom_schedule', compact('classroom'));
+        $data = $this->classroomScheduleRepository->create($id);
+
+        return view('backends.classrooms.classroom_schedule')->with([
+            'classroom' => $data['classroom'],
+            'classroomSchedule' => $data['classroomSchedule'],
+            'row' => $data['row'],
+            'col' => $data['col'],
+        ]);
     }
 
     public function store(Request $request, $id)
     {
         $data = $request->all();
-        $flag = $this->classroomSchedule->checkDayTimeClassroom($data);
-        if (!$flag) {
-            $this->classroomSchedule->create($data);
-            return redirect()->route('classroomchedules.create', $id)->with('massage',
-                'Tạo lịch cho lớp học  thành công!');
+        $message = $this->classroomScheduleRepository->store($data);
 
-        } else {
-            return redirect()->route('classroomchedules.create', $id)->with('massage', 'Lich  này đã có !');
-        }
+        return redirect()->route('classroomchedules.create', $id)->with('massage', $message);
     }
 
     public function destroy($id)
     {
-        $this->classroomSchedule->destroy($id);
+        $message = $this->classroomScheduleRepository->destroy($id);
+
         return response()->json([
             'status' => 200,
-            'message' => 'Xóa thành công',
+            'message' => $message,
         ]);
     }
 

@@ -57,24 +57,21 @@
                         <th>Thứ {{$i}}</th>
                     @endfor
                 </tr>
-                @for($i=1;$i<=4;$i++)
+                @for($i=0;$i<$row;$i++)
                     <tr>
-                        <td>Ca{{$i}}</td>
-                        @for($j=2;$j<=7;$j++)
+                        <td>Ca{{$i+1}}</td>
+                        @for($j=0;$j<$col;$j++)
                             <td class="position-relative">
-                                @foreach($classroom->classroomShedule as $classroomSchedule)
-                                    @if($classroomSchedule->day==$j && $classroomSchedule->time==$i)
-                                        <div>
-                                            <i class="fa fa-check text-primary " style="font-size:2vw;"></i>
-                                            <a classroomScheduleId="{{$classroomSchedule->id}}"
-                                               class="delete-classroom-schedule position-absolute "
-                                               style="top:0;right:1%;cursor: pointer">
-                                                <i class="fas fa-times text-danger" style="font-size:1.5vw;"
-                                                   title="xóa"></i></a>
-                                        </div>
-                                        @break
-                                    @endif
-                                @endforeach
+                                @if($classroomSchedule[$i][$j]!=0)
+                                    <div>
+                                        <i class="fa fa-check text-primary " style="font-size:2vw;"></i>
+                                        <a classroomScheduleId="{{$classroomSchedule[$i][$j]}}"
+                                           class="delete-classroom-schedule position-absolute "
+                                           style="top:0;right:1%;cursor: pointer">
+                                            <i class="fas fa-times text-danger" style="font-size:1.5vw;"
+                                               title="xóa"></i></a>
+                                    </div>
+                                @endif
                             </td>
                         @endfor
 
